@@ -1,0 +1,800 @@
+[p LITE_MODE PRO_MODE AUTOSTATIC PIC14 PIC14E SPACEOPT ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 16F1574 ]
+[d frameptr 6 ]
+"86 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/adc1.c
+[e E4858 . `uc
+channel_AN2 2
+channel_AN4 4
+channel_AN5 5
+channel_AN6 6
+channel_AN7 7
+channel_Temp 29
+channel_DAC 30
+channel_FVR 31
+]
+"62 G:\2018\cs70 redo\gasflowSensor.X\src/api/sample.c
+[e E4968 . `uc
+channel_AN2 2
+channel_AN4 4
+channel_AN5 5
+channel_AN6 6
+channel_AN7 7
+channel_Temp 29
+channel_DAC 30
+channel_FVR 31
+]
+"69 G:\2018\cs70 redo\gasflowSensor.X\src/app/main.c
+[e E4865 . `uc
+channel_AN2 2
+channel_AN4 4
+channel_AN5 5
+channel_AN6 6
+channel_AN7 7
+channel_Temp 29
+channel_DAC 30
+channel_FVR 31
+]
+"6 C:\Program Files (x86)\Microchip\xc8\v1.37\sources\common\aldiv.c
+[v ___aldiv __aldiv `(l  1 e 4 0 ]
+"5 C:\Program Files (x86)\Microchip\xc8\v1.37\sources\common\almod.c
+[v ___almod __almod `(l  1 e 4 0 ]
+"62 C:\Program Files (x86)\Microchip\xc8\v1.37\sources\common\float.c
+[v ___ftpack __ftpack `(f  1 e 3 0 ]
+"86 C:\Program Files (x86)\Microchip\xc8\v1.37\sources\common\ftadd.c
+[v ___ftadd __ftadd `(f  1 e 3 0 ]
+"6 C:\Program Files (x86)\Microchip\xc8\v1.37\sources\common\lldiv.c
+[v ___lldiv __lldiv `(ul  1 e 4 0 ]
+"6 C:\Program Files (x86)\Microchip\xc8\v1.37\sources\common\lwdiv.c
+[v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
+"15 C:\Program Files (x86)\Microchip\xc8\v1.37\sources\common\Umul32.c
+[v ___lmul __lmul `(ul  1 e 4 0 ]
+"64 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/adc1.c
+[v _ADC1_Initialize ADC1_Initialize `(v  1 e 1 0 ]
+"55 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/eusart.c
+[v _EUSART_Initialize EUSART_Initialize `(v  1 e 1 0 ]
+"57 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/fvr.c
+[v _FVR_Initialize FVR_Initialize `(v  1 e 1 0 ]
+"53 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/interrupt_manager.c
+[v _INTERRUPT_InterruptManager INTERRUPT_InterruptManager `II(v  1 e 1 0 ]
+"68 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/mcc.c
+[v _SYSTEM_Initialize SYSTEM_Initialize `(v  1 e 1 0 ]
+"82
+[v _OSCILLATOR_Initialize OSCILLATOR_Initialize `(v  1 e 1 0 ]
+"90
+[v _WDT_Initialize WDT_Initialize `(v  1 e 1 0 ]
+"57 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/memory.c
+[v _FLASH_ReadWord FLASH_ReadWord `(ui  1 e 2 0 ]
+"93
+[v _FLASH_WriteBlock FLASH_WriteBlock `(c  1 e 1 0 ]
+"147
+[v _FLASH_EraseBlock FLASH_EraseBlock `(v  1 e 1 0 ]
+"52 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/pin_manager.c
+[v _PIN_MANAGER_Initialize PIN_MANAGER_Initialize `(v  1 e 1 0 ]
+"58 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/pwm1.c
+[v _PWM1_Initialize PWM1_Initialize `(v  1 e 1 0 ]
+"112
+[v _PWM1_Start PWM1_Start `(v  1 e 1 0 ]
+"58 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/pwm2.c
+[v _PWM2_Initialize PWM2_Initialize `(v  1 e 1 0 ]
+"63 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/tmr2.c
+[v _TMR2_Initialize TMR2_Initialize `(v  1 e 1 0 ]
+"89
+[v _TMR2_StartTimer TMR2_StartTimer `(v  1 e 1 0 ]
+"132
+[v _TMR2_CallBack TMR2_CallBack `(v  1 e 1 0 ]
+"142
+[v _TMR2_SetInterruptHandler TMR2_SetInterruptHandler `(v  1 e 1 0 ]
+"146
+[v _TMR2_DefaultInterruptHandler TMR2_DefaultInterruptHandler `(v  1 e 1 0 ]
+"19 G:\2018\cs70 redo\gasflowSensor.X\src/api/my_uart.c
+[v _uart_send_str uart_send_str `(v  1 e 1 0 ]
+"19 G:\2018\cs70 redo\gasflowSensor.X\src/api/sample.c
+[v _get_idrv_pwm1_duty get_idrv_pwm1_duty `(ui  1 e 2 0 ]
+"24
+[v _set_idrv_pwm1_duty set_idrv_pwm1_duty `(v  1 e 1 0 ]
+"35
+[v _get_vout_pwm2_duty get_vout_pwm2_duty `(ui  1 e 2 0 ]
+"40
+[v _set_vout_pwm2_duty set_vout_pwm2_duty `(v  1 e 1 0 ]
+"52
+[v _fvr_set_gain fvr_set_gain `(v  1 e 1 0 ]
+"61
+[v _adc_init adc_init `(v  1 e 1 0 ]
+"74
+[v _adc_sample adc_sample `(ui  1 e 2 0 ]
+"98
+[v _calc_temp_rs calc_temp_rs `(ul  1 e 4 0 ]
+"124
+[v _calc_temp_rc calc_temp_rc `(ul  1 e 4 0 ]
+"169
+[v _pid_b_b_process pid_b_b_process `(v  1 e 1 0 ]
+"225
+[v _pid_run_process pid_run_process `(v  1 e 1 0 ]
+"257
+[v _calc_current_rs_avg calc_current_rs_avg `(ui  1 e 2 0 ]
+"280
+[v _cal_voout_pwm_duty cal_voout_pwm_duty `(ui  1 e 2 0 ]
+"57 G:\2018\cs70 redo\gasflowSensor.X\src/app/main.c
+[v _main main `(v  1 e 1 0 ]
+"32 G:\2018\cs70 redo\gasflowSensor.X\src/depend/m_string.c
+[v _m_mem_set m_mem_set `(v  1 e 1 0 ]
+"39
+[v _m_mem_cpy m_mem_cpy `(v  1 e 1 0 ]
+"113
+[v _m_math_pow m_math_pow `(l  1 e 4 0 ]
+"140
+[v _m_int_2_str_ex m_int_2_str_ex `(v  1 e 1 0 ]
+"6 G:\2018\cs70 redo\gasflowSensor.X\src/globle/globle.c
+[v _delay delay `(v  1 e 1 0 ]
+[s S339 . 1 `uc 1 IOCIF 1 0 :1:0 
+`uc 1 INTF 1 0 :1:1 
+`uc 1 TMR0IF 1 0 :1:2 
+`uc 1 IOCIE 1 0 :1:3 
+`uc 1 INTE 1 0 :1:4 
+`uc 1 TMR0IE 1 0 :1:5 
+`uc 1 PEIE 1 0 :1:6 
+`uc 1 GIE 1 0 :1:7 
+]
+"360 C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic16f1574.h
+[s S348 . 1 `uc 1 . 1 0 :2:0 
+`uc 1 T0IF 1 0 :1:2 
+`uc 1 . 1 0 :2:3 
+`uc 1 T0IE 1 0 :1:5 
+]
+[u S353 . 1 `S339 1 . 1 0 `S348 1 . 1 0 ]
+[v _INTCONbits INTCONbits `VES353  1 e 1 @11 ]
+[s S449 . 1 `uc 1 TMR1IF 1 0 :1:0 
+`uc 1 TMR2IF 1 0 :1:1 
+`uc 1 . 1 0 :2:2 
+`uc 1 TXIF 1 0 :1:4 
+`uc 1 RCIF 1 0 :1:5 
+`uc 1 ADIF 1 0 :1:6 
+`uc 1 TMR1GIF 1 0 :1:7 
+]
+"528
+[u S457 . 1 `S449 1 . 1 0 ]
+[v _PIR1bits PIR1bits `VES457  1 e 1 @17 ]
+"836
+[v _TMR2 TMR2 `VEuc  1 e 1 @26 ]
+"855
+[v _PR2 PR2 `VEuc  1 e 1 @27 ]
+"874
+[v _T2CON T2CON `VEuc  1 e 1 @28 ]
+[s S501 . 1 `uc 1 T2CKPS0 1 0 :1:0 
+`uc 1 T2CKPS1 1 0 :1:1 
+`uc 1 . 1 0 :1:2 
+`uc 1 T2OUTPS0 1 0 :1:3 
+`uc 1 T2OUTPS1 1 0 :1:4 
+`uc 1 T2OUTPS2 1 0 :1:5 
+`uc 1 T2OUTPS3 1 0 :1:6 
+]
+"895
+[s S509 . 1 `uc 1 T2CKPS 1 0 :2:0 
+`uc 1 TMR2ON 1 0 :1:2 
+`uc 1 T2OUTPS 1 0 :4:3 
+]
+[u S513 . 1 `S501 1 . 1 0 `S509 1 . 1 0 ]
+[v _T2CONbits T2CONbits `VES513  1 e 1 @28 ]
+"944
+[v _TRISA TRISA `VEuc  1 e 1 @140 ]
+"993
+[v _TRISC TRISC `VEuc  1 e 1 @142 ]
+[s S468 . 1 `uc 1 TMR1IE 1 0 :1:0 
+`uc 1 TMR2IE 1 0 :1:1 
+`uc 1 . 1 0 :2:2 
+`uc 1 TXIE 1 0 :1:4 
+`uc 1 RCIE 1 0 :1:5 
+`uc 1 ADIE 1 0 :1:6 
+`uc 1 TMR1GIE 1 0 :1:7 
+]
+"1058
+[u S476 . 1 `S468 1 . 1 0 ]
+[v _PIE1bits PIE1bits `VES476  1 e 1 @145 ]
+[s S829 . 1 `uc 1 PS0 1 0 :1:0 
+`uc 1 PS1 1 0 :1:1 
+`uc 1 PS2 1 0 :1:2 
+`uc 1 PSA 1 0 :1:3 
+`uc 1 TMR0SE 1 0 :1:4 
+`uc 1 TMR0CS 1 0 :1:5 
+`uc 1 INTEDG 1 0 :1:6 
+`uc 1 nWPUEN 1 0 :1:7 
+]
+"1179
+[s S838 . 1 `uc 1 PS 1 0 :3:0 
+`uc 1 . 1 0 :1:3 
+`uc 1 T0SE 1 0 :1:4 
+`uc 1 T0CS 1 0 :1:5 
+]
+[u S843 . 1 `S829 1 . 1 0 `S838 1 . 1 0 ]
+[v _OPTION_REGbits OPTION_REGbits `VES843  1 e 1 @149 ]
+"1294
+[v _WDTCON WDTCON `VEuc  1 e 1 @151 ]
+"1352
+[v _OSCTUNE OSCTUNE `VEuc  1 e 1 @152 ]
+"1409
+[v _OSCCON OSCCON `VEuc  1 e 1 @153 ]
+"1541
+[v _ADRESL ADRESL `VEuc  1 e 1 @155 ]
+"1560
+[v _ADRESH ADRESH `VEuc  1 e 1 @156 ]
+"1579
+[v _ADCON0 ADCON0 `VEuc  1 e 1 @157 ]
+[s S704 . 1 `uc 1 ADON 1 0 :1:0 
+`uc 1 GO_nDONE 1 0 :1:1 
+`uc 1 CHS0 1 0 :1:2 
+`uc 1 CHS1 1 0 :1:3 
+`uc 1 CHS2 1 0 :1:4 
+`uc 1 CHS3 1 0 :1:5 
+`uc 1 CHS4 1 0 :1:6 
+]
+"1608
+[s S712 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 ADGO 1 0 :1:1 
+`uc 1 CHS 1 0 :5:2 
+]
+[s S716 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 GO 1 0 :1:1 
+]
+[s S719 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 nDONE 1 0 :1:1 
+]
+[u S722 . 1 `S704 1 . 1 0 `S712 1 . 1 0 `S716 1 . 1 0 `S719 1 . 1 0 ]
+[v _ADCON0bits ADCON0bits `VES722  1 e 1 @157 ]
+"1667
+[v _ADCON1 ADCON1 `VEuc  1 e 1 @158 ]
+"1732
+[v _ADCON2 ADCON2 `VEuc  1 e 1 @159 ]
+"1779
+[v _LATA LATA `VEuc  1 e 1 @268 ]
+"1823
+[v _LATC LATC `VEuc  1 e 1 @270 ]
+"2183
+[v _FVRCON FVRCON `VEuc  1 e 1 @279 ]
+[s S618 . 1 `uc 1 ADFVR0 1 0 :1:0 
+`uc 1 ADFVR1 1 0 :1:1 
+`uc 1 CDAFVR0 1 0 :1:2 
+`uc 1 CDAFVR1 1 0 :1:3 
+`uc 1 TSRNG 1 0 :1:4 
+`uc 1 TSEN 1 0 :1:5 
+`uc 1 FVRRDY 1 0 :1:6 
+`uc 1 FVREN 1 0 :1:7 
+]
+"2204
+[s S627 . 1 `uc 1 ADFVR 1 0 :2:0 
+`uc 1 CDAFVR 1 0 :2:2 
+]
+[u S630 . 1 `S618 1 . 1 0 `S627 1 . 1 0 ]
+[v _FVRCONbits FVRCONbits `VES630  1 e 1 @279 ]
+"2363
+[v _ANSELA ANSELA `VEuc  1 e 1 @396 ]
+"2409
+[v _ANSELC ANSELC `VEuc  1 e 1 @398 ]
+"2655
+[v _TXREG TXREG `VEuc  1 e 1 @410 ]
+"2680
+[v _SPBRGL SPBRGL `VEuc  1 e 1 @411 ]
+"2699
+[v _SPBRGH SPBRGH `VEuc  1 e 1 @412 ]
+"2718
+[v _RCSTA RCSTA `VEuc  1 e 1 @413 ]
+"2779
+[v _TXSTA TXSTA `VEuc  1 e 1 @414 ]
+[s S975 . 1 `uc 1 TX9D 1 0 :1:0 
+`uc 1 TRMT 1 0 :1:1 
+`uc 1 BRGH 1 0 :1:2 
+`uc 1 SENDB 1 0 :1:3 
+`uc 1 SYNC 1 0 :1:4 
+`uc 1 TXEN 1 0 :1:5 
+`uc 1 TX9 1 0 :1:6 
+`uc 1 CSRC 1 0 :1:7 
+]
+"2796
+[u S984 . 1 `S975 1 . 1 0 ]
+[v _TXSTAbits TXSTAbits `VES984  1 e 1 @414 ]
+"2840
+[v _BAUDCON BAUDCON `VEuc  1 e 1 @415 ]
+"2891
+[v _WPUA WPUA `VEuc  1 e 1 @524 ]
+"2948
+[v _WPUC WPUC `VEuc  1 e 1 @526 ]
+"3005
+[v _ODCONA ODCONA `VEuc  1 e 1 @652 ]
+"3057
+[v _ODCONC ODCONC `VEuc  1 e 1 @654 ]
+"4149
+[v _PWM1PHL PWM1PHL `VEuc  1 e 1 @3473 ]
+"4226
+[v _PWM1PHH PWM1PHH `VEuc  1 e 1 @3474 ]
+"4309
+[v _PWM1DCL PWM1DCL `VEuc  1 e 1 @3475 ]
+"4386
+[v _PWM1DCH PWM1DCH `VEuc  1 e 1 @3476 ]
+"4469
+[v _PWM1PRL PWM1PRL `VEuc  1 e 1 @3477 ]
+"4546
+[v _PWM1PRH PWM1PRH `VEuc  1 e 1 @3478 ]
+"4629
+[v _PWM1OFL PWM1OFL `VEuc  1 e 1 @3479 ]
+"4706
+[v _PWM1OFH PWM1OFH `VEuc  1 e 1 @3480 ]
+"4789
+[v _PWM1TMRL PWM1TMRL `VEuc  1 e 1 @3481 ]
+"4866
+[v _PWM1TMRH PWM1TMRH `VEuc  1 e 1 @3482 ]
+"4943
+[v _PWM1CON PWM1CON `VEuc  1 e 1 @3483 ]
+[s S35 . 1 `uc 1 . 1 0 :2:0 
+`uc 1 MODE 1 0 :2:2 
+`uc 1 POL 1 0 :1:4 
+`uc 1 OUT 1 0 :1:5 
+`uc 1 OE 1 0 :1:6 
+`uc 1 EN 1 0 :1:7 
+]
+"4976
+[s S202 . 1 `uc 1 . 1 0 :2:0 
+`uc 1 PWM1MODE0 1 0 :1:2 
+`uc 1 PWM1MODE1 1 0 :1:3 
+]
+[s S206 . 1 `uc 1 . 1 0 :2:0 
+`uc 1 PWM1MODE 1 0 :2:2 
+`uc 1 PWM1POL 1 0 :1:4 
+`uc 1 PWM1OUT 1 0 :1:5 
+`uc 1 PWM1OE 1 0 :1:6 
+`uc 1 PWM1EN 1 0 :1:7 
+]
+[s S53 . 1 `uc 1 . 1 0 :2:0 
+`uc 1 MODE0 1 0 :1:2 
+`uc 1 MODE1 1 0 :1:3 
+]
+[u S217 . 1 `S35 1 . 1 0 `S202 1 . 1 0 `S206 1 . 1 0 `S53 1 . 1 0 ]
+[v _PWM1CONbits PWM1CONbits `VES217  1 e 1 @3483 ]
+"5050
+[v _PWM1INTE PWM1INTE `VEuc  1 e 1 @3484 ]
+"5175
+[v _PWM1INTF PWM1INTF `VEuc  1 e 1 @3485 ]
+"5300
+[v _PWM1CLKCON PWM1CLKCON `VEuc  1 e 1 @3486 ]
+"5407
+[v _PWM1LDCON PWM1LDCON `VEuc  1 e 1 @3487 ]
+"5488
+[v _PWM1OFCON PWM1OFCON `VEuc  1 e 1 @3488 ]
+"5601
+[v _PWM2PHL PWM2PHL `VEuc  1 e 1 @3489 ]
+"5678
+[v _PWM2PHH PWM2PHH `VEuc  1 e 1 @3490 ]
+"5761
+[v _PWM2DCL PWM2DCL `VEuc  1 e 1 @3491 ]
+"5838
+[v _PWM2DCH PWM2DCH `VEuc  1 e 1 @3492 ]
+"5921
+[v _PWM2PRL PWM2PRL `VEuc  1 e 1 @3493 ]
+"5998
+[v _PWM2PRH PWM2PRH `VEuc  1 e 1 @3494 ]
+"6081
+[v _PWM2OFL PWM2OFL `VEuc  1 e 1 @3495 ]
+"6158
+[v _PWM2OFH PWM2OFH `VEuc  1 e 1 @3496 ]
+"6241
+[v _PWM2TMRL PWM2TMRL `VEuc  1 e 1 @3497 ]
+"6318
+[v _PWM2TMRH PWM2TMRH `VEuc  1 e 1 @3498 ]
+"6395
+[v _PWM2CON PWM2CON `VEuc  1 e 1 @3499 ]
+"6428
+[s S42 . 1 `uc 1 . 1 0 :2:0 
+`uc 1 PWM2MODE0 1 0 :1:2 
+`uc 1 PWM2MODE1 1 0 :1:3 
+]
+[s S46 . 1 `uc 1 . 1 0 :2:0 
+`uc 1 PWM2MODE 1 0 :2:2 
+`uc 1 PWM2POL 1 0 :1:4 
+`uc 1 PWM2OUT 1 0 :1:5 
+`uc 1 PWM2OE 1 0 :1:6 
+`uc 1 PWM2EN 1 0 :1:7 
+]
+[u S57 . 1 `S35 1 . 1 0 `S42 1 . 1 0 `S46 1 . 1 0 `S53 1 . 1 0 ]
+[v _PWM2CONbits PWM2CONbits `VES57  1 e 1 @3499 ]
+"6502
+[v _PWM2INTE PWM2INTE `VEuc  1 e 1 @3500 ]
+"6627
+[v _PWM2INTF PWM2INTF `VEuc  1 e 1 @3501 ]
+"6752
+[v _PWM2CLKCON PWM2CLKCON `VEuc  1 e 1 @3502 ]
+"6859
+[v _PWM2LDCON PWM2LDCON `VEuc  1 e 1 @3503 ]
+"6940
+[v _PWM2OFCON PWM2OFCON `VEuc  1 e 1 @3504 ]
+"9951
+[v _PPSLOCK PPSLOCK `VEuc  1 e 1 @3599 ]
+[s S865 . 1 `uc 1 PPSLOCKED 1 0 :1:0 
+]
+"9961
+[u S867 . 1 `S865 1 . 1 0 ]
+[v _PPSLOCKbits PPSLOCKbits `VES867  1 e 1 @3599 ]
+[s S872 . 1 `uc 1 RXPPS 1 0 :5:0 
+]
+"10242
+[s S874 . 1 `uc 1 RXPPS0 1 0 :1:0 
+`uc 1 RXPPS1 1 0 :1:1 
+`uc 1 RXPPS2 1 0 :1:2 
+`uc 1 RXPPS3 1 0 :1:3 
+`uc 1 RXPPS4 1 0 :1:4 
+]
+[u S880 . 1 `S872 1 . 1 0 `S874 1 . 1 0 ]
+[v _RXPPSbits RXPPSbits `VES880  1 e 1 @3605 ]
+[s S892 . 1 `uc 1 RA4PPS 1 0 :4:0 
+]
+"10529
+[s S894 . 1 `uc 1 RA4PPS0 1 0 :1:0 
+`uc 1 RA4PPS1 1 0 :1:1 
+`uc 1 RA4PPS2 1 0 :1:2 
+`uc 1 RA4PPS3 1 0 :1:3 
+]
+[u S899 . 1 `S892 1 . 1 0 `S894 1 . 1 0 ]
+[v _RA4PPSbits RA4PPSbits `VES899  1 e 1 @3732 ]
+[s S910 . 1 `uc 1 RA5PPS 1 0 :4:0 
+]
+"10574
+[s S912 . 1 `uc 1 RA5PPS0 1 0 :1:0 
+`uc 1 RA5PPS1 1 0 :1:1 
+`uc 1 RA5PPS2 1 0 :1:2 
+`uc 1 RA5PPS3 1 0 :1:3 
+]
+[u S917 . 1 `S910 1 . 1 0 `S912 1 . 1 0 ]
+[v _RA5PPSbits RA5PPSbits `VES917  1 e 1 @3733 ]
+[s S928 . 1 `uc 1 RC5PPS 1 0 :4:0 
+]
+"10844
+[s S930 . 1 `uc 1 RC5PPS0 1 0 :1:0 
+`uc 1 RC5PPS1 1 0 :1:1 
+`uc 1 RC5PPS2 1 0 :1:2 
+`uc 1 RC5PPS3 1 0 :1:3 
+]
+[u S935 . 1 `S928 1 . 1 0 `S930 1 . 1 0 ]
+[v _RC5PPSbits RC5PPSbits `VES935  1 e 1 @3749 ]
+"11392
+[v _GIE GIE `VEb  1 e 0 @95 ]
+"51 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/interrupt_manager.c
+[v _subTickerX subTickerX `uc  1 e 1 0 ]
+"52
+[v _subTickerX_1s subTickerX_1s `uc  1 e 1 0 ]
+"5 G:\2018\cs70 redo\gasflowSensor.X\src/api/my_uart.c
+[v _eusartTxBuffer eusartTxBuffer `VE[64]uc  1 e 64 0 ]
+"6
+[v _eusartTxLen eusartTxLen `VEuc  1 e 1 0 ]
+"7
+[v _eusartRxIdleTime_ms eusartRxIdleTime_ms `VEui  1 e 2 0 ]
+"9
+[v _eusartRxBuffer eusartRxBuffer `VE[64]uc  1 e 64 0 ]
+"10
+[v _eusartRxCount eusartRxCount `VEuc  1 e 1 0 ]
+"6 G:\2018\cs70 redo\gasflowSensor.X\src/api/sample.c
+[v _rtAdcValueRsLo rtAdcValueRsLo `ui  1 e 2 0 ]
+"7
+[v _rtAdcValueRsHi rtAdcValueRsHi `ui  1 e 2 0 ]
+"9
+[v _rtAdcValueRcLo rtAdcValueRcLo `ui  1 e 2 0 ]
+"10
+[v _rtAdcValueRcHi rtAdcValueRcHi `ui  1 e 2 0 ]
+"14
+[v _resRc resRc `ul  1 e 4 0 ]
+"15
+[v _resRs resRs `ul  1 e 4 0 ]
+"147
+[v _pidBbSm pidBbSm `uc  1 e 1 0 ]
+"148
+[v _pidTestNum pidTestNum `uc  1 e 1 0 ]
+"161
+[v _PidKp PidKp `l  1 e 4 0 ]
+"162
+[v _PidTi PidTi `l  1 e 4 0 ]
+"165
+[v _bbmax bbmax `l  1 e 4 0 ]
+"166
+[v _bbmin bbmin `l  1 e 4 0 ]
+"167
+[v _bbt0 bbt0 `ul  1 e 4 0 ]
+[v _bbt1 bbt1 `ul  1 e 4 0 ]
+"168
+[v _bbtu bbtu `l  1 e 4 0 ]
+[v _bbta bbta `l  1 e 4 0 ]
+[v _bbu bbu `l  1 e 4 0 ]
+[v _bbku bbku `l  1 e 4 0 ]
+"223
+[v _pidU pidU `l  1 e 4 0 ]
+"224
+[v _err err `[3]l  1 e 12 0 ]
+"256
+[v _rtAdcValueRsLoAvg rtAdcValueRsLoAvg `ui  1 e 2 0 ]
+"279
+[v _pwm2DutyForVout pwm2DutyForVout `ui  1 e 2 0 ]
+"38 G:\2018\cs70 redo\gasflowSensor.X\src/globle/globle.h
+[v _isRunInBoot isRunInBoot `VEuc  1 e 1 @4095 ]
+"55 G:\2018\cs70 redo\gasflowSensor.X\src/app/main.c
+[v _str str `[16]uc  1 e 16 0 ]
+"3 G:\2018\cs70 redo\gasflowSensor.X\src/globle/globle.c
+[v _globalTicker globalTicker `VEul  1 e 4 0 ]
+"4
+[v _Event Event `VEuc  1 e 1 0 ]
+"57 G:\2018\cs70 redo\gasflowSensor.X\src/app/main.c
+[v _main main `(v  1 e 1 0 ]
+{
+"128
+} 0
+"19 G:\2018\cs70 redo\gasflowSensor.X\src/api/my_uart.c
+[v _uart_send_str uart_send_str `(v  1 e 1 0 ]
+{
+[v uart_send_str@str str `*.26uc  1 p 2 0 ]
+"35
+} 0
+"40 G:\2018\cs70 redo\gasflowSensor.X\src/api/sample.c
+[v _set_vout_pwm2_duty set_vout_pwm2_duty `(v  1 e 1 0 ]
+{
+"42
+[v set_vout_pwm2_duty@t16 t16 `ui  1 a 2 4 ]
+"40
+[v set_vout_pwm2_duty@duty duty `ui  1 p 2 2 ]
+"49
+} 0
+"35
+[v _get_vout_pwm2_duty get_vout_pwm2_duty `(ui  1 e 2 0 ]
+{
+"38
+} 0
+"225
+[v _pid_run_process pid_run_process `(v  1 e 1 0 ]
+{
+"229
+[v pid_run_process@t32 t32 `l  1 a 4 32 ]
+"228
+[v pid_run_process@ei ei `l  1 a 4 22 ]
+[v pid_run_process@ep ep `l  1 a 4 18 ]
+"251
+[v pid_run_process@t16 t16 `ui  1 a 2 30 ]
+"254
+} 0
+"169
+[v _pid_b_b_process pid_b_b_process `(v  1 e 1 0 ]
+{
+"171
+[v pid_b_b_process@t32 t32 `l  1 a 4 14 ]
+"222
+} 0
+"24
+[v _set_idrv_pwm1_duty set_idrv_pwm1_duty `(v  1 e 1 0 ]
+{
+"26
+[v set_idrv_pwm1_duty@t16 t16 `ui  1 a 2 4 ]
+"24
+[v set_idrv_pwm1_duty@duty duty `ui  1 p 2 2 ]
+"33
+} 0
+"19
+[v _get_idrv_pwm1_duty get_idrv_pwm1_duty `(ui  1 e 2 0 ]
+{
+"22
+} 0
+"140 G:\2018\cs70 redo\gasflowSensor.X\src/depend/m_string.c
+[v _m_int_2_str_ex m_int_2_str_ex `(v  1 e 1 0 ]
+{
+[v m_int_2_str_ex@buf buf `*.4uc  1 a 1 wreg ]
+"142
+[v m_int_2_str_ex@t t `l  1 a 4 24 ]
+"143
+[v m_int_2_str_ex@i i `uc  1 a 1 29 ]
+"144
+[v m_int_2_str_ex@sig sig `uc  1 a 1 28 ]
+"140
+[v m_int_2_str_ex@buf buf `*.4uc  1 a 1 wreg ]
+[v m_int_2_str_ex@x x `l  1 p 4 14 ]
+[v m_int_2_str_ex@ssize ssize `ui  1 p 2 18 ]
+"144
+[v m_int_2_str_ex@buf buf `*.4uc  1 a 1 30 ]
+"161
+} 0
+"32
+[v _m_mem_set m_mem_set `(v  1 e 1 0 ]
+{
+[v m_mem_set@buf buf `*.4uc  1 a 1 wreg ]
+[v m_mem_set@buf buf `*.4uc  1 a 1 wreg ]
+[v m_mem_set@x x `uc  1 p 1 0 ]
+[v m_mem_set@len len `ui  1 p 2 1 ]
+[v m_mem_set@buf buf `*.4uc  1 a 1 3 ]
+"38
+} 0
+"39
+[v _m_mem_cpy m_mem_cpy `(v  1 e 1 0 ]
+{
+[v m_mem_cpy@d d `*.4uc  1 a 1 wreg ]
+[v m_mem_cpy@d d `*.4uc  1 a 1 wreg ]
+[v m_mem_cpy@s s `*.4uc  1 p 1 0 ]
+[v m_mem_cpy@d d `*.4uc  1 a 1 1 ]
+"46
+} 0
+"5 C:\Program Files (x86)\Microchip\xc8\v1.37\sources\common\almod.c
+[v ___almod __almod `(l  1 e 4 0 ]
+{
+"11
+[v ___almod@sign sign `uc  1 a 1 9 ]
+[v ___almod@counter counter `uc  1 a 1 8 ]
+"5
+[v ___almod@divisor divisor `l  1 p 4 0 ]
+[v ___almod@dividend dividend `l  1 p 4 4 ]
+"35
+} 0
+"6 C:\Program Files (x86)\Microchip\xc8\v1.37\sources\common\aldiv.c
+[v ___aldiv __aldiv `(l  1 e 4 0 ]
+{
+"11
+[v ___aldiv@quotient quotient `l  1 a 4 10 ]
+"12
+[v ___aldiv@sign sign `uc  1 a 1 9 ]
+[v ___aldiv@counter counter `uc  1 a 1 8 ]
+"6
+[v ___aldiv@divisor divisor `l  1 p 4 0 ]
+[v ___aldiv@dividend dividend `l  1 p 4 4 ]
+"42
+} 0
+"98 G:\2018\cs70 redo\gasflowSensor.X\src/api/sample.c
+[v _calc_temp_rs calc_temp_rs `(ul  1 e 4 0 ]
+{
+"111
+[v calc_temp_rs@y y `ul  1 a 4 8 ]
+[v calc_temp_rs@x x `ul  1 a 4 4 ]
+"122
+} 0
+"124
+[v _calc_temp_rc calc_temp_rc `(ul  1 e 4 0 ]
+{
+"127
+[v calc_temp_rc@y y `ul  1 a 4 12 ]
+[v calc_temp_rc@x x `ul  1 a 4 8 ]
+"143
+} 0
+"257
+[v _calc_current_rs_avg calc_current_rs_avg `(ui  1 e 2 0 ]
+{
+"274
+} 0
+"280
+[v _cal_voout_pwm_duty cal_voout_pwm_duty `(ui  1 e 2 0 ]
+{
+"282
+[v cal_voout_pwm_duty@t32 t32 `ul  1 a 4 2 ]
+"295
+} 0
+"15 C:\Program Files (x86)\Microchip\xc8\v1.37\sources\common\Umul32.c
+[v ___lmul __lmul `(ul  1 e 4 0 ]
+{
+"17
+[v ___lmul@product product `ul  1 a 4 8 ]
+"15
+[v ___lmul@multiplier multiplier `ul  1 p 4 0 ]
+[v ___lmul@multiplicand multiplicand `ul  1 p 4 4 ]
+"129
+} 0
+"6 C:\Program Files (x86)\Microchip\xc8\v1.37\sources\common\lldiv.c
+[v ___lldiv __lldiv `(ul  1 e 4 0 ]
+{
+"11
+[v ___lldiv@quotient quotient `ul  1 a 4 8 ]
+"12
+[v ___lldiv@counter counter `uc  1 a 1 12 ]
+"6
+[v ___lldiv@divisor divisor `ul  1 p 4 0 ]
+[v ___lldiv@dividend dividend `ul  1 p 4 4 ]
+"31
+} 0
+"74 G:\2018\cs70 redo\gasflowSensor.X\src/api/sample.c
+[v _adc_sample adc_sample `(ui  1 e 2 0 ]
+{
+[v adc_sample@ch ch `uc  1 a 1 wreg ]
+"78
+[v adc_sample@t16 t16 `ui  1 a 2 9 ]
+"77
+[v adc_sample@ret ret `ui  1 a 2 6 ]
+"76
+[v adc_sample@i i `uc  1 a 1 8 ]
+"74
+[v adc_sample@ch ch `uc  1 a 1 wreg ]
+[v adc_sample@gfvr gfvr `uc  1 p 1 2 ]
+[v adc_sample@num num `uc  1 p 1 3 ]
+"77
+[v adc_sample@ch ch `uc  1 a 1 5 ]
+"95
+} 0
+"52
+[v _fvr_set_gain fvr_set_gain `(v  1 e 1 0 ]
+{
+[v fvr_set_gain@g g `uc  1 a 1 wreg ]
+"54
+[v fvr_set_gain@t8 t8 `uc  1 a 1 0 ]
+"52
+[v fvr_set_gain@g g `uc  1 a 1 wreg ]
+"54
+[v fvr_set_gain@g g `uc  1 a 1 1 ]
+"59
+} 0
+"61
+[v _adc_init adc_init `(v  1 e 1 0 ]
+{
+[v adc_init@ch ch `E4968  1 a 1 wreg ]
+[v adc_init@ch ch `E4968  1 a 1 wreg ]
+[v adc_init@ch ch `E4968  1 a 1 1 ]
+"70
+} 0
+"68 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/mcc.c
+[v _SYSTEM_Initialize SYSTEM_Initialize `(v  1 e 1 0 ]
+{
+"80
+} 0
+"90
+[v _WDT_Initialize WDT_Initialize `(v  1 e 1 0 ]
+{
+"94
+} 0
+"63 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/tmr2.c
+[v _TMR2_Initialize TMR2_Initialize `(v  1 e 1 0 ]
+{
+"87
+} 0
+"89
+[v _TMR2_StartTimer TMR2_StartTimer `(v  1 e 1 0 ]
+{
+"93
+} 0
+"142
+[v _TMR2_SetInterruptHandler TMR2_SetInterruptHandler `(v  1 e 1 0 ]
+{
+[v TMR2_SetInterruptHandler@InterruptHandler InterruptHandler `*.37(v  1 p 2 0 ]
+"144
+} 0
+"58 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/pwm2.c
+[v _PWM2_Initialize PWM2_Initialize `(v  1 e 1 0 ]
+{
+"109
+} 0
+"58 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/pwm1.c
+[v _PWM1_Initialize PWM1_Initialize `(v  1 e 1 0 ]
+{
+"109
+} 0
+"52 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/pin_manager.c
+[v _PIN_MANAGER_Initialize PIN_MANAGER_Initialize `(v  1 e 1 0 ]
+{
+"90
+[v PIN_MANAGER_Initialize@state state `uc  1 a 1 0 ]
+"106
+} 0
+"82 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/mcc.c
+[v _OSCILLATOR_Initialize OSCILLATOR_Initialize `(v  1 e 1 0 ]
+{
+"88
+} 0
+"57 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/fvr.c
+[v _FVR_Initialize FVR_Initialize `(v  1 e 1 0 ]
+{
+"61
+} 0
+"55 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/eusart.c
+[v _EUSART_Initialize EUSART_Initialize `(v  1 e 1 0 ]
+{
+"77
+} 0
+"64 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/adc1.c
+[v _ADC1_Initialize ADC1_Initialize `(v  1 e 1 0 ]
+{
+"83
+} 0
+"112 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/pwm1.c
+[v _PWM1_Start PWM1_Start `(v  1 e 1 0 ]
+{
+"115
+} 0
+"53 G:\2018\cs70 redo\gasflowSensor.X\mcc_generated_files/interrupt_manager.c
+[v _INTERRUPT_InterruptManager INTERRUPT_InterruptManager `II(v  1 e 1 0 ]
+{
+"77
+} 0
