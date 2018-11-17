@@ -17,9 +17,25 @@ uint32_t resRs=10000UL;
 
 #define opaGainRcLo 3140
 
+//继电控制测试赋值
+//<<--
+#define BB_RISE_Y		3500
+#define BB_FALL_Y		500
+
+#define iDRV_PWM1_MAX	1200
+#define iDRV_PWM1_MIN	2
+#define __x_delta_res	2000
+int32_t		PidKp;
+int32_t		PidTi;
+int32_t		PidTd;
+
+uint8_t pidBbSm=PID_BB_NONE;
+//-->>
+
+
+
 #define VOUT_PWM2_MAX	1580
 #define VOUT_PWM2_MIN	2
-
 int16_t pwm2DutyForVout=0x10;
 
 uint16_t get_idrv_pwm1_duty(void)
@@ -184,24 +200,8 @@ uint32_t calc_temp_rc(void)
 
 
 
-uint8_t pidBbSm=PID_BB_NONE;
+
 uint8_t pidTestNum=0;	
-
-//继电控制测试赋值
-
-#define BB_RISE_Y		3500
-#define BB_FALL_Y		500
-
-#define iDRV_PWM1_MAX	1200
-#define iDRV_PWM1_MIN	2
-#define __x_delta_res	2000
-
-
-
-int32_t		PidKp;
-int32_t		PidTi;
-int32_t		PidTd;
-bool	flgPidSetOK=false;
 int32_t bbmax=-200000L;
 int32_t bbmin=200000L;
 uint32_t bbt0=0,bbt1=0;
@@ -247,7 +247,7 @@ void pid_pwm1_idrv_b_b(void)
 			//bbku=314*bbta/(bbu*4);
 			bbku=(bbu*40000)/(bbta*314);
             bbku*=100;
-			//
+			//测试的响应速度1.2,2参数比较理想
 			PidKp=bbku*10/17;
 			PidTi=bbtu*10/20;
 			PidTd=bbtu/10;			
@@ -300,18 +300,18 @@ void pid_pwm2_vout_run(void)
 {
 	int16_t t16,ei;
 	t16=voExpectAdcValue-rtAdcValueVoFb;
-	ei=t16/80;
+	ei=t16/100;
 	if(ei==0){
-		if(t16>16)ei=1;
-		if(t16<-16)ei=-1;
+		if(t16>32)ei=1;
+		if(t16<-32)ei=-1;
 	}
 
 	pwm2Ei=pwm2Ei+ei;
-	if(pwm2Ei>300)pwm2Ei=300;
-	if(pwm2Ei<-300)pwm2Ei=-300;
+	if(pwm2Ei>500)pwm2Ei=500;
+	if(pwm2Ei<-500)pwm2Ei=-500;
 	
-	t16=voExpectAdcValue/10;
-	
+	t16=voExpectAdcValue/12;
+	//pwm2Ei=0;
 	pwm2DutyForVout=t16+pwm2Ei;
 	if(pwm2DutyForVout>VOUT_PWM2_MAX)pwm2DutyForVout=VOUT_PWM2_MAX;
 	if(pwm2DutyForVout<VOUT_PWM2_MIN)pwm2DutyForVout=VOUT_PWM2_MIN;
@@ -437,7 +437,7 @@ uint16_t cal_rs_simulate_power(void)
 }
 
 
-
+/*
 int32_t outResDiff=0x00UL;
 int32_t cal_res_diff(void)
 {
@@ -446,3 +446,4 @@ int32_t cal_res_diff(void)
 	x=x-t32;
 	return x;
 }
+*/

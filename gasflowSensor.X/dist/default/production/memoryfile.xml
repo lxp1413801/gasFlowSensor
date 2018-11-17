@@ -3,9 +3,9 @@
   <executable name="dist/default/production\gasflowSensor.X.production.hex">
     <memory name="program">
       <units>words</units>
-      <length>8064</length>
+      <length>3968</length>
       <used>3622</used>
-      <free>4442</free>
+      <free>346</free>
     </memory>
     <memory name="data">
       <units>bytes</units>

@@ -6566,7 +6566,14 @@ uint16_t rtAdcValueVoFb=0;
 uint32_t resRc=10000UL;
 uint32_t resRs=10000UL;
 
-# 23
+# 28
+int32_t PidKp;
+int32_t PidTi;
+int32_t PidTd;
+
+uint8_t pidBbSm=0;
+
+# 39
 int16_t pwm2DutyForVout=0x10;
 
 uint16_t get_idrv_pwm1_duty(void)
@@ -6685,7 +6692,7 @@ return ret;
 uint32_t calc_temp_rs(void)
 {
 
-# 151
+# 167
 uint32_t x,y;
 y=12000UL;
 y=y*rtAdcValueRsHi;
@@ -6722,14 +6729,8 @@ return y;
 
 
 
-uint8_t pidBbSm=0;
-uint8_t pidTestNum=0;
 
-# 201
-int32_t PidKp;
-int32_t PidTi;
-int32_t PidTd;
-bool flgPidSetOK=0;
+uint8_t pidTestNum=0;
 int32_t bbmax=-200000L;
 int32_t bbmin=200000L;
 uint32_t bbt0=0,bbt1=0;
@@ -6828,17 +6829,17 @@ void pid_pwm2_vout_run(void)
 {
 int16_t t16,ei;
 t16=voExpectAdcValue-rtAdcValueVoFb;
-ei=t16/80;
+ei=t16/100;
 if(ei==0){
-if(t16>16)ei=1;
-if(t16<-16)ei=-1;
+if(t16>32)ei=1;
+if(t16<-32)ei=-1;
 }
 
 pwm2Ei=pwm2Ei+ei;
-if(pwm2Ei>300)pwm2Ei=300;
-if(pwm2Ei<-300)pwm2Ei=-300;
+if(pwm2Ei>500)pwm2Ei=500;
+if(pwm2Ei<-500)pwm2Ei=-500;
 
-t16=voExpectAdcValue/10;
+t16=voExpectAdcValue/12;
 
 pwm2DutyForVout=t16+pwm2Ei;
 if(pwm2DutyForVout>1580)pwm2DutyForVout=1580;
@@ -6903,13 +6904,3 @@ return t16;
 # 437
 }
 
-
-
-int32_t outResDiff=0x00UL;
-int32_t cal_res_diff(void)
-{
-int32_t x=4000;
-int32_t t32=resRs-resRc;
-x=x-t32;
-return x;
-}
