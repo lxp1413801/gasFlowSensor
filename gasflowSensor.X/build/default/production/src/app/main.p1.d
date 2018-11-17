@@ -8,7 +8,9 @@ src/app/../../mcc_generated_files/pwm2.h  \
 src/app/../includes/../api/my_uart.h  \
 src/app/../includes/../api/iap.h  \
 src/app/../../mcc_generated_files/memory.h  \
+src/app/../api/sysData.h  \
 src/app/../includes/includes.h  \
+src/app/../api/modbus.h  \
 src/app/../includes/../globle/globle.h  \
 src/app/../../mcc_generated_files/interrupt_manager.h  \
 src/app/../../mcc_generated_files/tmr2.h  \

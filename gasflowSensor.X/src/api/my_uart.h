@@ -5,15 +5,15 @@
 extern "C"{
 #endif
 
-#define EUSART_TX_BUFFER_SIZE 64
-#define EUSART_RX_BUFFER_SIZE 64
+#define EUSART_TX_BUFFER_SIZE 32
+#define EUSART_RX_BUFFER_SIZE 32
 #define MIN_RX_IDLE_TIME	200
 
 #define RX_USED_MODEBUS 1
     
-extern volatile uint8_t eusartTxBuffer[EUSART_TX_BUFFER_SIZE];
-extern volatile uint8_t eusartTxLen;
-extern volatile uint16_t eusartRxIdleTime_ms;	//used for like modbus
+//extern volatile uint8_t eusartTxBuffer[EUSART_TX_BUFFER_SIZE];
+//extern volatile uint8_t eusartTxLen;
+extern volatile uint8_t eusartRxIdleTime_ms;	//used for like modbus
 
 extern volatile uint8_t eusartRxBuffer[EUSART_RX_BUFFER_SIZE];
 extern volatile uint8_t eusartRxCount;

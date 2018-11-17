@@ -29,19 +29,29 @@
 	#define PID_BB_OK       4
 	#define PID_BB_EXIT     5
 	extern uint8_t pidBbSm;
-	extern void pid_b_b_process();
-	extern void pid_run_process();
+    
+    extern int32_t		PidKp;
+    extern int32_t		PidTi;
+    extern int32_t		PidTd;   
+	extern void pid_pwm1_idrv_b_b(void);
+	extern void pid_pwm1_idrv_run(void);
+	extern void pid_pwm2_vout_run(void);
 	
 	extern uint16_t rtAdcValueRsLoAvg;
-	extern uint16_t calc_current_rs_avg();
+	//extern uint16_t calc_current_rs_avg();
 	
-	extern uint16_t pwm2DutyForVout;
+	extern int16_t pwm2DutyForVout;
 	extern uint16_t cal_voout_pwm_duty(void);
-	
+	extern uint16_t calc_expect_vout_adc_value(uint16_t x);
+    
 	extern int32_t pidU;;
 	extern int32_t outResDiff;
-    
+	
+	extern uint16_t rsSimPower;
+	extern uint16_t voExpectAdcValue;
+    extern uint16_t cal_rs_simulate_power(void);
     extern void set_idrv_pwm1_duty(uint16_t duty);
+	
 	#ifdef	__cplusplus
 		}
 	#endif

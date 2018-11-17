@@ -15,6 +15,7 @@ src/api/../../mcc_generated_files/tmr2.h  \
 src/api/../../mcc_generated_files/adc1.h  \
 src/api/../../mcc_generated_files/eusart.h  \
 src/api/../../mcc_generated_files/pin_manager.h  \
+src/api/../api/sysData.h  \
 src/api/../includes/../depend/m_string.h  \
 src/api/../includes/../api/sample.h  \
 src/api/../includes/../api/api.h 

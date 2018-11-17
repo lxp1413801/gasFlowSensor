@@ -24,8 +24,8 @@ extern "C" {
     extern volatile uint32_t globalTicker;
     
 	#define __20ms	5020
-	extern void delay(uint16_t dly);
-    extern void delay_ms(uint16_t dly);
+	//extern void delay(uint16_t dly);
+    //extern void delay_ms(uint16_t dly);
     //event
     #define flg_EVEN_RX_RECEIVED_PKG    (1<<0)
 	#define flg_EVEN_TICKER_20MS		(1<<1)

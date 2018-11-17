@@ -1,6 +1,7 @@
 #include "../includes/includes.h"
 #include "../../mcc_generated_files/adc1.h"
 #include "../../mcc_generated_files/mcc.h"
+#include "../api/sysData.h"
 #include <stdbool.h>
 
 uint16_t rtAdcValueRsLo=0;
@@ -15,6 +16,11 @@ uint32_t resRc=10000UL;
 uint32_t resRs=10000UL;
 
 #define opaGainRcLo 3140
+
+#define VOUT_PWM2_MAX	1580
+#define VOUT_PWM2_MIN	2
+
+int16_t pwm2DutyForVout=0x10;
 
 uint16_t get_idrv_pwm1_duty(void)
 {
@@ -69,7 +75,38 @@ void adc_init(adc_channel_t ch)
     ADRESH = 0x00;	
 }
 
-
+uint16_t get_adc_average_value(uint16_t*  buf, uint8_t len)
+{
+    uint8_t maxIndex,minIndex;
+    uint8_t i,j;
+    uint32_t ret=0;
+    uint16_t max,min;
+    for(j=0;j<8;j++){
+        ret=0;
+        max=0;
+        min=0x8000;
+        maxIndex=0;
+        minIndex=0;
+        for(i=0;i<len;i++){
+            if(max<buf[i]){
+                max=buf[i];
+                maxIndex=i;
+            }
+            if(min>buf[i]){
+                min=buf[i];
+                minIndex=i;
+            }
+            ret+=buf[i];
+        }
+        ret=ret-max;
+        ret=ret-min;
+        ret=ret/(len-2);
+        buf[maxIndex]=(uint16_t)ret;
+        buf[minIndex]=(uint16_t)ret;
+    }
+    return (uint16_t)ret;
+}
+uint16_t adcBuf[32];
 
 uint16_t adc_sample(uint8_t ch,uint8_t gfvr,uint8_t num)
 {
@@ -80,7 +117,7 @@ uint16_t adc_sample(uint8_t ch,uint8_t gfvr,uint8_t num)
 	fvr_set_gain(gfvr);
 	adc_init((adc_channel_t)ch);
     __delay_us(10);
-	if(num>64)num=64;
+	if(num>32)num=32;
 	for(i=0;i<num;i++){
 		ADCON0bits.GO_nDONE = 1;
 		while (ADCON0bits.GO_nDONE);
@@ -88,8 +125,11 @@ uint16_t adc_sample(uint8_t ch,uint8_t gfvr,uint8_t num)
 		t16=ADRESH;
 		t16<<=2;
 		t16|=(ADRESL>>6);
+		//adcBuf[i]=t16;
 		ret+=t16;
 	}
+	//ret=get_adc_average_value(adcBuf,num);
+    //ret=ret*num;
 	__nop;
 	return ret;	
 }
@@ -166,7 +206,7 @@ int32_t bbmax=-200000L;
 int32_t bbmin=200000L;
 uint32_t bbt0=0,bbt1=0;
 int32_t bbtu,bbta,bbu,bbku;
-void pid_b_b_process(void)
+void pid_pwm1_idrv_b_b(void)
 {
 	int32_t t32;
 	t32=(resRs-resRc);
@@ -210,7 +250,7 @@ void pid_b_b_process(void)
 			//
 			PidKp=bbku*10/17;
 			PidTi=bbtu*10/20;
-			PidTd=bbtu/8;			
+			PidTd=bbtu/10;			
 			pidBbSm=PID_BB_EXIT;
             break;	
 	}
@@ -222,7 +262,7 @@ void pid_b_b_process(void)
 }
 int32_t pidU=20;
 int32_t err[3];
-void pid_run_process(void)
+void pid_pwm1_idrv_run(void)
 {
 	//int du;
 	int32_t ep,ei,ed;
@@ -237,7 +277,7 @@ void pid_run_process(void)
 
 	ep=(err[0]-err[1])*PidKp;
 	ei=PidKp*err[0]/PidTi;
-	//ed=(err[0]-2*err[1]+err[2]);
+	//ed=(err[0]-2*err[1]+err[2])*PidKp*PidTd;;
     //ed=ed*PidKp*PidTd;
 	ed=0;
 	t32=ep+ei+ed;
@@ -252,35 +292,136 @@ void pid_run_process(void)
     t16=(uint16_t)pidU;
 	set_idrv_pwm1_duty(t16);
 }
-uint16_t rsCrrentBuf[8]={0};
-uint16_t rtAdcValueRsLoAvg=0;
-uint16_t calc_current_rs_avg(void)
+
+int16_t pidpwm2_U=20;
+int16_t errPwm2[3];
+int16_t pwm2Ei=0;
+void pid_pwm2_vout_run(void)
 {
-	/*
-	uint8_t i;
-	uint32_t t32=0;
-	for(i=0;i<7;i++){
-		rsCrrentBuf[i]=rsCrrentBuf[i+1];
-        t32+=rsCrrentBuf[i];
+	int16_t t16,ei;
+	t16=voExpectAdcValue-rtAdcValueVoFb;
+	ei=t16/80;
+	if(ei==0){
+		if(t16>16)ei=1;
+		if(t16<-16)ei=-1;
 	}
-	rsCrrentBuf[7]=rtAdcValueRsLo;
-	t32+=rtAdcValueRsLo;
-	t32/=8;
-	//rtAdcValueRsLoAvg=(uint16_t)t32;
-    if(t32>30000)t32=30000;
-	return (uint16_t)t32;
-	*/
-	return rtAdcValueRsLo;
+
+	pwm2Ei=pwm2Ei+ei;
+	if(pwm2Ei>300)pwm2Ei=300;
+	if(pwm2Ei<-300)pwm2Ei=-300;
+	
+	t16=voExpectAdcValue/10;
+	
+	pwm2DutyForVout=t16+pwm2Ei;
+	if(pwm2DutyForVout>VOUT_PWM2_MAX)pwm2DutyForVout=VOUT_PWM2_MAX;
+	if(pwm2DutyForVout<VOUT_PWM2_MIN)pwm2DutyForVout=VOUT_PWM2_MIN;
+	set_vout_pwm2_duty(pwm2DutyForVout);
+	
 }
 
-#define VOUT_PWM2_MAX	1580
-#define VOUT_PWM2_MIN	20
+/*
+void pid_pwm2_vout_run(void)
+{
+	//int du;
+	int16_t ep,ei,ed;
+	int16_t t32;
+	//t32=(resRs-resRc);
+	t32=voExpectAdcValue;
+	t32-=rtAdcValueVoFb;
+	if(t32>12000)t32=12000;
+	if(t32<-12000)t32=-12000;
+	
+	errPwm2[2]=errPwm2[1];
+	errPwm2[1]=errPwm2[0];
+	errPwm2[0]=(int16_t)t32;
+	
+    //ep=0;
+	//ep=(errPwm2[0]-errPwm2[1])/12;
+    ep=(errPwm2[0]-errPwm2[1])/32;
+	ei=errPwm2[0]/16;
+	if(ei==0){
+		if(errPwm2[0]>8)ei=1;
+		if(errPwm2[0]<-8)ei=-1;
+	}
+	//ei=0;
+	t32=pidpwm2_U+ep+ei;
+	if(t32>1580)t32=1580;
+	if(t32<10)t32=10;
+	
+	pwm2DutyForVout=(uint16_t)t32;
+	set_vout_pwm2_duty(pwm2DutyForVout);
+}
+*/
 
-uint16_t pwm2DutyForVout=0x10;
-uint16_t cal_voout_pwm_duty(void)
+
+
+
+
+/* 
+rtAdcValueRsLoAvg：
+32次最大值700mv，22378，去24000,576000000
+32次最小值200mv，6394，去6400,	40960000
+535040000,>>10  522500
+最大输出设定1.5V,16次采样,取12000
+
+pwm2输出采样比列调节单位负反馈，1600->12000 7.5被
+
+*/
+uint16_t rsSimPower=0x00;
+uint16_t voExpectAdcValue=0x00;
+uint16_t calc_expect_vout_adc_value(uint16_t x)
+{
+	uint8_t index=0;
+    int32_t y0,y1,x0,x1;
+    uint8_t i;
+	int32_t t32;
+    for (i = 0; i < MAX_CALIB_NUM-2; i++) {
+		if(sysData.calibSimuPowerVaule[i]<sysData.calibSimuPowerVaule[i+1]){
+			if (x < sysData.calibSimuPowerVaule[i])break;
+		}else{
+			if (x > sysData.calibSimuPowerVaule[i])break;
+		}
+    }
+    if(i)i--;
+    if (i > MAX_CALIB_NUM-2)i=MAX_CALIB_NUM-2;
+	y1=sysData.calibVoutAdcValue[i+1];
+	y0=sysData.calibVoutAdcValue[i];
+
+	
+	x1=sysData.calibSimuPowerVaule[i+1];
+	x0=sysData.calibSimuPowerVaule[i];
+	
+
+	if(x1==x0)return y0;
+	
+	//t16=y0+(x-x0)*(y1-y0)/(x1-x0);
+	t32=(x-x0);
+	t32=t32*(y1-y0);
+	t32=t32/(x1-x0);
+	t32=t32+y0;
+	if(t32<0)t32=0;
+	return (uint16_t)t32;
+}
+
+uint16_t cal_rs_simulate_power(void)
 {
     uint32_t t32;
+	//uint16_t t16=rtAdcValueRsLoAvg;
+    uint16_t t16=rtAdcValueRsLo;
+	if(t16>24000)t16=24000;
+	if(t16<6400)t16=6400;
+	t32=t16;
+	t32=t32*t16;
+    
+	t32-=40960000UL;
+	t32>>=13;//此处最大1FE4,8164//65312
+	if(t32>65535)t32=65535;
+	t16=(uint16_t)t32;
+	return t16;
+	
+	/*
     t32=rtAdcValueRsLoAvg;
+	
     if(t32>7200){
         t32-=7200;
     }else{
@@ -292,7 +433,11 @@ uint16_t cal_voout_pwm_duty(void)
     if(t32>VOUT_PWM2_MAX)t32=VOUT_PWM2_MAX;
     if(t32<VOUT_PWM2_MIN)t32=VOUT_PWM2_MIN;
     return (uint16_t)t32;
+	*/
 }
+
+
+
 int32_t outResDiff=0x00UL;
 int32_t cal_res_diff(void)
 {

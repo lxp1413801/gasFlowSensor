@@ -11,7 +11,7 @@ extern double __fpnormalize(double);
 #pragma intrinsic(__builtin_software_breakpoint)
 extern void __builtin_software_breakpoint(void);
 
-# 49 "C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic16f1574.h"
+# 49 "C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic16f1575.h"
 extern volatile unsigned char INDF0 @ 0x000;
 
 asm("INDF0 equ 00h");
@@ -6233,10 +6233,6 @@ typedef uint16_t uintptr_t;
 # 24 "src/api/../includes/../globle/globle.h"
 extern volatile uint32_t globalTicker;
 
-
-extern void delay(uint16_t dly);
-extern void delay_ms(uint16_t dly);
-
 # 34
 extern volatile uint8_t Event;
 
@@ -6293,26 +6289,33 @@ extern uint32_t calc_temp_rc(void);
 
 # 31
 extern uint8_t pidBbSm;
-extern void pid_b_b_process();
-extern void pid_run_process();
+
+extern int32_t PidKp;
+extern int32_t PidTi;
+extern int32_t PidTd;
+extern void pid_pwm1_idrv_b_b(void);
+extern void pid_pwm1_idrv_run(void);
+extern void pid_pwm2_vout_run(void);
 
 extern uint16_t rtAdcValueRsLoAvg;
-extern uint16_t calc_current_rs_avg();
 
-extern uint16_t pwm2DutyForVout;
+
+extern int16_t pwm2DutyForVout;
 extern uint16_t cal_voout_pwm_duty(void);
+extern uint16_t calc_expect_vout_adc_value(uint16_t x);
 
 extern int32_t pidU;;
 extern int32_t outResDiff;
 
+extern uint16_t rsSimPower;
+extern uint16_t voExpectAdcValue;
+extern uint16_t cal_rs_simulate_power(void);
 extern void set_idrv_pwm1_duty(uint16_t duty);
 
-# 14 "src/api/../includes/../api/my_uart.h"
-extern volatile uint8_t eusartTxBuffer[64];
-extern volatile uint8_t eusartTxLen;
-extern volatile uint16_t eusartRxIdleTime_ms;
+# 16 "src/api/../includes/../api/my_uart.h"
+extern volatile uint8_t eusartRxIdleTime_ms;
 
-extern volatile uint8_t eusartRxBuffer[64];
+extern volatile uint8_t eusartRxBuffer[32];
 extern volatile uint8_t eusartRxCount;
 
 extern void uart_send_byte(uint8_t x);
@@ -6531,7 +6534,27 @@ void OSCILLATOR_Initialize(void);
 # 101
 void WDT_Initialize(void);
 
-# 6 "src/api/sample.c"
+# 23 "src/api/../api/sysData.h"
+typedef struct
+{
+uint8_t pidSetFlg0;
+uint8_t pidSetFlg1;
+uint8_t id;
+uint8_t reverse;
+uint16_t pidKp;
+uint16_t pidTi;
+uint16_t pidTd;
+
+uint16_t calibSimuPowerVaule[10];
+uint16_t calibVoutAdcValue[10];
+uint16_t crc16;
+}sysData_t;
+extern sysData_t sysData;
+
+extern uint16_t sys_data_init(void);
+extern void sys_data_save(void);
+
+# 7 "src/api/sample.c"
 uint16_t rtAdcValueRsLo=0;
 uint16_t rtAdcValueRsHi=0;
 
@@ -6543,7 +6566,8 @@ uint16_t rtAdcValueVoFb=0;
 uint32_t resRc=10000UL;
 uint32_t resRs=10000UL;
 
-
+# 23
+int16_t pwm2DutyForVout=0x10;
 
 uint16_t get_idrv_pwm1_duty(void)
 {
@@ -6598,7 +6622,38 @@ ADRESL = 0x00;
 ADRESH = 0x00;
 }
 
-
+uint16_t get_adc_average_value(uint16_t* buf, uint8_t len)
+{
+uint8_t maxIndex,minIndex;
+uint8_t i,j;
+uint32_t ret=0;
+uint16_t max,min;
+for(j=0;j<8;j++){
+ret=0;
+max=0;
+min=0x8000;
+maxIndex=0;
+minIndex=0;
+for(i=0;i<len;i++){
+if(max<buf[i]){
+max=buf[i];
+maxIndex=i;
+}
+if(min>buf[i]){
+min=buf[i];
+minIndex=i;
+}
+ret+=buf[i];
+}
+ret=ret-max;
+ret=ret-min;
+ret=ret/(len-2);
+buf[maxIndex]=(uint16_t)ret;
+buf[minIndex]=(uint16_t)ret;
+}
+return (uint16_t)ret;
+}
+uint16_t adcBuf[32];
 
 uint16_t adc_sample(uint8_t ch,uint8_t gfvr,uint8_t num)
 {
@@ -6609,7 +6664,7 @@ uint16_t t16=0;
 fvr_set_gain(gfvr);
 adc_init((adc_channel_t)ch);
 _delay((unsigned long)((10)*(16000000/4000000.0)));
-if(num>64)num=64;
+if(num>32)num=32;
 for(i=0;i<num;i++){
 ADCON0bits.GO_nDONE = 1;
 while (ADCON0bits.GO_nDONE);
@@ -6617,8 +6672,11 @@ __nop();
 t16=ADRESH;
 t16<<=2;
 t16|=(ADRESL>>6);
+
 ret+=t16;
 }
+
+
 __nop;
 return ret;
 }
@@ -6627,7 +6685,7 @@ return ret;
 uint32_t calc_temp_rs(void)
 {
 
-# 111
+# 151
 uint32_t x,y;
 y=12000UL;
 y=y*rtAdcValueRsHi;
@@ -6667,7 +6725,7 @@ return y;
 uint8_t pidBbSm=0;
 uint8_t pidTestNum=0;
 
-# 161
+# 201
 int32_t PidKp;
 int32_t PidTi;
 int32_t PidTd;
@@ -6676,7 +6734,7 @@ int32_t bbmax=-200000L;
 int32_t bbmin=200000L;
 uint32_t bbt0=0,bbt1=0;
 int32_t bbtu,bbta,bbu,bbku;
-void pid_b_b_process(void)
+void pid_pwm1_idrv_b_b(void)
 {
 int32_t t32;
 t32=(resRs-resRc);
@@ -6720,7 +6778,7 @@ bbku*=100;
 
 PidKp=bbku*10/17;
 PidTi=bbtu*10/20;
-PidTd=bbtu/8;
+PidTd=bbtu/10;
 pidBbSm=5;
 break;
 }
@@ -6732,7 +6790,7 @@ if(bbmin>t32)bbmin=t32;
 }
 int32_t pidU=20;
 int32_t err[3];
-void pid_run_process(void)
+void pid_pwm1_idrv_run(void)
 {
 
 int32_t ep,ei,ed;
@@ -6762,35 +6820,91 @@ uint16_t t16;
 t16=(uint16_t)pidU;
 set_idrv_pwm1_duty(t16);
 }
-uint16_t rsCrrentBuf[8]={0};
-uint16_t rtAdcValueRsLoAvg=0;
-uint16_t calc_current_rs_avg(void)
-{
 
-# 273
-return rtAdcValueRsLo;
+int16_t pidpwm2_U=20;
+int16_t errPwm2[3];
+int16_t pwm2Ei=0;
+void pid_pwm2_vout_run(void)
+{
+int16_t t16,ei;
+t16=voExpectAdcValue-rtAdcValueVoFb;
+ei=t16/80;
+if(ei==0){
+if(t16>16)ei=1;
+if(t16<-16)ei=-1;
 }
 
+pwm2Ei=pwm2Ei+ei;
+if(pwm2Ei>300)pwm2Ei=300;
+if(pwm2Ei<-300)pwm2Ei=-300;
 
+t16=voExpectAdcValue/10;
 
+pwm2DutyForVout=t16+pwm2Ei;
+if(pwm2DutyForVout>1580)pwm2DutyForVout=1580;
+if(pwm2DutyForVout<2)pwm2DutyForVout=2;
+set_vout_pwm2_duty(pwm2DutyForVout);
 
-uint16_t pwm2DutyForVout=0x10;
-uint16_t cal_voout_pwm_duty(void)
+}
+
+# 370
+uint16_t rsSimPower=0x00;
+uint16_t voExpectAdcValue=0x00;
+uint16_t calc_expect_vout_adc_value(uint16_t x)
 {
-uint32_t t32;
-t32=rtAdcValueRsLoAvg;
-if(t32>7200){
-t32-=7200;
+uint8_t index=0;
+int32_t y0,y1,x0,x1;
+uint8_t i;
+int32_t t32;
+for (i = 0; i < 10-2; i++) {
+if(sysData.calibSimuPowerVaule[i]<sysData.calibSimuPowerVaule[i+1]){
+if (x < sysData.calibSimuPowerVaule[i])break;
 }else{
-t32=0;
+if (x > sysData.calibSimuPowerVaule[i])break;
 }
+}
+if(i)i--;
+if (i > 10-2)i=10-2;
+y1=sysData.calibVoutAdcValue[i+1];
+y0=sysData.calibVoutAdcValue[i];
 
-t32*=1600;
-t32/=13000;
-if(t32>1580)t32=1580;
-if(t32<20)t32=20;
+
+x1=sysData.calibSimuPowerVaule[i+1];
+x0=sysData.calibSimuPowerVaule[i];
+
+
+if(x1==x0)return y0;
+
+
+t32=(x-x0);
+t32=t32*(y1-y0);
+t32=t32/(x1-x0);
+t32=t32+y0;
+if(t32<0)t32=0;
 return (uint16_t)t32;
 }
+
+uint16_t cal_rs_simulate_power(void)
+{
+uint32_t t32;
+
+uint16_t t16=rtAdcValueRsLo;
+if(t16>24000)t16=24000;
+if(t16<6400)t16=6400;
+t32=t16;
+t32=t32*t16;
+
+t32-=40960000UL;
+t32>>=13;
+if(t32>65535)t32=65535;
+t16=(uint16_t)t32;
+return t16;
+
+# 437
+}
+
+
+
 int32_t outResDiff=0x00UL;
 int32_t cal_res_diff(void)
 {

@@ -11,7 +11,7 @@ extern double __fpnormalize(double);
 #pragma intrinsic(__builtin_software_breakpoint)
 extern void __builtin_software_breakpoint(void);
 
-# 49 "C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic16f1574.h"
+# 49 "C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic16f1575.h"
 extern volatile unsigned char INDF0 @ 0x000;
 
 asm("INDF0 equ 00h");
@@ -6439,10 +6439,6 @@ void WDT_Initialize(void);
 # 24 "src/api/../globle/globle.h"
 extern volatile uint32_t globalTicker;
 
-
-extern void delay(uint16_t dly);
-extern void delay_ms(uint16_t dly);
-
 # 34
 extern volatile uint8_t Event;
 
@@ -6450,12 +6446,10 @@ extern volatile uint8_t Event;
 asm("isRunInBoot equ 0xfff");
 extern volatile unsigned char isRunInBoot @ 0xfff;
 
-# 14 "src/api/my_uart.h"
-extern volatile uint8_t eusartTxBuffer[64];
-extern volatile uint8_t eusartTxLen;
-extern volatile uint16_t eusartRxIdleTime_ms;
+# 16 "src/api/my_uart.h"
+extern volatile uint8_t eusartRxIdleTime_ms;
 
-extern volatile uint8_t eusartRxBuffer[64];
+extern volatile uint8_t eusartRxBuffer[32];
 extern volatile uint8_t eusartRxCount;
 
 extern void uart_send_byte(uint8_t x);

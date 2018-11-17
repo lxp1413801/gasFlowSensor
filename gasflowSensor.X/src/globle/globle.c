@@ -2,7 +2,7 @@
 #include "globle.h"
 volatile uint32_t globalTicker=0x00ul;
 volatile uint8_t Event=0;  
-
+/*
 void delay(uint16_t dly)
 {
     while(dly--){
@@ -23,3 +23,4 @@ void delay_ms(uint16_t dly)
     }while(t16--);
 }
 
+*/

@@ -48,11 +48,13 @@
 #include "interrupt_manager.h"
 #include "mcc.h"
 #include "../src/globle/globle.h"
+#include "../src/api/my_uart.h"
 uint8_t subTickerX=0x00;
 uint8_t subTickerX_1s=0x00;
 void interrupt INTERRUPT_InterruptManager (void)
 {
     // interrupt handler
+	uint8_t t8;
     if(INTCONbits.PEIE == 1 && PIE1bits.TMR2IE == 1 && PIR1bits.TMR2IF == 1)
     {
         //TMR2_ISR();
@@ -68,7 +70,30 @@ void interrupt INTERRUPT_InterruptManager (void)
 			subTickerX_1s=0;
 			Event |= flg_EVEN_TICKER_1000MS;
 		}
+		
+		if(eusartRxIdleTime_ms){
+			eusartRxIdleTime_ms++;
+			if(eusartRxIdleTime_ms>15){
+				Event|=flg_EVEN_RX_RECEIVED_PKG;
+				eusartRxIdleTime_ms=0;
+			}
+		}
 		globalTicker++;
+    }
+	if(INTCONbits.PEIE == 1 && PIE1bits.RCIE == 1 && PIR1bits.RCIF == 1)
+    {
+        //EUSART_Receive_ISR();
+		PIR1bits.RCIF=0;
+		if(1 == RCSTAbits.OERR){
+			RCSTAbits.CREN = 0;
+			RCSTAbits.CREN = 1;
+		}		
+		t8=RCREG;
+		if(eusartRxCount<EUSART_RX_BUFFER_SIZE){
+			eusartRxBuffer[eusartRxCount]=t8;
+			eusartRxCount++;
+		}		
+		eusartRxIdleTime_ms=1;		
     }
     else
     {

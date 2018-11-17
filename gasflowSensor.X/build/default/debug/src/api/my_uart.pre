@@ -11,7 +11,7 @@ extern double __fpnormalize(double);
 #pragma intrinsic(__builtin_software_breakpoint)
 extern void __builtin_software_breakpoint(void);
 
-# 49 "C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic16f1574.h"
+# 49 "C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic16f1575.h"
 extern volatile unsigned char INDF0 @ 0x000;
 
 asm("INDF0 equ 00h");
@@ -6439,10 +6439,6 @@ void WDT_Initialize(void);
 # 24 "src/api/../globle/globle.h"
 extern volatile uint32_t globalTicker;
 
-
-extern void delay(uint16_t dly);
-extern void delay_ms(uint16_t dly);
-
 # 34
 extern volatile uint8_t Event;
 
@@ -6450,12 +6446,10 @@ extern volatile uint8_t Event;
 asm("isRunInBoot equ 0xfff");
 extern volatile unsigned char isRunInBoot @ 0xfff;
 
-# 14 "src/api/my_uart.h"
-extern volatile uint8_t eusartTxBuffer[64];
-extern volatile uint8_t eusartTxLen;
-extern volatile uint16_t eusartRxIdleTime_ms;
+# 16 "src/api/my_uart.h"
+extern volatile uint8_t eusartRxIdleTime_ms;
 
-extern volatile uint8_t eusartRxBuffer[64];
+extern volatile uint8_t eusartRxBuffer[32];
 extern volatile uint8_t eusartRxCount;
 
 extern void uart_send_byte(uint8_t x);
@@ -6465,12 +6459,10 @@ extern void uart_send_len(uint8_t* buf,uint8_t len);
 extern void uart_received_start(void);
 extern void uart_received_process(uint8_t* buf,uint8_t len);
 
-# 5 "src/api/my_uart.c"
-volatile uint8_t eusartTxBuffer[64];
-volatile uint8_t eusartTxLen=0;
-volatile uint16_t eusartRxIdleTime_ms=0;
+# 7 "src/api/my_uart.c"
+volatile uint8_t eusartRxIdleTime_ms=0;
 
-volatile uint8_t eusartRxBuffer[64];
+volatile uint8_t eusartRxBuffer[32];
 volatile uint8_t eusartRxCount=0;
 
 void uart_send_byte(uint8_t x)
@@ -6489,11 +6481,8 @@ while(*str!='\0'){
 while(0 == PIR1bits.TXIF);
 TXREG = *str;
 str++;
-{__nop();__nop();__nop();__nop();}while(0);;
-{__nop();__nop();__nop();__nop();}while(0);;
-{__nop();__nop();__nop();__nop();}while(0);;
-{__nop();__nop();__nop();__nop();}while(0);;
-{__nop();__nop();__nop();__nop();}while(0);;
+
+# 33
 }
 while(0 == PIR1bits.TXIF);
 }
@@ -6501,14 +6490,14 @@ while(0 == PIR1bits.TXIF);
 void uart_send_len(uint8_t* buf,uint8_t len)
 {
 uint8_t i;
-TXSTAbits.TXEN=0;
+
 TXSTAbits.TXEN=1;
-while(0 == PIR1bits.TXIF)
+
 for(i=0;i<len;i++){
 while(0 == PIR1bits.TXIF);
 TXREG = buf[i];
 }
-while(0 == PIR1bits.TXIF);
+
 }
 
 void uart_received_start(void)

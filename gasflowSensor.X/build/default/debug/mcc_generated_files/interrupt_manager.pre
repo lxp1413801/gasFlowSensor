@@ -14,7 +14,7 @@ extern double __fpnormalize(double);
 #pragma intrinsic(__builtin_software_breakpoint)
 extern void __builtin_software_breakpoint(void);
 
-# 49 "C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic16f1574.h"
+# 49 "C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic16f1575.h"
 extern volatile unsigned char INDF0 @ 0x000;
 
 asm("INDF0 equ 00h");
@@ -6439,10 +6439,6 @@ void WDT_Initialize(void);
 # 24 "mcc_generated_files/../src/globle/globle.h"
 extern volatile uint32_t globalTicker;
 
-
-extern void delay(uint16_t dly);
-extern void delay_ms(uint16_t dly);
-
 # 34
 extern volatile uint8_t Event;
 
@@ -6450,12 +6446,26 @@ extern volatile uint8_t Event;
 asm("isRunInBoot equ 0xfff");
 extern volatile unsigned char isRunInBoot @ 0xfff;
 
-# 51 "mcc_generated_files/interrupt_manager.c"
+# 16 "mcc_generated_files/../src/api/my_uart.h"
+extern volatile uint8_t eusartRxIdleTime_ms;
+
+extern volatile uint8_t eusartRxBuffer[32];
+extern volatile uint8_t eusartRxCount;
+
+extern void uart_send_byte(uint8_t x);
+extern void uart_send_str(uint8_t* str);
+extern void uart_send_len(uint8_t* buf,uint8_t len);
+
+extern void uart_received_start(void);
+extern void uart_received_process(uint8_t* buf,uint8_t len);
+
+# 52 "mcc_generated_files/interrupt_manager.c"
 uint8_t subTickerX=0x00;
 uint8_t subTickerX_1s=0x00;
 void interrupt INTERRUPT_InterruptManager (void)
 {
 
+uint8_t t8;
 if(INTCONbits.PEIE == 1 && PIE1bits.TMR2IE == 1 && PIR1bits.TMR2IF == 1)
 {
 
@@ -6471,7 +6481,30 @@ if(subTickerX_1s>=50){
 subTickerX_1s=0;
 Event |= (1<<3);
 }
+
+if(eusartRxIdleTime_ms){
+eusartRxIdleTime_ms++;
+if(eusartRxIdleTime_ms>15){
+Event|=(1<<0);
+eusartRxIdleTime_ms=0;
+}
+}
 globalTicker++;
+}
+if(INTCONbits.PEIE == 1 && PIE1bits.RCIE == 1 && PIR1bits.RCIF == 1)
+{
+
+PIR1bits.RCIF=0;
+if(1 == RCSTAbits.OERR){
+RCSTAbits.CREN = 0;
+RCSTAbits.CREN = 1;
+}
+t8=RCREG;
+if(eusartRxCount<32){
+eusartRxBuffer[eusartRxCount]=t8;
+eusartRxCount++;
+}
+eusartRxIdleTime_ms=1;
 }
 else
 {

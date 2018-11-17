@@ -3,15 +3,15 @@
   <executable name="dist/default/debug\gasflowSensor.X.debug.hex">
     <memory name="program">
       <units>words</units>
-      <length>4096</length>
-      <used>2401</used>
-      <free>1695</free>
+      <length>8064</length>
+      <used>3622</used>
+      <free>4442</free>
     </memory>
     <memory name="data">
       <units>bytes</units>
-      <length>512</length>
-      <used>284</used>
-      <free>228</free>
+      <length>1008</length>
+      <used>272</used>
+      <free>736</free>
     </memory>
   </executable>
 </project>
