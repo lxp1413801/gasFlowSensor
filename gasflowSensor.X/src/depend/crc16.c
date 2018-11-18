@@ -79,6 +79,7 @@ uint16_t crc_sum(uint8_t *puchMsg, uint16_t usDataLen)
 	return (uchCRCHi << 8 | uchCRCLo) ;
 }
 */
+/*
 uint16_t calc_crc_w(uint16_t crc,uint8_t b,uint16_t polynomial)
 {
 	uint16_t i;
@@ -107,11 +108,30 @@ uint16_t crc_sum(uint8_t *message, uint16_t len)
 		crc=calc_crc_w(crc,message[i],polynomial);
 	}
 	//return ~crc;
-	i=(crc<<8)&&0xff00;
-	crc=(crc>>8)&&0x00ff;
+	i=(crc<<8)&0xff00;
+	crc=(crc>>8)&0x00ff;
 	return crc+i;
 }
-
+*/
+uint16_t crc_sum( uint8_t* buf, uint16_t len)
+{
+	uint16_t crc=0xFFFF;
+	uint16_t i, j, Data;
+	for ( j=0; j<len;j++){
+		crc=crc ^*buf++;
+		for ( i=0; i<8; i++){
+			
+			if(crc&0x0001){
+				crc=crc>>1;
+				crc=crc^ 0xa001;
+			}else{
+				crc=crc>>1;
+			}
+		}
+		
+	}
+	return ( crc);
+}
 uint8_t crc_verify( uint8_t* message, uint16_t n)
 {
     uint16_t expected,crccal;

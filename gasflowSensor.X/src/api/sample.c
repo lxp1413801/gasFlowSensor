@@ -19,11 +19,11 @@ uint32_t resRs=10000UL;
 
 //继电控制测试赋值
 //<<--
-#define BB_RISE_Y		3500
-#define BB_FALL_Y		500
+#define BB_RISE_Y		5000
+#define BB_FALL_Y		2000
 
 #define iDRV_PWM1_MAX	1200
-#define iDRV_PWM1_MIN	2
+#define iDRV_PWM1_MIN	5
 #define __x_delta_res	2000
 int32_t		PidKp;
 int32_t		PidTi;
@@ -122,7 +122,7 @@ uint16_t get_adc_average_value(uint16_t*  buf, uint8_t len)
     }
     return (uint16_t)ret;
 }
-uint16_t adcBuf[32];
+//uint16_t adcBuf[32];
 
 uint16_t adc_sample(uint8_t ch,uint8_t gfvr,uint8_t num)
 {
@@ -133,7 +133,7 @@ uint16_t adc_sample(uint8_t ch,uint8_t gfvr,uint8_t num)
 	fvr_set_gain(gfvr);
 	adc_init((adc_channel_t)ch);
     __delay_us(10);
-	if(num>32)num=32;
+	if(num>64)num=64;
 	for(i=0;i<num;i++){
 		ADCON0bits.GO_nDONE = 1;
 		while (ADCON0bits.GO_nDONE);
@@ -198,7 +198,15 @@ uint32_t calc_temp_rc(void)
 	return y;
 }
 
-
+/*
+参数整定找最佳，从小到大顺序查
+先是比例后积分，最后再把微分加
+曲线振荡很频繁，比例度盘要放大
+曲线漂浮绕大湾，比例度盘往小扳
+曲线偏离回复慢，积分时间往下降
+曲线波动周期长，积分时间再加长
+曲线振荡频率快，先把微分降下来
+*/
 
 
 uint8_t pidTestNum=0;	
@@ -230,7 +238,7 @@ void pid_pwm1_idrv_b_b(void)
 				bbt0=bbt1;
 				bbt1=globalTicker;
 				pidTestNum++;
-				if(pidTestNum>5){
+				if(pidTestNum>4){
 					pidBbSm=PID_BB_OK;
 					break;
 				}
@@ -248,9 +256,9 @@ void pid_pwm1_idrv_b_b(void)
 			bbku=(bbu*40000)/(bbta*314);
             bbku*=100;
 			//测试的响应速度1.2,2参数比较理想
-			PidKp=bbku*10/17;
-			PidTi=bbtu*10/20;
-			PidTd=bbtu/10;			
+			PidKp=bbku*10/10;
+			PidTi=bbtu*10/40;
+			PidTd=bbtu/8;			
 			pidBbSm=PID_BB_EXIT;
             break;	
 	}
@@ -277,9 +285,8 @@ void pid_pwm1_idrv_run(void)
 
 	ep=(err[0]-err[1])*PidKp;
 	ei=PidKp*err[0]/PidTi;
-	//ed=(err[0]-2*err[1]+err[2])*PidKp*PidTd;;
-    //ed=ed*PidKp*PidTd;
-	ed=0;
+	ed=(err[0]-2*err[1]+err[2])*PidKp*PidTd/120;;
+	//ed=0;
 	t32=ep+ei+ed;
 	t32/=10000;
 	t32+=pidU;
@@ -307,8 +314,8 @@ void pid_pwm2_vout_run(void)
 	}
 
 	pwm2Ei=pwm2Ei+ei;
-	if(pwm2Ei>500)pwm2Ei=500;
-	if(pwm2Ei<-500)pwm2Ei=-500;
+	//if(pwm2Ei>500)pwm2Ei=500;
+	//if(pwm2Ei<-500)pwm2Ei=-500;
 	
 	t16=voExpectAdcValue/12;
 	//pwm2Ei=0;

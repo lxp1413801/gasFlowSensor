@@ -73,7 +73,7 @@ void interrupt INTERRUPT_InterruptManager (void)
 		
 		if(eusartRxIdleTime_ms){
 			eusartRxIdleTime_ms++;
-			if(eusartRxIdleTime_ms>15){
+			if(eusartRxIdleTime_ms>5){
 				Event|=flg_EVEN_RX_RECEIVED_PKG;
 				eusartRxIdleTime_ms=0;
 			}
@@ -92,6 +92,7 @@ void interrupt INTERRUPT_InterruptManager (void)
 		if(eusartRxCount<EUSART_RX_BUFFER_SIZE){
 			eusartRxBuffer[eusartRxCount]=t8;
 			eusartRxCount++;
+            //eusartRxIdleTime_ms=1;	
 		}		
 		eusartRxIdleTime_ms=1;		
     }

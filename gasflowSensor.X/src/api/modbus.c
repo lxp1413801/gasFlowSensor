@@ -100,12 +100,11 @@ uint16_t getRegisterVal(uint16_t addr,uint16_t *tempData)
 		case 0x0f:*tempData=voExpectAdcValue;break;
 		default: *tempData=0x55aa;break;
 	}
-	if(tempAddr>0x10 && tempAddr < 0x10+20){
+	if(tempAddr>0x0f && tempAddr < 0x10+20){
+		tempAddr-=0x10;
         if(tempAddr & 0x01){
-            tempAddr-=0x02;
             *tempData=sysData.calibVoutAdcValue[tempAddr>>1];
         }else{
-            tempAddr-=0x02;
             *tempData=sysData.calibSimuPowerVaule[tempAddr>>1];
         }
     }
@@ -115,25 +114,35 @@ uint16_t getRegisterVal(uint16_t addr,uint16_t *tempData)
 void modbus_response_write_single_register(uint8_t* rbuf)
 {
     uint16_t startAddr=0;
-	uint8_t len=0;
+	uint16_t t16;
+	uint8_t fiSave=0;
 	st_modbusComReqStructDef* pmdbs=(st_modbusComReqStructDef*)rbuf;
     if(pmdbs->addr!=sysData.id)return;
 	startAddr=pmdbs->addr_hi;
 	startAddr<<=8;
 	startAddr |= pmdbs->addr_lo;
-    //tmpAddr=startAddr;
-	//len = pmdbs->len_lo;   
-    //len<<=1;
-    switch( startAddr & 0xff){
-		case 0x03:
-            sysData.pidSetFlg1=rbuf[4];
-            sysData.pidSetFlg0=rbuf[5];
-			break;
-          
-        default:
-            modbus_response_illgeal_function(rbuf,ILLEGAL_DATA_ADDRESS);
-            return;
+	startAddr = startAddr & 0xff;
+	if(startAddr==0x02){
+		sysData.id=rbuf[5];
+		fiSave=1;	
+	}else if(startAddr==0x03){
+		sysData.pidSetFlg1=rbuf[4];
+		sysData.pidSetFlg0=rbuf[5];
+		fiSave=1;	
+	}else if(startAddr>0x0f && startAddr < 0x10+20){
+		startAddr-=0x10;
+        if(startAddr & 0x01){
+            t16=rbuf[4];
+			t16<<=8;
+			t16 |= rbuf[5];
+			sysData.calibVoutAdcValue[startAddr>>1]=t16;	
+			fiSave=1;
+        }		
+	}else{
+		//modbus_response_illgeal_function(rbuf,ILLEGAL_DATA_ADDRESS);
+		return;
 	}
+	if(fiSave)sys_data_save();
     if(pmdbs->addr==0)return;
     rbuf[0]=sysData.id;
     crc_append(rbuf,6);
@@ -145,7 +154,7 @@ void modbus_response_command(uint8_t* rbuf){
     uint16_t tempData,tmpAddr;
 	uint8_t len=0;
 	st_modbusComReqStructDef* pmdbs=(st_modbusComReqStructDef*)rbuf;
-    if(pmdbs->addr!=sysData.id)return;
+    if(pmdbs->addr!=sysData.id ||  pmdbs->addr==0)return;
 	startAddr=pmdbs->addr_hi;
 	startAddr<<=8;
 	startAddr |= pmdbs->addr_lo;
@@ -172,7 +181,8 @@ void modbus_response_process(uint8_t* rbuf,uint16_t rlen){
 	uint8_t resp=0;
 	st_modbusComReqStructDef* pmdbs=(st_modbusComReqStructDef*)rbuf;
 	//if(!(pmdbs->addr ==0xff  || pmdbs->addr==mainSystemData.shortID || pmdbs->addr!=0x00))return;
-    if(!( pmdbs->addr==sysData.id || pmdbs->addr!=0x00))return;
+    //if(!( pmdbs->addr==sysData.id || pmdbs->addr!=0x00))return;
+    if((pmdbs->addr!=sysData.id) && (pmdbs->addr!=0x00))return;
 	if(!(crc_verify(rbuf,rlen)))return ;
 	//function expand expand
 	switch(pmdbs->func){

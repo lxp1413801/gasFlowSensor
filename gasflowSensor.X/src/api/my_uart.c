@@ -37,20 +37,25 @@ void uart_send_str(uint8_t* str)
 void uart_send_len(uint8_t* buf,uint8_t len)
 {
 	uint8_t i;
-    //TXSTAbits.TXEN=0;
-    TXSTAbits.TXEN=1;   
-    //while(0 == PIR1bits.TXIF)
+    if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;  
+    while(0 == PIR1bits.TXIF);
 	for(i=0;i<len;i++){
 		while(0 == PIR1bits.TXIF);
 		TXREG = buf[i];		
 	}
-    //while(0 == PIR1bits.TXIF);
+    while(0 == PIR1bits.TXIF);
 }
 
 void uart_received_start(void)
 {
 	eusartRxCount=0;
+    RCSTAbits.CREN=0;
+    PIE1bits.RCIE = 0;
+    PIR1bits.RCIF=0;
+    
+    RCSTAbits.CREN=1;
 	PIE1bits.RCIE = 1;
+    
 	eusartRxIdleTime_ms=0;
 }
 
