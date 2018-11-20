@@ -6281,7 +6281,7 @@ void PWM2_Initialize(void)
 
 
 
-PWM2INTE = 0x00;
+PWM2INTE = 0x01;
 
 
 PWM2INTF = 0x00;
@@ -6290,7 +6290,7 @@ PWM2INTF = 0x00;
 PWM2CLKCON = 0x00;
 
 
-PWM2LDCON = 0x80;
+PWM2LDCON = 0x00;
 
 
 PWM2OFCON = 0x00;
@@ -6299,7 +6299,7 @@ PWM2OFCON = 0x00;
 PWM2PHH = 0x00;
 
 
-PWM2PHL = 0x00;
+PWM2PHL = 0x02;
 
 
 PWM2DCH = 0x00;
@@ -6327,6 +6327,8 @@ PWM2TMRL = 0x00;
 
 
 PWM2CON = 0x90;
+
+# 114
 }
 
 

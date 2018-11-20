@@ -6301,6 +6301,7 @@ extern uint16_t rtAdcValueRsLoAvg;
 
 
 extern int16_t pwm2DutyForVout;
+extern int16_t pwm1DutyForIdrv;
 extern uint16_t cal_voout_pwm_duty(void);
 extern uint16_t calc_expect_vout_adc_value(uint16_t x);
 
@@ -6469,7 +6470,7 @@ sysData.pidSetFlg1=0xff;
 sysData.id=0xff;
 for(i=0;i<20;i++){
 
-sysData.calibRsAdc[i]=9600+i*720;
+sysData.calibRsAdc[i]=6400+i*720;
 sysData.calibVoMV[i]=i*333;
 }
 crc_append((uint8_t*)&sysData,sizeof(sysData_t)-2);

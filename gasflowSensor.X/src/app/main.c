@@ -2,7 +2,7 @@
 #define USART_MODE_MODBUS 	0
 #define USART_MODE_CONSLE	1
 
-#define USART_MODE USART_MODE_CONSLE
+#define USART_MODE USART_MODE_MODBUS
 
 #define PID_CTROLLOR_EN 1
 
@@ -21,7 +21,7 @@ void main(void)
     SYSTEM_Initialize();
     irq_global_enable();
 	//set_idrv_pwm1_duty(10);
-	set_vout_pwm2_duty(10);
+	//set_vout_pwm2_duty(10);
     sys_data_init();
     
     if(sysData.pidSetFlg0 != 0x55 || sysData.pidSetFlg1 != 0xaa){

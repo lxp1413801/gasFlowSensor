@@ -41,6 +41,7 @@
 	//extern uint16_t calc_current_rs_avg();
 	
 	extern int16_t pwm2DutyForVout;
+    extern int16_t pwm1DutyForIdrv;
 	extern uint16_t cal_voout_pwm_duty(void);
 	extern uint16_t calc_expect_vout_adc_value(uint16_t x);
     

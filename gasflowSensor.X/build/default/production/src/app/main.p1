@@ -16,8 +16,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S26 . . . ]
 "360
 [v _INTCONbits `VS26 ~T0 @X0 0 e@11 ]
-"19 src/app/../includes/../api/sample.h
-[v _set_vout_pwm2_duty `(v ~T0 @X0 0 ef1`ui ]
 "39 src/app/../api/sysData.h
 [v _sys_data_init `(ui ~T0 @X0 0 ef ]
 "24
@@ -60,15 +58,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _calc_temp_rs `(ul ~T0 @X0 0 ef ]
 "37
 [v _pid_pwm1_idrv_run `(v ~T0 @X0 0 ef ]
-"56
-[v _rsLoAvg `ui ~T0 @X0 0 e ]
 "57
+[v _rsLoAvg `ui ~T0 @X0 0 e ]
+"58
 [v _calc_rs_lo_avg `(ui ~T0 @X0 0 ef1`ui ]
-"51
-[v _voExpectMv `ui ~T0 @X0 0 e ]
-"45
-[v _calc_expect_vout_adc_value `(ui ~T0 @X0 0 ef1`ui ]
 "52
+[v _voExpectMv `ui ~T0 @X0 0 e ]
+"46
+[v _calc_expect_vout_adc_value `(ui ~T0 @X0 0 ef1`ui ]
+"53
 [v _voExpectAdcValue `ui ~T0 @X0 0 e ]
 "38
 [v _pid_pwm2_vout_run `(v ~T0 @X0 0 ef ]
@@ -76,12 +74,18 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _pid_pwm1_idrv_b_b `(v ~T0 @X0 0 ef ]
 "40 src/app/../api/sysData.h
 [v _sys_data_save `(v ~T0 @X0 0 ef ]
-"22 src/app/../includes/../api/my_uart.h
-[v _uart_send_str `(v ~T0 @X0 0 ef1`*uc ]
-"20 src/app/../includes/../depend/m_string.h
-[v _m_int_2_str_ex `(v ~T0 @X0 0 ef3`*uc`l`ui ]
-"43 src/app/../includes/../api/sample.h
-[v _pwm2DutyForVout `i ~T0 @X0 0 e ]
+"19 src/app/../includes/../api/my_uart.h
+[v _eusartRxCount `Vuc ~T0 @X0 0 e ]
+"9 src/app/../includes/../depend/m_string.h
+[v _m_mem_cpy_len `(v ~T0 @X0 0 ef3`*uc`*uc`ui ]
+"74 src/app/../api/modbus.h
+[v _modbusBuf `uc ~T0 @X0 -> 0 `x e ]
+"18 src/app/../includes/../api/my_uart.h
+[v _eusartRxBuffer `Vuc ~T0 @X0 -> 0 `x e ]
+"75 src/app/../api/modbus.h
+[v _modbus_response_process `(v ~T0 @X0 0 ef2`*uc`ui ]
+"25 src/app/../includes/../api/my_uart.h
+[v _uart_received_start `(v ~T0 @X0 0 ef ]
 [; ;stdint.h: 13: typedef signed char int8_t;
 [; ;stdint.h: 20: typedef signed int int16_t;
 [; ;stdint.h: 28: typedef signed short long int int24_t;
@@ -4816,16 +4820,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;sample.h: 38: extern void pid_pwm2_vout_run(void);
 [; ;sample.h: 40: extern uint16_t rtAdcValueRsLoAvg;
 [; ;sample.h: 43: extern int16_t pwm2DutyForVout;
-[; ;sample.h: 44: extern uint16_t cal_voout_pwm_duty(void);
-[; ;sample.h: 45: extern uint16_t calc_expect_vout_adc_value(uint16_t x);
-[; ;sample.h: 47: extern int32_t pidU;;
-[; ;sample.h: 48: extern int32_t outResDiff;
-[; ;sample.h: 51: extern uint16_t voExpectMv;
-[; ;sample.h: 52: extern uint16_t voExpectAdcValue;
-[; ;sample.h: 53: extern uint16_t cal_rs_simulate_power(void);
-[; ;sample.h: 54: extern void set_idrv_pwm1_duty(uint16_t duty);
-[; ;sample.h: 56: extern uint16_t rsLoAvg;
-[; ;sample.h: 57: extern uint16_t calc_rs_lo_avg(uint16_t x);
+[; ;sample.h: 44: extern int16_t pwm1DutyForIdrv;
+[; ;sample.h: 45: extern uint16_t cal_voout_pwm_duty(void);
+[; ;sample.h: 46: extern uint16_t calc_expect_vout_adc_value(uint16_t x);
+[; ;sample.h: 48: extern int32_t pidU;;
+[; ;sample.h: 49: extern int32_t outResDiff;
+[; ;sample.h: 52: extern uint16_t voExpectMv;
+[; ;sample.h: 53: extern uint16_t voExpectAdcValue;
+[; ;sample.h: 54: extern uint16_t cal_rs_simulate_power(void);
+[; ;sample.h: 55: extern void set_idrv_pwm1_duty(uint16_t duty);
+[; ;sample.h: 57: extern uint16_t rsLoAvg;
+[; ;sample.h: 58: extern uint16_t calc_rs_lo_avg(uint16_t x);
 [; ;my_uart.h: 16: extern volatile uint8_t eusartRxIdleTime_ms;
 [; ;my_uart.h: 18: extern volatile uint8_t eusartRxBuffer[64];
 [; ;my_uart.h: 19: extern volatile uint8_t eusartRxCount;
@@ -4851,40 +4856,40 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;sysData.h: 37: extern sysData_t sysData;
 [; ;sysData.h: 39: extern uint16_t sys_data_init(void);
 [; ;sysData.h: 40: extern void sys_data_save(void);
-[; ;modbus.h: 35: typedef struct{
-[; ;modbus.h: 36: uint8_t addr;
-[; ;modbus.h: 37: uint8_t func;
-[; ;modbus.h: 38: uint8_t addr_hi;
-[; ;modbus.h: 39: uint8_t addr_lo;
-[; ;modbus.h: 40: uint8_t len_hi;
-[; ;modbus.h: 41: uint8_t len_lo;
-[; ;modbus.h: 42: }st_modbusComReqStructDef;
-[; ;modbus.h: 43: typedef struct{
-[; ;modbus.h: 44: uint8_t addr;
-[; ;modbus.h: 45: uint8_t func;
-[; ;modbus.h: 46: uint8_t errcord;
-[; ;modbus.h: 47: uint8_t crc16;
-[; ;modbus.h: 48: }st_modbusErrRespStructDef;
-[; ;modbus.h: 49: typedef struct{
-[; ;modbus.h: 50: uint8_t addr;
-[; ;modbus.h: 51: uint8_t func;
-[; ;modbus.h: 52: uint8_t addr_hi;
-[; ;modbus.h: 53: uint8_t addr_lo;
-[; ;modbus.h: 54: uint8_t len_hi;
-[; ;modbus.h: 55: uint8_t len_lo;
-[; ;modbus.h: 56: uint16_t crc16;
-[; ;modbus.h: 57: }st_modbusReadClib;
-[; ;modbus.h: 58: typedef struct{
-[; ;modbus.h: 59: uint8_t addr;
-[; ;modbus.h: 60: uint8_t func;
-[; ;modbus.h: 61: uint8_t addr_hi;
-[; ;modbus.h: 62: uint8_t addr_lo;
-[; ;modbus.h: 63: uint8_t data_hi;
-[; ;modbus.h: 64: uint8_t data_lo;
-[; ;modbus.h: 65: uint16_t crc16;
-[; ;modbus.h: 66: }st_modbusWriteSingleClib;
-[; ;modbus.h: 72: extern uint8_t modbusBuf[];
-[; ;modbus.h: 73: extern void modbus_response_process(uint8_t* rbuf,uint16_t rlen);
+[; ;modbus.h: 37: typedef struct{
+[; ;modbus.h: 38: uint8_t addr;
+[; ;modbus.h: 39: uint8_t func;
+[; ;modbus.h: 40: uint8_t addr_hi;
+[; ;modbus.h: 41: uint8_t addr_lo;
+[; ;modbus.h: 42: uint8_t len_hi;
+[; ;modbus.h: 43: uint8_t len_lo;
+[; ;modbus.h: 44: }st_modbusComReqStructDef;
+[; ;modbus.h: 45: typedef struct{
+[; ;modbus.h: 46: uint8_t addr;
+[; ;modbus.h: 47: uint8_t func;
+[; ;modbus.h: 48: uint8_t errcord;
+[; ;modbus.h: 49: uint8_t crc16;
+[; ;modbus.h: 50: }st_modbusErrRespStructDef;
+[; ;modbus.h: 51: typedef struct{
+[; ;modbus.h: 52: uint8_t addr;
+[; ;modbus.h: 53: uint8_t func;
+[; ;modbus.h: 54: uint8_t addr_hi;
+[; ;modbus.h: 55: uint8_t addr_lo;
+[; ;modbus.h: 56: uint8_t len_hi;
+[; ;modbus.h: 57: uint8_t len_lo;
+[; ;modbus.h: 58: uint16_t crc16;
+[; ;modbus.h: 59: }st_modbusReadClib;
+[; ;modbus.h: 60: typedef struct{
+[; ;modbus.h: 61: uint8_t addr;
+[; ;modbus.h: 62: uint8_t func;
+[; ;modbus.h: 63: uint8_t addr_hi;
+[; ;modbus.h: 64: uint8_t addr_lo;
+[; ;modbus.h: 65: uint8_t data_hi;
+[; ;modbus.h: 66: uint8_t data_lo;
+[; ;modbus.h: 67: uint16_t crc16;
+[; ;modbus.h: 68: }st_modbusWriteSingleClib;
+[; ;modbus.h: 74: extern uint8_t modbusBuf[];
+[; ;modbus.h: 75: extern void modbus_response_process(uint8_t* rbuf,uint16_t rlen);
 "15 src/app/main.c
 [v _str `uc ~T0 @X0 -> 16 `i e ]
 [; ;main.c: 15: uint8_t str[16];
@@ -4913,9 +4918,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = . . _INTCONbits 0 6 -> -> 1 `i `uc ]
 }
 [e :U 602 ]
-[; ;main.c: 24: set_vout_pwm2_duty(10);
-"24
-[e ( _set_vout_pwm2_duty (1 -> -> 10 `i `ui ]
 [; ;main.c: 25: sys_data_init();
 "25
 [e ( _sys_data_init ..  ]
@@ -5061,67 +5063,38 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 81: Event &= ~(1<<3);
 "81
 [e =& _Event -> ~ << -> 1 `i -> 3 `i `uc ]
-[; ;main.c: 83: uart_send_str((uint8_t*)"Rc=");
-"83
-[e ( _uart_send_str (1 -> :s 1C `*uc ]
-[; ;main.c: 84: m_int_2_str_ex(str,resRc,sizeof(str));
-"84
-[e ( _m_int_2_str_ex (3 , , &U _str -> _resRc `l -> # _str `ui ]
-[; ;main.c: 85: uart_send_str(str);
-"85
-[e ( _uart_send_str (1 &U _str ]
-[; ;main.c: 87: uart_send_str((uint8_t*)"\tRs=");
-"87
-[e ( _uart_send_str (1 -> :s 2C `*uc ]
-[; ;main.c: 88: m_int_2_str_ex(str,resRs,sizeof(str));
-"88
-[e ( _m_int_2_str_ex (3 , , &U _str -> _resRs `l -> # _str `ui ]
-[; ;main.c: 89: uart_send_str(str);
-"89
-[e ( _uart_send_str (1 &U _str ]
-[; ;main.c: 91: uart_send_str((uint8_t*)"\ti=");
-"91
-[e ( _uart_send_str (1 -> :s 3C `*uc ]
-[; ;main.c: 92: m_int_2_str_ex(str,rtAdcValueRsLo,sizeof(str));
-"92
-[e ( _m_int_2_str_ex (3 , , &U _str -> _rtAdcValueRsLo `l -> # _str `ui ]
-[; ;main.c: 93: uart_send_str(str);
-"93
-[e ( _uart_send_str (1 &U _str ]
-[; ;main.c: 95: uart_send_str((uint8_t*)"\texp=");
-"95
-[e ( _uart_send_str (1 -> :s 4C `*uc ]
-[; ;main.c: 96: m_int_2_str_ex(str,voExpectAdcValue,sizeof(str));
-"96
-[e ( _m_int_2_str_ex (3 , , &U _str -> _voExpectAdcValue `l -> # _str `ui ]
-[; ;main.c: 97: uart_send_str(str);
-"97
-[e ( _uart_send_str (1 &U _str ]
-[; ;main.c: 99: uart_send_str((uint8_t*)"\tvo=");
-"99
-[e ( _uart_send_str (1 -> :s 5C `*uc ]
-[; ;main.c: 100: m_int_2_str_ex(str,voExpectMv,sizeof(str));
-"100
-[e ( _m_int_2_str_ex (3 , , &U _str -> _voExpectMv `l -> # _str `ui ]
-[; ;main.c: 101: uart_send_str(str);
-"101
-[e ( _uart_send_str (1 &U _str ]
-[; ;main.c: 103: uart_send_str((uint8_t*)"\tpwm=");
-"103
-[e ( _uart_send_str (1 -> :s 6C `*uc ]
-[; ;main.c: 104: m_int_2_str_ex(str,pwm2DutyForVout,sizeof(str));
-"104
-[e ( _m_int_2_str_ex (3 , , &U _str -> _pwm2DutyForVout `l -> # _str `ui ]
-[; ;main.c: 105: uart_send_str(str);
-"105
-[e ( _uart_send_str (1 &U _str ]
-[; ;main.c: 107: uart_send_str((uint8_t*)"\r\n");
-"107
-[e ( _uart_send_str (1 -> :s 7C `*uc ]
 "109
 }
 [e :U 613 ]
 [; ;main.c: 109: }
+[; ;main.c: 111: if(Event & (1<<0)){
+"111
+[e $ ! != & -> _Event `i << -> 1 `i -> 0 `i -> 0 `i 614  ]
+{
+[; ;main.c: 112: Event &= ~ (1<<0);
+"112
+[e =& _Event -> ~ << -> 1 `i -> 0 `i `uc ]
+[; ;main.c: 113: if(eusartRxCount>0){
+"113
+[e $ ! > -> _eusartRxCount `i -> 0 `i 615  ]
+{
+[; ;main.c: 114: m_mem_cpy_len(modbusBuf,eusartRxBuffer,eusartRxCount);
+"114
+[e ( _m_mem_cpy_len (3 , , &U _modbusBuf -> &U _eusartRxBuffer `*uc -> _eusartRxCount `ui ]
+[; ;main.c: 115: modbus_response_process(modbusBuf,eusartRxCount);
+"115
+[e ( _modbus_response_process (2 , &U _modbusBuf -> _eusartRxCount `ui ]
+"117
+}
+[e :U 615 ]
+[; ;main.c: 117: }
+[; ;main.c: 119: uart_received_start();
+"119
+[e ( _uart_received_start ..  ]
+"120
+}
+[e :U 614 ]
+[; ;main.c: 120: }
 [; ;main.c: 122: __nop();
 "122
 [e ( ___nop ..  ]
@@ -5136,10 +5109,3 @@ Version 3.2 HI-TECH Software Intermediate Code
 "126
 [e :UE 600 ]
 }
-[a 2C 9 82 115 61 0 ]
-[a 4C 9 101 120 112 61 0 ]
-[a 5C 9 118 111 61 0 ]
-[a 6C 9 112 119 109 61 0 ]
-[a 3C 9 105 61 0 ]
-[a 1C 82 99 61 0 ]
-[a 7C 13 10 0 ]

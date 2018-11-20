@@ -49,6 +49,7 @@
 #include "mcc.h"
 #include "../src/globle/globle.h"
 #include "../src/api/my_uart.h"
+#include "../src/api/sample.h"
 uint8_t subTickerX=0x00;
 uint8_t subTickerX_1s=0x00;
 void interrupt INTERRUPT_InterruptManager (void)
@@ -96,6 +97,23 @@ void interrupt INTERRUPT_InterruptManager (void)
 		}		
 		eusartRxIdleTime_ms=1;		
     }
+    if(INTCONbits.PEIE == 1 && PIE3bits.PWM2IE == 1 && PIR3bits.PWM2IF == 1){
+        //PWM2_ISR();
+        PIR3bits.PWM2IF = 0;
+        if(PWM2INTFbits.PRIF){
+            PWM2INTFbits.PRIF=0;
+            PWM2DCH = (pwm2DutyForVout>>8);	//writing 8 MSBs to PWMPRH register
+            PWM2DCL = (pwm2DutyForVout);	//writing 8 LSBs to PWMPRL register	            
+        }        
+    }
+    if(INTCONbits.PEIE == 1 && PIE3bits.PWM1IE == 1 && PIR3bits.PWM1IF == 1){
+        PIR3bits.PWM1IF = 0;
+        if(PWM1INTFbits.PRIF){
+            PWM1INTFbits.PRIF=0;
+            PWM1DCH = (pwm1DutyForIdrv>>8);	//writing 8 MSBs to PWMPRH register
+            PWM1DCL = (pwm1DutyForIdrv);	//writing 8 LSBs to PWMPRL register	             
+        }
+    }    
     else
     {
         //Unhandled Interrupt

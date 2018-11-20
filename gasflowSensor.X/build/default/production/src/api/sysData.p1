@@ -4696,16 +4696,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;sample.h: 38: extern void pid_pwm2_vout_run(void);
 [; ;sample.h: 40: extern uint16_t rtAdcValueRsLoAvg;
 [; ;sample.h: 43: extern int16_t pwm2DutyForVout;
-[; ;sample.h: 44: extern uint16_t cal_voout_pwm_duty(void);
-[; ;sample.h: 45: extern uint16_t calc_expect_vout_adc_value(uint16_t x);
-[; ;sample.h: 47: extern int32_t pidU;;
-[; ;sample.h: 48: extern int32_t outResDiff;
-[; ;sample.h: 51: extern uint16_t voExpectMv;
-[; ;sample.h: 52: extern uint16_t voExpectAdcValue;
-[; ;sample.h: 53: extern uint16_t cal_rs_simulate_power(void);
-[; ;sample.h: 54: extern void set_idrv_pwm1_duty(uint16_t duty);
-[; ;sample.h: 56: extern uint16_t rsLoAvg;
-[; ;sample.h: 57: extern uint16_t calc_rs_lo_avg(uint16_t x);
+[; ;sample.h: 44: extern int16_t pwm1DutyForIdrv;
+[; ;sample.h: 45: extern uint16_t cal_voout_pwm_duty(void);
+[; ;sample.h: 46: extern uint16_t calc_expect_vout_adc_value(uint16_t x);
+[; ;sample.h: 48: extern int32_t pidU;;
+[; ;sample.h: 49: extern int32_t outResDiff;
+[; ;sample.h: 52: extern uint16_t voExpectMv;
+[; ;sample.h: 53: extern uint16_t voExpectAdcValue;
+[; ;sample.h: 54: extern uint16_t cal_rs_simulate_power(void);
+[; ;sample.h: 55: extern void set_idrv_pwm1_duty(uint16_t duty);
+[; ;sample.h: 57: extern uint16_t rsLoAvg;
+[; ;sample.h: 58: extern uint16_t calc_rs_lo_avg(uint16_t x);
 [; ;my_uart.h: 16: extern volatile uint8_t eusartRxIdleTime_ms;
 [; ;my_uart.h: 18: extern volatile uint8_t eusartRxBuffer[64];
 [; ;my_uart.h: 19: extern volatile uint8_t eusartRxCount;
@@ -5041,9 +5042,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $U 616  ]
 [e :U 615 ]
 {
-[; ;sysData.c: 105: sysData.calibRsAdc[i]=9600+i*720;
+[; ;sysData.c: 105: sysData.calibRsAdc[i]=6400+i*720;
 "105
-[e = *U + &U . _sysData 7 * -> _i `ux -> -> # *U &U . _sysData 7 `ui `ux + -> -> 9600 `i `ui * _i -> -> 720 `i `ui ]
+[e = *U + &U . _sysData 7 * -> _i `ux -> -> # *U &U . _sysData 7 `ui `ux + -> -> 6400 `i `ui * _i -> -> 720 `i `ui ]
 [; ;sysData.c: 106: sysData.calibVoMV[i]=i*333;
 "106
 [e = *U + &U . _sysData 8 * -> _i `ux -> -> # *U &U . _sysData 8 `ui `ux * _i -> -> 333 `i `ui ]

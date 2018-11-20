@@ -114,10 +114,11 @@ uint16_t getRegisterVal(uint16_t addr,uint16_t *tempData)
 void modbus_response_write_single_register(uint8_t* rbuf)
 {
     uint16_t startAddr=0;
-	uint16_t t16;
+	uint16_t t16,i;
 	uint8_t fiSave=0;
 	st_modbusComReqStructDef* pmdbs=(st_modbusComReqStructDef*)rbuf;
     if(pmdbs->addr!=sysData.id && pmdbs->addr!=0)return;
+    if(sysData.id==253 && pmdbs->addr==0)return; 
 	startAddr=pmdbs->addr_hi;
 	startAddr<<=8;
 	startAddr |= pmdbs->addr_lo;
@@ -136,8 +137,15 @@ void modbus_response_write_single_register(uint8_t* rbuf)
 			t16<<=8;
 			t16 |= rbuf[5];
 			sysData.calibVoMV[startAddr>>1]=t16;	
-            sysData.calibRsAdc[startAddr>>1]=rtAdcValueRsLo;
-			fiSave=1;
+            sysData.calibRsAdc[startAddr>>1]=rsLoAvg;
+			
+            if(rbuf[1]==FUNC_WRITE_SINGLE_REGISTER_EX){
+                for(i=(startAddr>>1)+1;i<MAX_CALIB_NUM;i++){
+                    sysData.calibVoMV[i]=t16;
+                    sysData.calibRsAdc[i]=rsLoAvg;
+                }
+            }
+            fiSave=1;
         }		
 	}else{
 		//modbus_response_illgeal_function(rbuf,ILLEGAL_DATA_ADDRESS);
@@ -191,6 +199,7 @@ void modbus_response_process(uint8_t* rbuf,uint16_t rlen){
             modbus_response_command(rbuf);
             break;
         case FUNC_WRITE_SINGLE_REGISTER:
+        case FUNC_WRITE_SINGLE_REGISTER_EX:
              modbus_response_write_single_register(rbuf);
              break;
 		/*

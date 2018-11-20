@@ -60,7 +60,7 @@ void PWM2_Initialize(void)
     // set the PWM2 to the options selected in the User Interface
 
      //PHIE disabled; DCIE disabled; OFIE disabled; PRIE disabled; 
-    PWM2INTE = 0x00;
+    PWM2INTE = 0x01;
 
      //PHIF cleared; OFIF cleared; DCIF cleared; PRIF cleared; 
     PWM2INTF = 0x00;
@@ -69,7 +69,7 @@ void PWM2_Initialize(void)
     PWM2CLKCON = 0x00;
 
      //LDS LD1_trigger; LDT disabled; LDA load; 
-    PWM2LDCON = 0x80;
+    PWM2LDCON = 0x00;
 
      //OFM independent_run; OFS OF1_match; OFO match_incrementing; 
     PWM2OFCON = 0x00;
@@ -78,7 +78,7 @@ void PWM2_Initialize(void)
     PWM2PHH = 0x00;
 
      //PWM2PHL 0; 
-    PWM2PHL = 0x00;
+    PWM2PHL = 0x02;
 
      //PWM2DCH 0; 
     PWM2DCH = 0x00;
@@ -106,6 +106,11 @@ void PWM2_Initialize(void)
     
      //MODE standard_PWM; POL active_lo; EN enabled; 
     PWM2CON = 0x90;
+    // Clear the PWM2 interrupt flag
+    //PIR3bits.PWM2IF = 0;
+        
+    // Enabling PWM2 interrupt.
+    //PIE3bits.PWM2IE = 1;    
 }    
 
 

@@ -60,7 +60,7 @@ void PWM1_Initialize(void)
     // set the PWM1 to the options selected in the User Interface
 
      //PHIE disabled; DCIE disabled; OFIE disabled; PRIE disabled; 
-    PWM1INTE = 0x00;
+    PWM1INTE = 0x01;
 
      //PHIF cleared; OFIF cleared; DCIF cleared; PRIF cleared; 
     PWM1INTF = 0x00;
@@ -69,7 +69,7 @@ void PWM1_Initialize(void)
     PWM1CLKCON = 0x00;
 
      //LDS LD1_trigger; LDT disabled; LDA load; 
-    PWM1LDCON = 0x80;
+    PWM1LDCON = 0x00;
 
      //OFM independent_run; OFS OF1_match; OFO match_incrementing; 
     PWM1OFCON = 0x00;
@@ -78,7 +78,7 @@ void PWM1_Initialize(void)
     PWM1PHH = 0x00;
 
      //PWM1PHL 0; 
-    PWM1PHL = 0x00;
+    PWM1PHL = 0x02;
 
      //PWM1DCH 0; 
     PWM1DCH = 0x00;
@@ -106,6 +106,15 @@ void PWM1_Initialize(void)
     
      //MODE standard_PWM; POL active_lo; EN enabled; 
     PWM1CON = 0x90;
+    
+     //MODE standard_PWM; POL active_lo; EN enabled; 
+    //PWM1CON = 0x90;
+    
+    // Clear the PWM1 interrupt flag
+    //PIR3bits.PWM1IF = 0;
+        
+    // Enabling PWM1 interrupt.
+    //PIE3bits.PWM1IE = 1;    
 }    
 
 

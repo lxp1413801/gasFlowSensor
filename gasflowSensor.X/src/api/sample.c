@@ -31,13 +31,15 @@ int32_t		PidTd;
 
 uint8_t pidBbSm=PID_BB_NONE;
 //-->>
-
+//p 3428
+//i 3
+//d 0 
 
 
 #define VOUT_PWM2_MAX	1580
 #define VOUT_PWM2_MIN	5
-int16_t pwm2DutyForVout=0x10;
-
+int16_t pwm2DutyForVout=VOUT_PWM2_MIN;
+int16_t pwm1DutyForIdrv=iDRV_PWM1_MIN;
 uint16_t get_idrv_pwm1_duty(void)
 {
 	return ((PWM1DCH<<8)|PWM1DCL);
@@ -45,13 +47,22 @@ uint16_t get_idrv_pwm1_duty(void)
 
 void set_idrv_pwm1_duty(uint16_t duty)
 {
+    
 	uint16_t t16;
+    pwm1DutyForIdrv=duty;
 	t16=get_idrv_pwm1_duty();
 	if(t16==duty)return;
+    //while(!PWM1INTFbits.PRIF);
+   // PWM1INTFbits.PRIF=0;
 	PWM1CONbits.EN = 0;	
 	PWM1DCL= (uint8_t)(duty&0xff);
 	PWM1DCH=(uint8_t)(duty>>8);
 	PWM1CONbits.EN = 1;	
+    /*
+    PIE3bits.PWM1IE = 0;    
+    pwm1DutyForIdrv=duty;
+    PIE3bits.PWM1IE = 1;    
+     * */
 }
 
 uint16_t get_vout_pwm2_duty(void)
@@ -61,13 +72,24 @@ uint16_t get_vout_pwm2_duty(void)
 
 void set_vout_pwm2_duty(uint16_t duty)
 {
+    
 	uint16_t t16;
+     pwm2DutyForVout=duty;
 	t16=get_vout_pwm2_duty();
-	if(t16==duty)return;
+    if(t16==duty)return;
+    //while(!PWM2INTFbits.PRIF);
+    //PWM2INTFbits.PRIF=0;   
+	
 	PWM2CONbits.EN = 0;	
 	PWM2DCL= (uint8_t)(duty&0xff);
 	PWM2DCH=(uint8_t)(duty>>8);
 	PWM2CONbits.EN = 1;	
+   
+    /*
+    PIE3bits.PWM2IE = 0;    
+    pwm2DutyForVout=duty;
+    PIE3bits.PWM2IE = 1;    
+    */
 }
 
 
@@ -285,8 +307,8 @@ void pid_pwm1_idrv_run(void)
 
 	ep=(err[0]-err[1])*PidKp;
 	ei=PidKp*err[0]/PidTi;
-	ed=(err[0]-2*err[1]+err[2])*PidKp*PidTd/160;;
-	//ed=0;
+	//ed=(err[0]-2*err[1]+err[2])*PidKp*PidTd/160;;
+	ed=0;
 	t32=ep+ei+ed;
 	t32/=10000;
 	t32+=pidU;
@@ -319,10 +341,10 @@ void pid_pwm2_vout_run(void)
 	
 	t16=voExpectAdcValue/10;
 	//pwm2Ei=0;
-	pwm2DutyForVout=t16+pwm2Ei;
-	if(pwm2DutyForVout>VOUT_PWM2_MAX)pwm2DutyForVout=VOUT_PWM2_MAX;
-	if(pwm2DutyForVout<VOUT_PWM2_MIN)pwm2DutyForVout=VOUT_PWM2_MIN;
-	set_vout_pwm2_duty(pwm2DutyForVout);
+	t16=t16+pwm2Ei;
+	if(t16>VOUT_PWM2_MAX)t16=VOUT_PWM2_MAX;
+	if(t16<VOUT_PWM2_MIN)t16=VOUT_PWM2_MIN;
+	set_vout_pwm2_duty(t16);
 	
 }
 
@@ -399,14 +421,14 @@ uint16_t calc_expect_vout_adc_value(uint16_t x)
     int32_t y0,y1,x0,x1;
     uint8_t i;
 	int32_t t32;
-    for (i = 0; i < MAX_CALIB_NUM-2; i++) {
+    for (i = 0; i < MAX_CALIB_NUM-1; i++) {
 		if(sysData.calibRsAdc[i]<sysData.calibRsAdc[i+1]){
-			if (x <= sysData.calibRsAdc[i])break;
+			if (x <= sysData.calibRsAdc[i+1])break;
 		}else{
-			if (x >= sysData.calibRsAdc[i])break;
+			if (x >= sysData.calibRsAdc[i+1])break;
 		}
     }
-    if(i)i--;
+    //if(i)i--;
     if (i > MAX_CALIB_NUM-2)i=MAX_CALIB_NUM-2;
 	y1=sysData.calibVoMV[i+1];
 	y0=sysData.calibVoMV[i];

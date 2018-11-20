@@ -91,7 +91,7 @@ typedef int16_t intptr_t;
 
 typedef uint16_t uintptr_t;
 
-# 35 "src/api/modbus.h"
+# 37 "src/api/modbus.h"
 typedef struct{
 uint8_t addr;
 uint8_t func;
@@ -125,7 +125,7 @@ uint8_t data_lo;
 uint16_t crc16;
 }st_modbusWriteSingleClib;
 
-# 72
+# 74
 extern uint8_t modbusBuf[];
 extern void modbus_response_process(uint8_t* rbuf,uint16_t rlen);
 
@@ -6339,6 +6339,7 @@ extern uint16_t rtAdcValueRsLoAvg;
 
 
 extern int16_t pwm2DutyForVout;
+extern int16_t pwm1DutyForIdrv;
 extern uint16_t cal_voout_pwm_duty(void);
 extern uint16_t calc_expect_vout_adc_value(uint16_t x);
 
@@ -6449,10 +6450,11 @@ return t16;
 void modbus_response_write_single_register(uint8_t* rbuf)
 {
 uint16_t startAddr=0;
-uint16_t t16;
+uint16_t t16,i;
 uint8_t fiSave=0;
 st_modbusComReqStructDef* pmdbs=(st_modbusComReqStructDef*)rbuf;
 if(pmdbs->addr!=sysData.id && pmdbs->addr!=0)return;
+if(sysData.id==253 && pmdbs->addr==0)return;
 startAddr=pmdbs->addr_hi;
 startAddr<<=8;
 startAddr |= pmdbs->addr_lo;
@@ -6471,7 +6473,14 @@ t16=rbuf[4];
 t16<<=8;
 t16 |= rbuf[5];
 sysData.calibVoMV[startAddr>>1]=t16;
-sysData.calibRsAdc[startAddr>>1]=rtAdcValueRsLo;
+sysData.calibRsAdc[startAddr>>1]=rsLoAvg;
+
+if(rbuf[1]==0x26){
+for(i=(startAddr>>1)+1;i<20;i++){
+sysData.calibVoMV[i]=t16;
+sysData.calibRsAdc[i]=rsLoAvg;
+}
+}
 fiSave=1;
 }
 }else{
@@ -6526,10 +6535,11 @@ case 0x03:
 modbus_response_command(rbuf);
 break;
 case 0x06:
+case 0x26:
 modbus_response_write_single_register(rbuf);
 break;
 
-# 218
+# 227
 default:
 modbus_response_illgeal_function(rbuf,0x01);break;
 }

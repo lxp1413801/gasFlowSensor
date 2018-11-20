@@ -4711,27 +4711,27 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pwm2.c: 59: {
 [e :U _PWM2_Initialize ]
 [f ]
-[; ;pwm2.c: 63: PWM2INTE = 0x00;
+[; ;pwm2.c: 63: PWM2INTE = 0x01;
 "63
-[e = _PWM2INTE -> -> 0 `i `uc ]
+[e = _PWM2INTE -> -> 1 `i `uc ]
 [; ;pwm2.c: 66: PWM2INTF = 0x00;
 "66
 [e = _PWM2INTF -> -> 0 `i `uc ]
 [; ;pwm2.c: 69: PWM2CLKCON = 0x00;
 "69
 [e = _PWM2CLKCON -> -> 0 `i `uc ]
-[; ;pwm2.c: 72: PWM2LDCON = 0x80;
+[; ;pwm2.c: 72: PWM2LDCON = 0x00;
 "72
-[e = _PWM2LDCON -> -> 128 `i `uc ]
+[e = _PWM2LDCON -> -> 0 `i `uc ]
 [; ;pwm2.c: 75: PWM2OFCON = 0x00;
 "75
 [e = _PWM2OFCON -> -> 0 `i `uc ]
 [; ;pwm2.c: 78: PWM2PHH = 0x00;
 "78
 [e = _PWM2PHH -> -> 0 `i `uc ]
-[; ;pwm2.c: 81: PWM2PHL = 0x00;
+[; ;pwm2.c: 81: PWM2PHL = 0x02;
 "81
-[e = _PWM2PHL -> -> 0 `i `uc ]
+[e = _PWM2PHL -> -> 2 `i `uc ]
 [; ;pwm2.c: 84: PWM2DCH = 0x00;
 "84
 [e = _PWM2DCH -> -> 0 `i `uc ]
@@ -4759,232 +4759,232 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pwm2.c: 108: PWM2CON = 0x90;
 "108
 [e = _PWM2CON -> -> 144 `i `uc ]
-[; ;pwm2.c: 109: }
-"109
+[; ;pwm2.c: 114: }
+"114
 [e :UE 594 ]
 }
-"112
-[v _PWM2_Start `(v ~T0 @X0 1 ef ]
-"113
-{
-[; ;pwm2.c: 112: void PWM2_Start(void)
-[; ;pwm2.c: 113: {
-[e :U _PWM2_Start ]
-[f ]
-[; ;pwm2.c: 114: PWM2CONbits.EN = 1;
-"114
-[e = . . _PWM2CONbits 0 5 -> -> 1 `i `uc ]
-[; ;pwm2.c: 115: }
-"115
-[e :UE 595 ]
-}
 "117
-[v _PWM2_Stop `(v ~T0 @X0 1 ef ]
+[v _PWM2_Start `(v ~T0 @X0 1 ef ]
 "118
 {
-[; ;pwm2.c: 117: void PWM2_Stop(void)
+[; ;pwm2.c: 117: void PWM2_Start(void)
 [; ;pwm2.c: 118: {
-[e :U _PWM2_Stop ]
+[e :U _PWM2_Start ]
 [f ]
-[; ;pwm2.c: 119: PWM2CONbits.EN = 0;
+[; ;pwm2.c: 119: PWM2CONbits.EN = 1;
 "119
-[e = . . _PWM2CONbits 0 5 -> -> 0 `i `uc ]
+[e = . . _PWM2CONbits 0 5 -> -> 1 `i `uc ]
 [; ;pwm2.c: 120: }
 "120
-[e :UE 596 ]
+[e :UE 595 ]
 }
 "122
-[v _PWM2_CheckOutputStatus `(uc ~T0 @X0 1 ef ]
+[v _PWM2_Stop `(v ~T0 @X0 1 ef ]
 "123
 {
-[; ;pwm2.c: 122: bool PWM2_CheckOutputStatus(void)
+[; ;pwm2.c: 122: void PWM2_Stop(void)
 [; ;pwm2.c: 123: {
-[e :U _PWM2_CheckOutputStatus ]
+[e :U _PWM2_Stop ]
 [f ]
-[; ;pwm2.c: 124: return (PWM2CONbits.OUT);
+[; ;pwm2.c: 124: PWM2CONbits.EN = 0;
 "124
-[e ) . . _PWM2CONbits 0 3 ]
-[e $UE 597  ]
+[e = . . _PWM2CONbits 0 5 -> -> 0 `i `uc ]
 [; ;pwm2.c: 125: }
 "125
-[e :UE 597 ]
+[e :UE 596 ]
 }
 "127
-[v _PWM2_LoadBufferSet `(v ~T0 @X0 1 ef ]
+[v _PWM2_CheckOutputStatus `(uc ~T0 @X0 1 ef ]
 "128
 {
-[; ;pwm2.c: 127: void PWM2_LoadBufferSet(void)
+[; ;pwm2.c: 127: bool PWM2_CheckOutputStatus(void)
 [; ;pwm2.c: 128: {
-[e :U _PWM2_LoadBufferSet ]
+[e :U _PWM2_CheckOutputStatus ]
 [f ]
-[; ;pwm2.c: 129: PWM2LDCONbits.LDA = 1;
+[; ;pwm2.c: 129: return (PWM2CONbits.OUT);
 "129
-[e = . . _PWM2LDCONbits 0 3 -> -> 1 `i `uc ]
+[e ) . . _PWM2CONbits 0 3 ]
+[e $UE 597  ]
 [; ;pwm2.c: 130: }
 "130
+[e :UE 597 ]
+}
+"132
+[v _PWM2_LoadBufferSet `(v ~T0 @X0 1 ef ]
+"133
+{
+[; ;pwm2.c: 132: void PWM2_LoadBufferSet(void)
+[; ;pwm2.c: 133: {
+[e :U _PWM2_LoadBufferSet ]
+[f ]
+[; ;pwm2.c: 134: PWM2LDCONbits.LDA = 1;
+"134
+[e = . . _PWM2LDCONbits 0 3 -> -> 1 `i `uc ]
+[; ;pwm2.c: 135: }
+"135
 [e :UE 598 ]
 }
-"132
+"137
 [v _PWM2_PhaseSet `(v ~T0 @X0 1 ef1`ui ]
-"133
+"138
 {
-[; ;pwm2.c: 132: void PWM2_PhaseSet(uint16_t phaseCount)
-[; ;pwm2.c: 133: {
+[; ;pwm2.c: 137: void PWM2_PhaseSet(uint16_t phaseCount)
+[; ;pwm2.c: 138: {
 [e :U _PWM2_PhaseSet ]
-"132
+"137
 [v _phaseCount `ui ~T0 @X0 1 r1 ]
-"133
+"138
 [f ]
-[; ;pwm2.c: 134: PWM2PHH = (phaseCount>>8);
-"134
+[; ;pwm2.c: 139: PWM2PHH = (phaseCount>>8);
+"139
 [e = _PWM2PHH -> >> _phaseCount -> 8 `i `uc ]
-[; ;pwm2.c: 135: PWM2PHL = (phaseCount);
-"135
+[; ;pwm2.c: 140: PWM2PHL = (phaseCount);
+"140
 [e = _PWM2PHL -> _phaseCount `uc ]
-[; ;pwm2.c: 136: }
-"136
+[; ;pwm2.c: 141: }
+"141
 [e :UE 599 ]
 }
-"138
+"143
 [v _PWM2_DutyCycleSet `(v ~T0 @X0 1 ef1`ui ]
-"139
+"144
 {
-[; ;pwm2.c: 138: void PWM2_DutyCycleSet(uint16_t dutyCycleCount)
-[; ;pwm2.c: 139: {
+[; ;pwm2.c: 143: void PWM2_DutyCycleSet(uint16_t dutyCycleCount)
+[; ;pwm2.c: 144: {
 [e :U _PWM2_DutyCycleSet ]
-"138
+"143
 [v _dutyCycleCount `ui ~T0 @X0 1 r1 ]
-"139
+"144
 [f ]
-[; ;pwm2.c: 140: PWM2DCH = (dutyCycleCount>>8);
-"140
+[; ;pwm2.c: 145: PWM2DCH = (dutyCycleCount>>8);
+"145
 [e = _PWM2DCH -> >> _dutyCycleCount -> 8 `i `uc ]
-[; ;pwm2.c: 141: PWM2DCL = (dutyCycleCount);
-"141
+[; ;pwm2.c: 146: PWM2DCL = (dutyCycleCount);
+"146
 [e = _PWM2DCL -> _dutyCycleCount `uc ]
-[; ;pwm2.c: 142: }
-"142
+[; ;pwm2.c: 147: }
+"147
 [e :UE 600 ]
 }
-"144
+"149
 [v _PWM2_PeriodSet `(v ~T0 @X0 1 ef1`ui ]
-"145
+"150
 {
-[; ;pwm2.c: 144: void PWM2_PeriodSet(uint16_t periodCount)
-[; ;pwm2.c: 145: {
+[; ;pwm2.c: 149: void PWM2_PeriodSet(uint16_t periodCount)
+[; ;pwm2.c: 150: {
 [e :U _PWM2_PeriodSet ]
-"144
+"149
 [v _periodCount `ui ~T0 @X0 1 r1 ]
-"145
+"150
 [f ]
-[; ;pwm2.c: 146: PWM2PRH = (periodCount>>8);
-"146
+[; ;pwm2.c: 151: PWM2PRH = (periodCount>>8);
+"151
 [e = _PWM2PRH -> >> _periodCount -> 8 `i `uc ]
-[; ;pwm2.c: 147: PWM2PRL = (periodCount);
-"147
+[; ;pwm2.c: 152: PWM2PRL = (periodCount);
+"152
 [e = _PWM2PRL -> _periodCount `uc ]
-[; ;pwm2.c: 148: }
-"148
+[; ;pwm2.c: 153: }
+"153
 [e :UE 601 ]
 }
-"150
+"155
 [v _PWM2_OffsetSet `(v ~T0 @X0 1 ef1`ui ]
-"151
-{
-[; ;pwm2.c: 150: void PWM2_OffsetSet(uint16_t offsetCount)
-[; ;pwm2.c: 151: {
-[e :U _PWM2_OffsetSet ]
-"150
-[v _offsetCount `ui ~T0 @X0 1 r1 ]
-"151
-[f ]
-[; ;pwm2.c: 152: PWM2OFH = (offsetCount>>8);
-"152
-[e = _PWM2OFH -> >> _offsetCount -> 8 `i `uc ]
-[; ;pwm2.c: 153: PWM2OFL = (offsetCount);
-"153
-[e = _PWM2OFL -> _offsetCount `uc ]
-[; ;pwm2.c: 154: }
-"154
-[e :UE 602 ]
-}
 "156
-[v _PWM2_TimerCountGet `(ui ~T0 @X0 1 ef ]
-"157
 {
-[; ;pwm2.c: 156: uint16_t PWM2_TimerCountGet(void)
-[; ;pwm2.c: 157: {
-[e :U _PWM2_TimerCountGet ]
+[; ;pwm2.c: 155: void PWM2_OffsetSet(uint16_t offsetCount)
+[; ;pwm2.c: 156: {
+[e :U _PWM2_OffsetSet ]
+"155
+[v _offsetCount `ui ~T0 @X0 1 r1 ]
+"156
 [f ]
-[; ;pwm2.c: 158: return ((uint16_t)((PWM2TMRH<<8) | PWM2TMRL));
+[; ;pwm2.c: 157: PWM2OFH = (offsetCount>>8);
+"157
+[e = _PWM2OFH -> >> _offsetCount -> 8 `i `uc ]
+[; ;pwm2.c: 158: PWM2OFL = (offsetCount);
 "158
-[e ) -> | << -> _PWM2TMRH `i -> 8 `i -> _PWM2TMRL `i `ui ]
-[e $UE 603  ]
+[e = _PWM2OFL -> _offsetCount `uc ]
 [; ;pwm2.c: 159: }
 "159
-[e :UE 603 ]
+[e :UE 602 ]
 }
 "161
-[v _PWM2_IsOffsetMatchOccured `(uc ~T0 @X0 1 ef ]
+[v _PWM2_TimerCountGet `(ui ~T0 @X0 1 ef ]
 "162
 {
-[; ;pwm2.c: 161: bool PWM2_IsOffsetMatchOccured(void)
+[; ;pwm2.c: 161: uint16_t PWM2_TimerCountGet(void)
 [; ;pwm2.c: 162: {
-[e :U _PWM2_IsOffsetMatchOccured ]
+[e :U _PWM2_TimerCountGet ]
 [f ]
-[; ;pwm2.c: 163: return (PWM2INTFbits.OFIF);
+[; ;pwm2.c: 163: return ((uint16_t)((PWM2TMRH<<8) | PWM2TMRL));
 "163
-[e ) . . _PWM2INTFbits 0 3 ]
-[e $UE 604  ]
+[e ) -> | << -> _PWM2TMRH `i -> 8 `i -> _PWM2TMRL `i `ui ]
+[e $UE 603  ]
 [; ;pwm2.c: 164: }
 "164
-[e :UE 604 ]
+[e :UE 603 ]
 }
 "166
-[v _PWM2_IsPhaseMatchOccured `(uc ~T0 @X0 1 ef ]
+[v _PWM2_IsOffsetMatchOccured `(uc ~T0 @X0 1 ef ]
 "167
 {
-[; ;pwm2.c: 166: bool PWM2_IsPhaseMatchOccured(void)
+[; ;pwm2.c: 166: bool PWM2_IsOffsetMatchOccured(void)
 [; ;pwm2.c: 167: {
-[e :U _PWM2_IsPhaseMatchOccured ]
+[e :U _PWM2_IsOffsetMatchOccured ]
 [f ]
-[; ;pwm2.c: 168: return (PWM2INTFbits.PHIF);
+[; ;pwm2.c: 168: return (PWM2INTFbits.OFIF);
 "168
-[e ) . . _PWM2INTFbits 0 2 ]
-[e $UE 605  ]
+[e ) . . _PWM2INTFbits 0 3 ]
+[e $UE 604  ]
 [; ;pwm2.c: 169: }
 "169
-[e :UE 605 ]
+[e :UE 604 ]
 }
 "171
-[v _PWM2_IsDutyCycleMatchOccured `(uc ~T0 @X0 1 ef ]
+[v _PWM2_IsPhaseMatchOccured `(uc ~T0 @X0 1 ef ]
 "172
 {
-[; ;pwm2.c: 171: bool PWM2_IsDutyCycleMatchOccured(void)
+[; ;pwm2.c: 171: bool PWM2_IsPhaseMatchOccured(void)
 [; ;pwm2.c: 172: {
-[e :U _PWM2_IsDutyCycleMatchOccured ]
+[e :U _PWM2_IsPhaseMatchOccured ]
 [f ]
-[; ;pwm2.c: 173: return (PWM2INTFbits.DCIF);
+[; ;pwm2.c: 173: return (PWM2INTFbits.PHIF);
 "173
-[e ) . . _PWM2INTFbits 0 1 ]
-[e $UE 606  ]
+[e ) . . _PWM2INTFbits 0 2 ]
+[e $UE 605  ]
 [; ;pwm2.c: 174: }
 "174
-[e :UE 606 ]
+[e :UE 605 ]
 }
 "176
-[v _PWM2_IsPeriodMatchOccured `(uc ~T0 @X0 1 ef ]
+[v _PWM2_IsDutyCycleMatchOccured `(uc ~T0 @X0 1 ef ]
 "177
 {
-[; ;pwm2.c: 176: bool PWM2_IsPeriodMatchOccured(void)
+[; ;pwm2.c: 176: bool PWM2_IsDutyCycleMatchOccured(void)
 [; ;pwm2.c: 177: {
-[e :U _PWM2_IsPeriodMatchOccured ]
+[e :U _PWM2_IsDutyCycleMatchOccured ]
 [f ]
-[; ;pwm2.c: 178: return (PWM2INTFbits.PRIF);
+[; ;pwm2.c: 178: return (PWM2INTFbits.DCIF);
 "178
-[e ) . . _PWM2INTFbits 0 0 ]
-[e $UE 607  ]
+[e ) . . _PWM2INTFbits 0 1 ]
+[e $UE 606  ]
 [; ;pwm2.c: 179: }
 "179
+[e :UE 606 ]
+}
+"181
+[v _PWM2_IsPeriodMatchOccured `(uc ~T0 @X0 1 ef ]
+"182
+{
+[; ;pwm2.c: 181: bool PWM2_IsPeriodMatchOccured(void)
+[; ;pwm2.c: 182: {
+[e :U _PWM2_IsPeriodMatchOccured ]
+[f ]
+[; ;pwm2.c: 183: return (PWM2INTFbits.PRIF);
+"183
+[e ) . . _PWM2INTFbits 0 0 ]
+[e $UE 607  ]
+[; ;pwm2.c: 184: }
+"184
 [e :UE 607 ]
 }

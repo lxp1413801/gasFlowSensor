@@ -10,6 +10,7 @@ mcc_generated_files/../src/api/my_uart.h  \
 mcc_generated_files/interrupt_manager.h  \
 mcc_generated_files/tmr2.h  \
 mcc_generated_files/adc1.h  \
+mcc_generated_files/../src/api/sample.h  \
 mcc_generated_files/eusart.h  \
 mcc_generated_files/pin_manager.h  \
 mcc_generated_files/../src/globle/globle.h 

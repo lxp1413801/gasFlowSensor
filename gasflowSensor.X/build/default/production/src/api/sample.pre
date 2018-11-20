@@ -6301,6 +6301,7 @@ extern uint16_t rtAdcValueRsLoAvg;
 
 
 extern int16_t pwm2DutyForVout;
+extern int16_t pwm1DutyForIdrv;
 extern uint16_t cal_voout_pwm_duty(void);
 extern uint16_t calc_expect_vout_adc_value(uint16_t x);
 
@@ -6577,9 +6578,9 @@ int32_t PidTd;
 
 uint8_t pidBbSm=0;
 
-# 39
-int16_t pwm2DutyForVout=0x10;
-
+# 41
+int16_t pwm2DutyForVout=5;
+int16_t pwm1DutyForIdrv=5;
 uint16_t get_idrv_pwm1_duty(void)
 {
 return ((PWM1DCH<<8)|PWM1DCL);
@@ -6587,13 +6588,19 @@ return ((PWM1DCH<<8)|PWM1DCL);
 
 void set_idrv_pwm1_duty(uint16_t duty)
 {
+
 uint16_t t16;
+pwm1DutyForIdrv=duty;
 t16=get_idrv_pwm1_duty();
 if(t16==duty)return;
+
+
 PWM1CONbits.EN = 0;
 PWM1DCL= (uint8_t)(duty&0xff);
 PWM1DCH=(uint8_t)(duty>>8);
 PWM1CONbits.EN = 1;
+
+# 66
 }
 
 uint16_t get_vout_pwm2_duty(void)
@@ -6603,13 +6610,20 @@ return ((PWM2DCH<<8)|PWM2DCL);
 
 void set_vout_pwm2_duty(uint16_t duty)
 {
+
 uint16_t t16;
+pwm2DutyForVout=duty;
 t16=get_vout_pwm2_duty();
 if(t16==duty)return;
+
+
+
 PWM2CONbits.EN = 0;
 PWM2DCL= (uint8_t)(duty&0xff);
 PWM2DCH=(uint8_t)(duty>>8);
 PWM2CONbits.EN = 1;
+
+# 93
 }
 
 
@@ -6696,7 +6710,7 @@ return ret;
 uint32_t calc_temp_rs(void)
 {
 
-# 167
+# 189
 uint32_t x,y;
 y=12000UL;
 y=y*rtAdcValueRsHi;
@@ -6731,7 +6745,7 @@ if(y>25000)y=25000;
 return y;
 }
 
-# 212
+# 234
 uint8_t pidTestNum=0;
 int32_t bbmax=-200000L;
 int32_t bbmin=200000L;
@@ -6808,8 +6822,8 @@ err[0]=t32;
 
 ep=(err[0]-err[1])*PidKp;
 ei=PidKp*err[0]/PidTi;
-ed=(err[0]-2*err[1]+err[2])*PidKp*PidTd/160;;
 
+ed=0;
 t32=ep+ei+ed;
 t32/=10000;
 t32+=pidU;
@@ -6842,14 +6856,14 @@ pwm2Ei=pwm2Ei+ei;
 
 t16=voExpectAdcValue/10;
 
-pwm2DutyForVout=t16+pwm2Ei;
-if(pwm2DutyForVout>1580)pwm2DutyForVout=1580;
-if(pwm2DutyForVout<5)pwm2DutyForVout=5;
-set_vout_pwm2_duty(pwm2DutyForVout);
+t16=t16+pwm2Ei;
+if(t16>1580)t16=1580;
+if(t16<5)t16=5;
+set_vout_pwm2_duty(t16);
 
 }
 
-# 378
+# 400
 uint16_t voExpectMv;
 uint16_t voExpectAdcValue=0x00;
 uint16_t rsLoAvg=0;
@@ -6874,14 +6888,14 @@ uint8_t index=0;
 int32_t y0,y1,x0,x1;
 uint8_t i;
 int32_t t32;
-for (i = 0; i < 20-2; i++) {
+for (i = 0; i < 20-1; i++) {
 if(sysData.calibRsAdc[i]<sysData.calibRsAdc[i+1]){
-if (x <= sysData.calibRsAdc[i])break;
+if (x <= sysData.calibRsAdc[i+1])break;
 }else{
-if (x >= sysData.calibRsAdc[i])break;
+if (x >= sysData.calibRsAdc[i+1])break;
 }
 }
-if(i)i--;
+
 if (i > 20-2)i=20-2;
 y1=sysData.calibVoMV[i+1];
 y0=sysData.calibVoMV[i];
@@ -6918,6 +6932,6 @@ if(t32>65535)t32=65535;
 t16=(uint16_t)t32;
 return t16;
 
-# 461
+# 483
 }
 
