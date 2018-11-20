@@ -18,7 +18,7 @@
 	*/
 
 	
-	#define MAX_CALIB_NUM	10
+	#define MAX_CALIB_NUM	20
 	
 	typedef struct
     {
@@ -30,8 +30,8 @@
 		uint16_t pidTi;
 		uint16_t pidTd;
 		
-		uint16_t calibSimuPowerVaule[MAX_CALIB_NUM];
-		uint16_t calibVoutAdcValue[MAX_CALIB_NUM];
+		uint16_t calibRsAdc[MAX_CALIB_NUM];
+		uint16_t calibVoMV[MAX_CALIB_NUM];
 		uint16_t  crc16;
 	}sysData_t;
 	extern sysData_t sysData;

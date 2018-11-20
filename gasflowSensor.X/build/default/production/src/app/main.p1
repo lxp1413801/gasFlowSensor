@@ -21,8 +21,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 "39 src/app/../api/sysData.h
 [v _sys_data_init `(ui ~T0 @X0 0 ef ]
 "24
-[s S595 `uc 1 `uc 1 `uc 1 `uc 1 `ui 1 `ui 1 `ui 1 `ui -> 10 `i `ui -> 10 `i `ui 1 ]
-[n S595 . pidSetFlg0 pidSetFlg1 id reverse pidKp pidTi pidTd calibSimuPowerVaule calibVoutAdcValue crc16 ]
+[s S595 `uc 1 `uc 1 `uc 1 `uc 1 `ui 1 `ui 1 `ui 1 `ui -> 20 `i `ui -> 20 `i `ui 1 ]
+[n S595 . pidSetFlg0 pidSetFlg1 id reverse pidKp pidTi pidTd calibRsAdc calibVoMV crc16 ]
 "37
 [v _sysData `S595 ~T0 @X0 0 e ]
 "31 src/app/../includes/../api/sample.h
@@ -60,32 +60,28 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _calc_temp_rs `(ul ~T0 @X0 0 ef ]
 "37
 [v _pid_pwm1_idrv_run `(v ~T0 @X0 0 ef ]
-"50
-[v _rsSimPower `ui ~T0 @X0 0 e ]
-"52
-[v _cal_rs_simulate_power `(ui ~T0 @X0 0 ef ]
+"56
+[v _rsLoAvg `ui ~T0 @X0 0 e ]
+"57
+[v _calc_rs_lo_avg `(ui ~T0 @X0 0 ef1`ui ]
 "51
-[v _voExpectAdcValue `ui ~T0 @X0 0 e ]
+[v _voExpectMv `ui ~T0 @X0 0 e ]
 "45
 [v _calc_expect_vout_adc_value `(ui ~T0 @X0 0 ef1`ui ]
+"52
+[v _voExpectAdcValue `ui ~T0 @X0 0 e ]
 "38
 [v _pid_pwm2_vout_run `(v ~T0 @X0 0 ef ]
 "36
 [v _pid_pwm1_idrv_b_b `(v ~T0 @X0 0 ef ]
 "40 src/app/../api/sysData.h
 [v _sys_data_save `(v ~T0 @X0 0 ef ]
-"19 src/app/../includes/../api/my_uart.h
-[v _eusartRxCount `Vuc ~T0 @X0 0 e ]
-"9 src/app/../includes/../depend/m_string.h
-[v _m_mem_cpy_len `(v ~T0 @X0 0 ef3`*uc`*uc`ui ]
-"72 src/app/../api/modbus.h
-[v _modbusBuf `uc ~T0 @X0 -> 0 `x e ]
-"18 src/app/../includes/../api/my_uart.h
-[v _eusartRxBuffer `Vuc ~T0 @X0 -> 0 `x e ]
-"73 src/app/../api/modbus.h
-[v _modbus_response_process `(v ~T0 @X0 0 ef2`*uc`ui ]
-"25 src/app/../includes/../api/my_uart.h
-[v _uart_received_start `(v ~T0 @X0 0 ef ]
+"22 src/app/../includes/../api/my_uart.h
+[v _uart_send_str `(v ~T0 @X0 0 ef1`*uc ]
+"20 src/app/../includes/../depend/m_string.h
+[v _m_int_2_str_ex `(v ~T0 @X0 0 ef3`*uc`l`ui ]
+"43 src/app/../includes/../api/sample.h
+[v _pwm2DutyForVout `i ~T0 @X0 0 e ]
 [; ;stdint.h: 13: typedef signed char int8_t;
 [; ;stdint.h: 20: typedef signed int int16_t;
 [; ;stdint.h: 28: typedef signed short long int int24_t;
@@ -4824,10 +4820,12 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;sample.h: 45: extern uint16_t calc_expect_vout_adc_value(uint16_t x);
 [; ;sample.h: 47: extern int32_t pidU;;
 [; ;sample.h: 48: extern int32_t outResDiff;
-[; ;sample.h: 50: extern uint16_t rsSimPower;
-[; ;sample.h: 51: extern uint16_t voExpectAdcValue;
-[; ;sample.h: 52: extern uint16_t cal_rs_simulate_power(void);
-[; ;sample.h: 53: extern void set_idrv_pwm1_duty(uint16_t duty);
+[; ;sample.h: 51: extern uint16_t voExpectMv;
+[; ;sample.h: 52: extern uint16_t voExpectAdcValue;
+[; ;sample.h: 53: extern uint16_t cal_rs_simulate_power(void);
+[; ;sample.h: 54: extern void set_idrv_pwm1_duty(uint16_t duty);
+[; ;sample.h: 56: extern uint16_t rsLoAvg;
+[; ;sample.h: 57: extern uint16_t calc_rs_lo_avg(uint16_t x);
 [; ;my_uart.h: 16: extern volatile uint8_t eusartRxIdleTime_ms;
 [; ;my_uart.h: 18: extern volatile uint8_t eusartRxBuffer[64];
 [; ;my_uart.h: 19: extern volatile uint8_t eusartRxCount;
@@ -4846,8 +4844,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;sysData.h: 29: uint16_t pidKp;
 [; ;sysData.h: 30: uint16_t pidTi;
 [; ;sysData.h: 31: uint16_t pidTd;
-[; ;sysData.h: 33: uint16_t calibSimuPowerVaule[10];
-[; ;sysData.h: 34: uint16_t calibVoutAdcValue[10];
+[; ;sysData.h: 33: uint16_t calibRsAdc[20];
+[; ;sysData.h: 34: uint16_t calibVoMV[20];
 [; ;sysData.h: 35: uint16_t crc16;
 [; ;sysData.h: 36: }sysData_t;
 [; ;sysData.h: 37: extern sysData_t sysData;
@@ -4967,133 +4965,181 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 42: rtAdcValueRsHi=adc_sample(channel_AN5,3,32);
 "42
 [e = _rtAdcValueRsHi ( _adc_sample (3 , , -> . `E4865 2 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
-[; ;main.c: 45: rtAdcValueRcLo=adc_sample(channel_AN4,3,16);
+[; ;main.c: 45: rtAdcValueRcLo=adc_sample(channel_AN4,3,32);
 "45
-[e = _rtAdcValueRcLo ( _adc_sample (3 , , -> . `E4865 1 `uc -> -> 3 `i `uc -> -> 16 `i `uc ]
-[; ;main.c: 46: rtAdcValueRcHi=adc_sample(channel_AN2,3,16);
+[e = _rtAdcValueRcLo ( _adc_sample (3 , , -> . `E4865 1 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
+[; ;main.c: 46: rtAdcValueRcLo>>=1;
 "46
-[e = _rtAdcValueRcHi ( _adc_sample (3 , , -> . `E4865 0 `uc -> -> 3 `i `uc -> -> 16 `i `uc ]
-[; ;main.c: 47: rtAdcValueVoFb=adc_sample(channel_AN7,1,16);
+[e =>> _rtAdcValueRcLo -> 1 `i ]
+[; ;main.c: 47: rtAdcValueRcHi=adc_sample(channel_AN2,3,32);
 "47
-[e = _rtAdcValueVoFb ( _adc_sample (3 , , -> . `E4865 4 `uc -> -> 1 `i `uc -> -> 16 `i `uc ]
-[; ;main.c: 50: resRc=calc_temp_rc();
+[e = _rtAdcValueRcHi ( _adc_sample (3 , , -> . `E4865 0 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
+[; ;main.c: 48: rtAdcValueRcHi>>=1;
+"48
+[e =>> _rtAdcValueRcHi -> 1 `i ]
+[; ;main.c: 50: rtAdcValueVoFb=adc_sample(channel_AN7,3,32);
 "50
-[e = _resRc ( _calc_temp_rc ..  ]
-[; ;main.c: 51: resRs=calc_temp_rs();
+[e = _rtAdcValueVoFb ( _adc_sample (3 , , -> . `E4865 4 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
+[; ;main.c: 51: rtAdcValueVoFb>>=1;
 "51
-[e = _resRs ( _calc_temp_rs ..  ]
-[; ;main.c: 53: __nop();
+[e =>> _rtAdcValueVoFb -> 1 `i ]
+[; ;main.c: 53: resRc=calc_temp_rc();
 "53
-[e ( ___nop ..  ]
-[; ;main.c: 54: if(pidBbSm>=5){
+[e = _resRc ( _calc_temp_rc ..  ]
+[; ;main.c: 54: resRs=calc_temp_rs();
 "54
+[e = _resRs ( _calc_temp_rs ..  ]
+[; ;main.c: 56: __nop();
+"56
+[e ( ___nop ..  ]
+[; ;main.c: 57: if(pidBbSm>=5){
+"57
 [e $ ! >= -> _pidBbSm `i -> 5 `i 610  ]
 {
-[; ;main.c: 55: pid_pwm1_idrv_run();
-"55
-[e ( _pid_pwm1_idrv_run ..  ]
-[; ;main.c: 56: rsSimPower=cal_rs_simulate_power();
-"56
-[e = _rsSimPower ( _cal_rs_simulate_power ..  ]
-[; ;main.c: 57: voExpectAdcValue=calc_expect_vout_adc_value(rsSimPower);
-"57
-[e = _voExpectAdcValue ( _calc_expect_vout_adc_value (1 _rsSimPower ]
-[; ;main.c: 58: pid_pwm2_vout_run();
+[; ;main.c: 58: pid_pwm1_idrv_run();
 "58
+[e ( _pid_pwm1_idrv_run ..  ]
+[; ;main.c: 61: rsLoAvg=calc_rs_lo_avg(rtAdcValueRsLo);
+"61
+[e = _rsLoAvg ( _calc_rs_lo_avg (1 _rtAdcValueRsLo ]
+[; ;main.c: 62: voExpectMv=calc_expect_vout_adc_value(rsLoAvg);
+"62
+[e = _voExpectMv ( _calc_expect_vout_adc_value (1 _rsLoAvg ]
+[; ;main.c: 63: voExpectAdcValue=(voExpectMv<<1);
+"63
+[e = _voExpectAdcValue << _voExpectMv -> 1 `i ]
+[; ;main.c: 64: pid_pwm2_vout_run();
+"64
 [e ( _pid_pwm2_vout_run ..  ]
-"59
+"65
 }
-[; ;main.c: 59: }else{
+[; ;main.c: 65: }else{
 [e $U 611  ]
 [e :U 610 ]
 {
-[; ;main.c: 60: pid_pwm1_idrv_b_b();
-"60
+[; ;main.c: 66: pid_pwm1_idrv_b_b();
+"66
 [e ( _pid_pwm1_idrv_b_b ..  ]
-[; ;main.c: 62: if(pidBbSm>=5){
-"62
+[; ;main.c: 68: if(pidBbSm>=5){
+"68
 [e $ ! >= -> _pidBbSm `i -> 5 `i 612  ]
 {
-[; ;main.c: 63: sysData.pidSetFlg0 = 0x55;
-"63
-[e = . _sysData 0 -> -> 85 `i `uc ]
-[; ;main.c: 64: sysData.pidSetFlg1 = 0xaa;
-"64
-[e = . _sysData 1 -> -> 170 `i `uc ]
-[; ;main.c: 65: sysData.pidKp=PidKp;
-"65
-[e = . _sysData 4 -> _PidKp `ui ]
-[; ;main.c: 66: sysData.pidTd=PidTd;
-"66
-[e = . _sysData 6 -> _PidTd `ui ]
-[; ;main.c: 67: sysData.pidTi=PidTi;
-"67
-[e = . _sysData 5 -> _PidTi `ui ]
-[; ;main.c: 68: sys_data_save();
-"68
-[e ( _sys_data_save ..  ]
+[; ;main.c: 69: sysData.pidSetFlg0 = 0x55;
 "69
+[e = . _sysData 0 -> -> 85 `i `uc ]
+[; ;main.c: 70: sysData.pidSetFlg1 = 0xaa;
+"70
+[e = . _sysData 1 -> -> 170 `i `uc ]
+[; ;main.c: 71: sysData.pidKp=PidKp;
+"71
+[e = . _sysData 4 -> _PidKp `ui ]
+[; ;main.c: 72: sysData.pidTd=PidTd;
+"72
+[e = . _sysData 6 -> _PidTd `ui ]
+[; ;main.c: 73: sysData.pidTi=PidTi;
+"73
+[e = . _sysData 5 -> _PidTi `ui ]
+[; ;main.c: 74: sys_data_save();
+"74
+[e ( _sys_data_save ..  ]
+"75
 }
 [e :U 612 ]
-"70
+"76
 }
 [e :U 611 ]
-"72
+"78
 }
 [e :U 609 ]
-[; ;main.c: 69: }
-[; ;main.c: 70: }
-[; ;main.c: 72: }
-[; ;main.c: 74: if(Event & (1<<3)){
-"74
+[; ;main.c: 75: }
+[; ;main.c: 76: }
+[; ;main.c: 78: }
+[; ;main.c: 80: if(Event & (1<<3)){
+"80
 [e $ ! != & -> _Event `i << -> 1 `i -> 3 `i -> 0 `i 613  ]
 {
-[; ;main.c: 75: Event &= ~(1<<3);
-"75
+[; ;main.c: 81: Event &= ~(1<<3);
+"81
 [e =& _Event -> ~ << -> 1 `i -> 3 `i `uc ]
+[; ;main.c: 83: uart_send_str((uint8_t*)"Rc=");
+"83
+[e ( _uart_send_str (1 -> :s 1C `*uc ]
+[; ;main.c: 84: m_int_2_str_ex(str,resRc,sizeof(str));
+"84
+[e ( _m_int_2_str_ex (3 , , &U _str -> _resRc `l -> # _str `ui ]
+[; ;main.c: 85: uart_send_str(str);
+"85
+[e ( _uart_send_str (1 &U _str ]
+[; ;main.c: 87: uart_send_str((uint8_t*)"\tRs=");
+"87
+[e ( _uart_send_str (1 -> :s 2C `*uc ]
+[; ;main.c: 88: m_int_2_str_ex(str,resRs,sizeof(str));
+"88
+[e ( _m_int_2_str_ex (3 , , &U _str -> _resRs `l -> # _str `ui ]
+[; ;main.c: 89: uart_send_str(str);
+"89
+[e ( _uart_send_str (1 &U _str ]
+[; ;main.c: 91: uart_send_str((uint8_t*)"\ti=");
+"91
+[e ( _uart_send_str (1 -> :s 3C `*uc ]
+[; ;main.c: 92: m_int_2_str_ex(str,rtAdcValueRsLo,sizeof(str));
+"92
+[e ( _m_int_2_str_ex (3 , , &U _str -> _rtAdcValueRsLo `l -> # _str `ui ]
+[; ;main.c: 93: uart_send_str(str);
+"93
+[e ( _uart_send_str (1 &U _str ]
+[; ;main.c: 95: uart_send_str((uint8_t*)"\texp=");
+"95
+[e ( _uart_send_str (1 -> :s 4C `*uc ]
+[; ;main.c: 96: m_int_2_str_ex(str,voExpectAdcValue,sizeof(str));
+"96
+[e ( _m_int_2_str_ex (3 , , &U _str -> _voExpectAdcValue `l -> # _str `ui ]
+[; ;main.c: 97: uart_send_str(str);
+"97
+[e ( _uart_send_str (1 &U _str ]
+[; ;main.c: 99: uart_send_str((uint8_t*)"\tvo=");
+"99
+[e ( _uart_send_str (1 -> :s 5C `*uc ]
+[; ;main.c: 100: m_int_2_str_ex(str,voExpectMv,sizeof(str));
+"100
+[e ( _m_int_2_str_ex (3 , , &U _str -> _voExpectMv `l -> # _str `ui ]
+[; ;main.c: 101: uart_send_str(str);
+"101
+[e ( _uart_send_str (1 &U _str ]
+[; ;main.c: 103: uart_send_str((uint8_t*)"\tpwm=");
 "103
+[e ( _uart_send_str (1 -> :s 6C `*uc ]
+[; ;main.c: 104: m_int_2_str_ex(str,pwm2DutyForVout,sizeof(str));
+"104
+[e ( _m_int_2_str_ex (3 , , &U _str -> _pwm2DutyForVout `l -> # _str `ui ]
+[; ;main.c: 105: uart_send_str(str);
+"105
+[e ( _uart_send_str (1 &U _str ]
+[; ;main.c: 107: uart_send_str((uint8_t*)"\r\n");
+"107
+[e ( _uart_send_str (1 -> :s 7C `*uc ]
+"109
 }
 [e :U 613 ]
-[; ;main.c: 103: }
-[; ;main.c: 105: if(Event & (1<<0)){
-"105
-[e $ ! != & -> _Event `i << -> 1 `i -> 0 `i -> 0 `i 614  ]
-{
-[; ;main.c: 106: Event &= ~ (1<<0);
-"106
-[e =& _Event -> ~ << -> 1 `i -> 0 `i `uc ]
-[; ;main.c: 107: if(eusartRxCount>0){
-"107
-[e $ ! > -> _eusartRxCount `i -> 0 `i 615  ]
-{
-[; ;main.c: 108: m_mem_cpy_len(modbusBuf,eusartRxBuffer,eusartRxCount);
-"108
-[e ( _m_mem_cpy_len (3 , , &U _modbusBuf -> &U _eusartRxBuffer `*uc -> _eusartRxCount `ui ]
-[; ;main.c: 109: modbus_response_process(modbusBuf,eusartRxCount);
-"109
-[e ( _modbus_response_process (2 , &U _modbusBuf -> _eusartRxCount `ui ]
-"111
-}
-[e :U 615 ]
-[; ;main.c: 111: }
-[; ;main.c: 113: uart_received_start();
-"113
-[e ( _uart_received_start ..  ]
-"114
-}
-[e :U 614 ]
-[; ;main.c: 114: }
-[; ;main.c: 116: __nop();
-"116
+[; ;main.c: 109: }
+[; ;main.c: 122: __nop();
+"122
 [e ( ___nop ..  ]
-"117
+"123
 }
 [e :U 606 ]
 "36
 [e $U 607  ]
 [e :U 608 ]
-[; ;main.c: 117: }
-[; ;main.c: 120: }
-"120
+[; ;main.c: 123: }
+[; ;main.c: 126: }
+"126
 [e :UE 600 ]
 }
+[a 2C 9 82 115 61 0 ]
+[a 4C 9 101 120 112 61 0 ]
+[a 5C 9 118 111 61 0 ]
+[a 6C 9 112 119 109 61 0 ]
+[a 3C 9 105 61 0 ]
+[a 1C 82 99 61 0 ]
+[a 7C 13 10 0 ]

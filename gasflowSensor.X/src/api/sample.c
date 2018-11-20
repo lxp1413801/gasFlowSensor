@@ -19,8 +19,8 @@ uint32_t resRs=10000UL;
 
 //继电控制测试赋值
 //<<--
-#define BB_RISE_Y		5000
-#define BB_FALL_Y		2000
+#define BB_RISE_Y		4500
+#define BB_FALL_Y		1500
 
 #define iDRV_PWM1_MAX	1200
 #define iDRV_PWM1_MIN	5
@@ -35,7 +35,7 @@ uint8_t pidBbSm=PID_BB_NONE;
 
 
 #define VOUT_PWM2_MAX	1580
-#define VOUT_PWM2_MIN	2
+#define VOUT_PWM2_MIN	5
 int16_t pwm2DutyForVout=0x10;
 
 uint16_t get_idrv_pwm1_duty(void)
@@ -256,8 +256,8 @@ void pid_pwm1_idrv_b_b(void)
 			bbku=(bbu*40000)/(bbta*314);
             bbku*=100;
 			//测试的响应速度1.2,2参数比较理想
-			PidKp=bbku*10/10;
-			PidTi=bbtu*10/40;
+			PidKp=bbku*10/14;
+			PidTi=bbtu*10/20;
 			PidTd=bbtu/8;			
 			pidBbSm=PID_BB_EXIT;
             break;	
@@ -285,7 +285,7 @@ void pid_pwm1_idrv_run(void)
 
 	ep=(err[0]-err[1])*PidKp;
 	ei=PidKp*err[0]/PidTi;
-	ed=(err[0]-2*err[1]+err[2])*PidKp*PidTd/120;;
+	ed=(err[0]-2*err[1]+err[2])*PidKp*PidTd/160;;
 	//ed=0;
 	t32=ep+ei+ed;
 	t32/=10000;
@@ -307,7 +307,7 @@ void pid_pwm2_vout_run(void)
 {
 	int16_t t16,ei;
 	t16=voExpectAdcValue-rtAdcValueVoFb;
-	ei=t16/100;
+	ei=t16/150;
 	if(ei==0){
 		if(t16>32)ei=1;
 		if(t16<-32)ei=-1;
@@ -317,7 +317,7 @@ void pid_pwm2_vout_run(void)
 	//if(pwm2Ei>500)pwm2Ei=500;
 	//if(pwm2Ei<-500)pwm2Ei=-500;
 	
-	t16=voExpectAdcValue/12;
+	t16=voExpectAdcValue/10;
 	//pwm2Ei=0;
 	pwm2DutyForVout=t16+pwm2Ei;
 	if(pwm2DutyForVout>VOUT_PWM2_MAX)pwm2DutyForVout=VOUT_PWM2_MAX;
@@ -374,8 +374,25 @@ rtAdcValueRsLoAvg：
 pwm2输出采样比列调节单位负反馈，1600->12000 7.5被
 
 */
-uint16_t rsSimPower=0x00;
+//uint16_t rsSimPower=0x00;
+uint16_t voExpectMv;
 uint16_t voExpectAdcValue=0x00;
+uint16_t rsLoAvg=0;
+uint16_t rsLoAvgBuf[5]={0};
+uint16_t calc_rs_lo_avg(uint16_t x)
+{
+    uint8_t i;
+    uint32_t t32=0;
+    
+    for(i=0;i<4;i++){
+        rsLoAvgBuf[i]=rsLoAvgBuf[i+1];
+        t32+=rsLoAvgBuf[i];
+    }
+    rsLoAvgBuf[i]=x;
+    t32+=x;
+    t32/=5;
+    return (uint16_t)t32;
+}
 uint16_t calc_expect_vout_adc_value(uint16_t x)
 {
 	uint8_t index=0;
@@ -383,20 +400,20 @@ uint16_t calc_expect_vout_adc_value(uint16_t x)
     uint8_t i;
 	int32_t t32;
     for (i = 0; i < MAX_CALIB_NUM-2; i++) {
-		if(sysData.calibSimuPowerVaule[i]<sysData.calibSimuPowerVaule[i+1]){
-			if (x < sysData.calibSimuPowerVaule[i])break;
+		if(sysData.calibRsAdc[i]<sysData.calibRsAdc[i+1]){
+			if (x <= sysData.calibRsAdc[i])break;
 		}else{
-			if (x > sysData.calibSimuPowerVaule[i])break;
+			if (x >= sysData.calibRsAdc[i])break;
 		}
     }
     if(i)i--;
     if (i > MAX_CALIB_NUM-2)i=MAX_CALIB_NUM-2;
-	y1=sysData.calibVoutAdcValue[i+1];
-	y0=sysData.calibVoutAdcValue[i];
+	y1=sysData.calibVoMV[i+1];
+	y0=sysData.calibVoMV[i];
 
 	
-	x1=sysData.calibSimuPowerVaule[i+1];
-	x0=sysData.calibSimuPowerVaule[i];
+	x1=sysData.calibRsAdc[i+1];
+	x0=sysData.calibRsAdc[i];
 	
 
 	if(x1==x0)return y0;

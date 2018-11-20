@@ -2,9 +2,9 @@
 #define USART_MODE_MODBUS 	0
 #define USART_MODE_CONSLE	1
 
-#define USART_MODE USART_MODE_MODBUS
+#define USART_MODE USART_MODE_CONSLE
 
-#define USART_DEBUG 0
+#define PID_CTROLLOR_EN 1
 
 #include <stdint.h>
 #include "../../mcc_generated_files/mcc.h"
@@ -36,25 +36,31 @@ void main(void)
     while (1){
         if(Event & flg_EVEN_TICKER_100MS){
             Event &= ~flg_EVEN_TICKER_100MS;
-			#if USART_DEBUG==0
+			#if PID_CTROLLOR_EN
 			rtAdcValueRsLo=adc_sample(channel_AN6,1,32);
             //rtAdcValueRsLo>>=1;
 			rtAdcValueRsHi=adc_sample(channel_AN5,3,32);
             //rtAdcValueRsHi>>=1;
             
-			rtAdcValueRcLo=adc_sample(channel_AN4,3,16);
-			rtAdcValueRcHi=adc_sample(channel_AN2,3,16);
-            rtAdcValueVoFb=adc_sample(channel_AN7,1,16);
+			rtAdcValueRcLo=adc_sample(channel_AN4,3,32);
+            rtAdcValueRcLo>>=1;
+			rtAdcValueRcHi=adc_sample(channel_AN2,3,32);
+			rtAdcValueRcHi>>=1;
+			
+            rtAdcValueVoFb=adc_sample(channel_AN7,3,32);
+            rtAdcValueVoFb>>=1;
 			//此处的16次采样不能改，后面计算有依耐性
-			//rtAdcValueVoFb=adc_sample(channel_AN7,1,16);
             resRc=calc_temp_rc();
 			resRs=calc_temp_rs();
             
             __nop();
             if(pidBbSm>=PID_BB_EXIT){
 				pid_pwm1_idrv_run();
-				rsSimPower=cal_rs_simulate_power();
-				voExpectAdcValue=calc_expect_vout_adc_value(rsSimPower);	
+				//rsSimPower=cal_rs_simulate_power();
+                //extern uint16_t rsLoAvg;
+                rsLoAvg=calc_rs_lo_avg(rtAdcValueRsLo);
+                voExpectMv=calc_expect_vout_adc_value(rsLoAvg);
+				voExpectAdcValue=(voExpectMv<<1);
 				pid_pwm2_vout_run();
 			}else{
                 pid_pwm1_idrv_b_b();
@@ -91,7 +97,7 @@ void main(void)
 			uart_send_str(str);	  
             
 			uart_send_str((uint8_t*)"\tvo=");
-			m_int_2_str_ex(str,rtAdcValueVoFb,sizeof(str));
+			m_int_2_str_ex(str,voExpectMv,sizeof(str));
 			uart_send_str(str);	               
 			
 			uart_send_str((uint8_t*)"\tpwm=");

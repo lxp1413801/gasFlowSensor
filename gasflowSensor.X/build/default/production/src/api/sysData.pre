@@ -6307,10 +6307,14 @@ extern uint16_t calc_expect_vout_adc_value(uint16_t x);
 extern int32_t pidU;;
 extern int32_t outResDiff;
 
-extern uint16_t rsSimPower;
+
+extern uint16_t voExpectMv;
 extern uint16_t voExpectAdcValue;
 extern uint16_t cal_rs_simulate_power(void);
 extern void set_idrv_pwm1_duty(uint16_t duty);
+
+extern uint16_t rsLoAvg;
+extern uint16_t calc_rs_lo_avg(uint16_t x);
 
 # 16 "src/api/../includes/../api/my_uart.h"
 extern volatile uint8_t eusartRxIdleTime_ms;
@@ -6354,8 +6358,8 @@ uint16_t pidKp;
 uint16_t pidTi;
 uint16_t pidTd;
 
-uint16_t calibSimuPowerVaule[10];
-uint16_t calibVoutAdcValue[10];
+uint16_t calibRsAdc[20];
+uint16_t calibVoMV[20];
 uint16_t crc16;
 }sysData_t;
 extern sysData_t sysData;
@@ -6373,8 +6377,12 @@ sysData_t sysData;
 
 void my_flash_read_system_erase(void)
 {
+
+# 15
 FLASH_EraseBlock(0x1f80);
 FLASH_EraseBlock(0x1f80+32);
+FLASH_EraseBlock(0x1f80+64);
+FLASH_EraseBlock(0x1f80+96);
 }
 
 void my_flash_system_read(uint8_t* buf,uint16_t len)
@@ -6458,10 +6466,11 @@ ret=crc_verify((uint8_t*)&sysData,sizeof(sysData_t));
 if(!ret){
 sysData.pidSetFlg0=0xff;
 sysData.pidSetFlg1=0xff;
-sysData.id=0;
-for(i=0;i<10;i++){
-sysData.calibSimuPowerVaule[i]=i*6553;
-sysData.calibVoutAdcValue[i]=i*1200;
+sysData.id=0xff;
+for(i=0;i<20;i++){
+
+sysData.calibRsAdc[i]=9600+i*720;
+sysData.calibVoMV[i]=i*333;
 }
 crc_append((uint8_t*)&sysData,sizeof(sysData_t)-2);
 

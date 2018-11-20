@@ -6307,10 +6307,14 @@ extern uint16_t calc_expect_vout_adc_value(uint16_t x);
 extern int32_t pidU;;
 extern int32_t outResDiff;
 
-extern uint16_t rsSimPower;
+
+extern uint16_t voExpectMv;
 extern uint16_t voExpectAdcValue;
 extern uint16_t cal_rs_simulate_power(void);
 extern void set_idrv_pwm1_duty(uint16_t duty);
+
+extern uint16_t rsLoAvg;
+extern uint16_t calc_rs_lo_avg(uint16_t x);
 
 # 16 "src/api/../includes/../api/my_uart.h"
 extern volatile uint8_t eusartRxIdleTime_ms;
@@ -6545,8 +6549,8 @@ uint16_t pidKp;
 uint16_t pidTi;
 uint16_t pidTd;
 
-uint16_t calibSimuPowerVaule[10];
-uint16_t calibVoutAdcValue[10];
+uint16_t calibRsAdc[20];
+uint16_t calibVoMV[20];
 uint16_t crc16;
 }sysData_t;
 extern sysData_t sysData;
@@ -6746,14 +6750,14 @@ set_idrv_pwm1_duty(1200);
 pidBbSm=2;
 break;
 case 2:
-if(t32>5000){
+if(t32>4500){
 set_idrv_pwm1_duty(5);
 pidBbSm=3;
 break;
 }
 break;
 case 3:
-if(t32<2000){
+if(t32<1500){
 bbt0=bbt1;
 bbt1=globalTicker;
 pidTestNum++;
@@ -6775,8 +6779,8 @@ bbu=(1200-5)/2;
 bbku=(bbu*40000)/(bbta*314);
 bbku*=100;
 
-PidKp=bbku*10/10;
-PidTi=bbtu*10/40;
+PidKp=bbku*10/14;
+PidTi=bbtu*10/20;
 PidTd=bbtu/8;
 pidBbSm=5;
 break;
@@ -6804,7 +6808,7 @@ err[0]=t32;
 
 ep=(err[0]-err[1])*PidKp;
 ei=PidKp*err[0]/PidTi;
-ed=(err[0]-2*err[1]+err[2])*PidKp*PidTd/120;;
+ed=(err[0]-2*err[1]+err[2])*PidKp*PidTd/160;;
 
 t32=ep+ei+ed;
 t32/=10000;
@@ -6826,7 +6830,7 @@ void pid_pwm2_vout_run(void)
 {
 int16_t t16,ei;
 t16=voExpectAdcValue-rtAdcValueVoFb;
-ei=t16/100;
+ei=t16/150;
 if(ei==0){
 if(t16>32)ei=1;
 if(t16<-32)ei=-1;
@@ -6836,39 +6840,55 @@ pwm2Ei=pwm2Ei+ei;
 
 
 
-t16=voExpectAdcValue/12;
+t16=voExpectAdcValue/10;
 
 pwm2DutyForVout=t16+pwm2Ei;
 if(pwm2DutyForVout>1580)pwm2DutyForVout=1580;
-if(pwm2DutyForVout<2)pwm2DutyForVout=2;
+if(pwm2DutyForVout<5)pwm2DutyForVout=5;
 set_vout_pwm2_duty(pwm2DutyForVout);
 
 }
 
-# 377
-uint16_t rsSimPower=0x00;
+# 378
+uint16_t voExpectMv;
 uint16_t voExpectAdcValue=0x00;
+uint16_t rsLoAvg=0;
+uint16_t rsLoAvgBuf[5]={0};
+uint16_t calc_rs_lo_avg(uint16_t x)
+{
+uint8_t i;
+uint32_t t32=0;
+
+for(i=0;i<4;i++){
+rsLoAvgBuf[i]=rsLoAvgBuf[i+1];
+t32+=rsLoAvgBuf[i];
+}
+rsLoAvgBuf[i]=x;
+t32+=x;
+t32/=5;
+return (uint16_t)t32;
+}
 uint16_t calc_expect_vout_adc_value(uint16_t x)
 {
 uint8_t index=0;
 int32_t y0,y1,x0,x1;
 uint8_t i;
 int32_t t32;
-for (i = 0; i < 10-2; i++) {
-if(sysData.calibSimuPowerVaule[i]<sysData.calibSimuPowerVaule[i+1]){
-if (x < sysData.calibSimuPowerVaule[i])break;
+for (i = 0; i < 20-2; i++) {
+if(sysData.calibRsAdc[i]<sysData.calibRsAdc[i+1]){
+if (x <= sysData.calibRsAdc[i])break;
 }else{
-if (x > sysData.calibSimuPowerVaule[i])break;
+if (x >= sysData.calibRsAdc[i])break;
 }
 }
 if(i)i--;
-if (i > 10-2)i=10-2;
-y1=sysData.calibVoutAdcValue[i+1];
-y0=sysData.calibVoutAdcValue[i];
+if (i > 20-2)i=20-2;
+y1=sysData.calibVoMV[i+1];
+y0=sysData.calibVoMV[i];
 
 
-x1=sysData.calibSimuPowerVaule[i+1];
-x0=sysData.calibSimuPowerVaule[i];
+x1=sysData.calibRsAdc[i+1];
+x0=sysData.calibRsAdc[i];
 
 
 if(x1==x0)return y0;
@@ -6898,6 +6918,6 @@ if(t32>65535)t32=65535;
 t16=(uint16_t)t32;
 return t16;
 
-# 444
+# 461
 }
 

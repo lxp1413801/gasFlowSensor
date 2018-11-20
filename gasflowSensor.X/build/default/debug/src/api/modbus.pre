@@ -6345,10 +6345,14 @@ extern uint16_t calc_expect_vout_adc_value(uint16_t x);
 extern int32_t pidU;;
 extern int32_t outResDiff;
 
-extern uint16_t rsSimPower;
+
+extern uint16_t voExpectMv;
 extern uint16_t voExpectAdcValue;
 extern uint16_t cal_rs_simulate_power(void);
 extern void set_idrv_pwm1_duty(uint16_t duty);
+
+extern uint16_t rsLoAvg;
+extern uint16_t calc_rs_lo_avg(uint16_t x);
 
 # 16 "src/api/../includes/../api/my_uart.h"
 extern volatile uint8_t eusartRxIdleTime_ms;
@@ -6377,8 +6381,8 @@ uint16_t pidKp;
 uint16_t pidTi;
 uint16_t pidTd;
 
-uint16_t calibSimuPowerVaule[10];
-uint16_t calibVoutAdcValue[10];
+uint16_t calibRsAdc[20];
+uint16_t calibVoMV[20];
 uint16_t crc16;
 }sysData_t;
 extern sysData_t sysData;
@@ -6427,16 +6431,16 @@ case 0x0a:*tempData=rtAdcValueRcHi;break;
 case 0x0b:*tempData=resRc;break;
 case 0x0c:*tempData=resRs;break;
 case 0x0d:*tempData=rtAdcValueVoFb;break;
-case 0x0e:*tempData=rsSimPower;break;
+case 0x0e:*tempData=voExpectMv;break;
 case 0x0f:*tempData=voExpectAdcValue;break;
 default: *tempData=0x55aa;break;
 }
-if(tempAddr>0x0f && tempAddr < 0x10+20){
+if(tempAddr>0x0f && tempAddr < 0x10+20*2){
 tempAddr-=0x10;
 if(tempAddr & 0x01){
-*tempData=sysData.calibVoutAdcValue[tempAddr>>1];
+*tempData=sysData.calibVoMV[tempAddr>>1];
 }else{
-*tempData=sysData.calibSimuPowerVaule[tempAddr>>1];
+*tempData=sysData.calibRsAdc[tempAddr>>1];
 }
 }
 return t16;
@@ -6448,7 +6452,7 @@ uint16_t startAddr=0;
 uint16_t t16;
 uint8_t fiSave=0;
 st_modbusComReqStructDef* pmdbs=(st_modbusComReqStructDef*)rbuf;
-if(pmdbs->addr!=sysData.id)return;
+if(pmdbs->addr!=sysData.id && pmdbs->addr!=0)return;
 startAddr=pmdbs->addr_hi;
 startAddr<<=8;
 startAddr |= pmdbs->addr_lo;
@@ -6460,13 +6464,14 @@ fiSave=1;
 sysData.pidSetFlg1=rbuf[4];
 sysData.pidSetFlg0=rbuf[5];
 fiSave=1;
-}else if(startAddr>0x0f && startAddr < 0x10+20){
+}else if(startAddr>0x0f && startAddr < 0x10+20*2){
 startAddr-=0x10;
 if(startAddr & 0x01){
 t16=rbuf[4];
 t16<<=8;
 t16 |= rbuf[5];
-sysData.calibVoutAdcValue[startAddr>>1]=t16;
+sysData.calibVoMV[startAddr>>1]=t16;
+sysData.calibRsAdc[startAddr>>1]=rtAdcValueRsLo;
 fiSave=1;
 }
 }else{
@@ -6524,7 +6529,7 @@ case 0x06:
 modbus_response_write_single_register(rbuf);
 break;
 
-# 217
+# 218
 default:
 modbus_response_illgeal_function(rbuf,0x01);break;
 }

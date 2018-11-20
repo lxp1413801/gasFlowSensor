@@ -7,8 +7,15 @@ sysData_t sysData;
 
 void my_flash_read_system_erase(void)
 {
+	/*
 	FLASH_EraseBlock(SYSDATA_START_ADDR); 
 	FLASH_EraseBlock(SYSDATA_START_ADDR+ERASE_FLASH_BLOCKSIZE); 
+	FLASH_EraseBlock(SYSDATA_START_ADDR+ERASE_FLASH_BLOCKSIZE); 
+	*/
+	FLASH_EraseBlock(SYSDATA_START_ADDR); 
+	FLASH_EraseBlock(SYSDATA_START_ADDR+32); 
+	FLASH_EraseBlock(SYSDATA_START_ADDR+64); 
+	FLASH_EraseBlock(SYSDATA_START_ADDR+96); 
 }
 
 void my_flash_system_read(uint8_t* buf,uint16_t len)
@@ -92,10 +99,11 @@ uint16_t sys_data_init(void)
 	if(!ret){
 		sysData.pidSetFlg0=0xff;
 		sysData.pidSetFlg1=0xff;
-		sysData.id=0;
+		sysData.id=0xff;
 		for(i=0;i<MAX_CALIB_NUM;i++){
-			sysData.calibSimuPowerVaule[i]=i*6553;
-			sysData.calibVoutAdcValue[i]=i*1200;
+			//24000
+			sysData.calibRsAdc[i]=9600+i*720;
+			sysData.calibVoMV[i]=i*333;
 		}
 		crc_append((uint8_t*)&sysData,sizeof(sysData_t)-2);
         

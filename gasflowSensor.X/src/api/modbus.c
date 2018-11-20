@@ -96,16 +96,16 @@ uint16_t getRegisterVal(uint16_t addr,uint16_t *tempData)
 		case 0x0b:*tempData=resRc;break;
 		case 0x0c:*tempData=resRs;break;
 		case 0x0d:*tempData=rtAdcValueVoFb;break;
-		case 0x0e:*tempData=rsSimPower;break;
+		case 0x0e:*tempData=voExpectMv;break;
 		case 0x0f:*tempData=voExpectAdcValue;break;
 		default: *tempData=0x55aa;break;
 	}
-	if(tempAddr>0x0f && tempAddr < 0x10+20){
+	if(tempAddr>0x0f && tempAddr < 0x10+MAX_CALIB_NUM*2){
 		tempAddr-=0x10;
         if(tempAddr & 0x01){
-            *tempData=sysData.calibVoutAdcValue[tempAddr>>1];
+            *tempData=sysData.calibVoMV[tempAddr>>1];
         }else{
-            *tempData=sysData.calibSimuPowerVaule[tempAddr>>1];
+            *tempData=sysData.calibRsAdc[tempAddr>>1];
         }
     }
 	return t16;
@@ -117,7 +117,7 @@ void modbus_response_write_single_register(uint8_t* rbuf)
 	uint16_t t16;
 	uint8_t fiSave=0;
 	st_modbusComReqStructDef* pmdbs=(st_modbusComReqStructDef*)rbuf;
-    if(pmdbs->addr!=sysData.id)return;
+    if(pmdbs->addr!=sysData.id && pmdbs->addr!=0)return;
 	startAddr=pmdbs->addr_hi;
 	startAddr<<=8;
 	startAddr |= pmdbs->addr_lo;
@@ -129,13 +129,14 @@ void modbus_response_write_single_register(uint8_t* rbuf)
 		sysData.pidSetFlg1=rbuf[4];
 		sysData.pidSetFlg0=rbuf[5];
 		fiSave=1;	
-	}else if(startAddr>0x0f && startAddr < 0x10+20){
+	}else if(startAddr>0x0f && startAddr < 0x10+MAX_CALIB_NUM*2){
 		startAddr-=0x10;
         if(startAddr & 0x01){
             t16=rbuf[4];
 			t16<<=8;
 			t16 |= rbuf[5];
-			sysData.calibVoutAdcValue[startAddr>>1]=t16;	
+			sysData.calibVoMV[startAddr>>1]=t16;	
+            sysData.calibRsAdc[startAddr>>1]=rtAdcValueRsLo;
 			fiSave=1;
         }		
 	}else{

@@ -47,11 +47,14 @@
 	extern int32_t pidU;;
 	extern int32_t outResDiff;
 	
-	extern uint16_t rsSimPower;
+	//extern uint16_t rsSimPower;
+    extern uint16_t voExpectMv;
 	extern uint16_t voExpectAdcValue;
     extern uint16_t cal_rs_simulate_power(void);
     extern void set_idrv_pwm1_duty(uint16_t duty);
 	
+    extern uint16_t rsLoAvg;
+    extern uint16_t calc_rs_lo_avg(uint16_t x);
 	#ifdef	__cplusplus
 		}
 	#endif
