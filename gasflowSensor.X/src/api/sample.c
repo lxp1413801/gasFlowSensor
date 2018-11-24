@@ -331,8 +331,8 @@ void pid_pwm2_vout_run(void)
 	t16=voExpectAdcValue-rtAdcValueVoFb;
 	ei=t16/150;
 	if(ei==0){
-		if(t16>32)ei=1;
-		if(t16<-32)ei=-1;
+		if(t16>16)ei=1;
+		if(t16<-16)ei=-1;
 	}
 
 	pwm2Ei=pwm2Ei+ei;
@@ -400,19 +400,19 @@ pwm2输出采样比列调节单位负反馈，1600->12000 7.5被
 uint16_t voExpectMv;
 uint16_t voExpectAdcValue=0x00;
 uint16_t rsLoAvg=0;
-uint16_t rsLoAvgBuf[5]={0};
+uint16_t rsLoAvgBuf[6]={0};
 uint16_t calc_rs_lo_avg(uint16_t x)
 {
     uint8_t i;
     uint32_t t32=0;
     
-    for(i=0;i<4;i++){
+    for(i=0;i<sizeof(rsLoAvgBuf)/sizeof(rsLoAvgBuf[0])-1;i++){
         rsLoAvgBuf[i]=rsLoAvgBuf[i+1];
         t32+=rsLoAvgBuf[i];
     }
     rsLoAvgBuf[i]=x;
     t32+=x;
-    t32/=5;
+    t32/=(sizeof(rsLoAvgBuf)/sizeof(rsLoAvgBuf[0]));
     return (uint16_t)t32;
 }
 uint16_t calc_expect_vout_adc_value(uint16_t x)
@@ -437,7 +437,7 @@ uint16_t calc_expect_vout_adc_value(uint16_t x)
 	x1=sysData.calibRsAdc[i+1];
 	x0=sysData.calibRsAdc[i];
 	
-
+    if(x<=x0 && i==0)return y0;
 	if(x1==x0)return y0;
 	
 	//t16=y0+(x-x0)*(y1-y0)/(x1-x0);

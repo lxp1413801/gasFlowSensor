@@ -94,10 +94,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 "53 src/api/../includes/../api/sample.h
 [v _voExpectAdcValue `ui ~T0 @X0 0 e ]
 "24 src/api/../api/sysData.h
-[s S595 `uc 1 `uc 1 `uc 1 `uc 1 `ui 1 `ui 1 `ui 1 `ui -> 20 `i `ui -> 20 `i `ui 1 ]
+[s S595 `uc 1 `uc 1 `uc 1 `uc 1 `ui 1 `ui 1 `ui 1 `ui -> 30 `i `ui -> 30 `i `ui 1 ]
 [n S595 . pidSetFlg0 pidSetFlg1 id reverse pidKp pidTi pidTd calibRsAdc calibVoMV crc16 ]
 "37
-[v _sysData `S595 ~T0 @X0 0 e ]
+[v _sysData `VS595 ~T0 @X0 0 e ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -4861,11 +4861,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;sysData.h: 29: uint16_t pidKp;
 [; ;sysData.h: 30: uint16_t pidTi;
 [; ;sysData.h: 31: uint16_t pidTd;
-[; ;sysData.h: 33: uint16_t calibRsAdc[20];
-[; ;sysData.h: 34: uint16_t calibVoMV[20];
+[; ;sysData.h: 33: uint16_t calibRsAdc[30];
+[; ;sysData.h: 34: uint16_t calibVoMV[30];
 [; ;sysData.h: 35: uint16_t crc16;
 [; ;sysData.h: 36: }sysData_t;
-[; ;sysData.h: 37: extern sysData_t sysData;
+[; ;sysData.h: 37: extern volatile sysData_t sysData;
 [; ;sysData.h: 39: extern uint16_t sys_data_init(void);
 [; ;sysData.h: 40: extern void sys_data_save(void);
 "7 src/api/sample.c
@@ -5786,14 +5786,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 "333
 [e $ ! == _ei -> 0 `i 655  ]
 {
-[; ;sample.c: 334: if(t16>32)ei=1;
+[; ;sample.c: 334: if(t16>16)ei=1;
 "334
-[e $ ! > _t16 -> 32 `i 656  ]
+[e $ ! > _t16 -> 16 `i 656  ]
 [e = _ei -> 1 `i ]
 [e :U 656 ]
-[; ;sample.c: 335: if(t16<-32)ei=-1;
+[; ;sample.c: 335: if(t16<-16)ei=-1;
 "335
-[e $ ! < _t16 -U -> 32 `i 657  ]
+[e $ ! < _t16 -U -> 16 `i 657  ]
 [e = _ei -U -> 1 `i ]
 [e :U 657 ]
 "336
@@ -5842,13 +5842,13 @@ Version 3.2 HI-TECH Software Intermediate Code
 ]
 [; ;sample.c: 402: uint16_t rsLoAvg=0;
 "403
-[v _rsLoAvgBuf `ui ~T0 @X0 -> 5 `i e ]
+[v _rsLoAvgBuf `ui ~T0 @X0 -> 6 `i e ]
 [i _rsLoAvgBuf
 :U ..
 -> -> 0 `i `ui
 ..
 ]
-[; ;sample.c: 403: uint16_t rsLoAvgBuf[5]={0};
+[; ;sample.c: 403: uint16_t rsLoAvgBuf[6]={0};
 "404
 [v _calc_rs_lo_avg `(ui ~T0 @X0 1 ef1`ui ]
 "405
@@ -5867,11 +5867,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;sample.c: 406: uint8_t i;
 [; ;sample.c: 407: uint32_t t32=0;
 [e = _t32 -> -> -> 0 `i `l `ul ]
-[; ;sample.c: 409: for(i=0;i<4;i++){
+[; ;sample.c: 409: for(i=0;i<sizeof(rsLoAvgBuf)/sizeof(rsLoAvgBuf[0])-1;i++){
 "409
 {
 [e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i -> 4 `i 661  ]
+[e $ < -> _i `ui - / -> # _rsLoAvgBuf `ui -> # *U + &U _rsLoAvgBuf * -> -> -> 0 `i `ui `ux -> -> # *U &U _rsLoAvgBuf `ui `ux `ui -> -> 1 `i `ui 661  ]
 [e $U 662  ]
 [e :U 661 ]
 {
@@ -5885,7 +5885,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 "409
 [e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i -> 4 `i 661  ]
+[e $ < -> _i `ui - / -> # _rsLoAvgBuf `ui -> # *U + &U _rsLoAvgBuf * -> -> -> 0 `i `ui `ux -> -> # *U &U _rsLoAvgBuf `ui `ux `ui -> -> 1 `i `ui 661  ]
 [e :U 662 ]
 "412
 }
@@ -5896,9 +5896,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;sample.c: 414: t32+=x;
 "414
 [e =+ _t32 -> _x `ul ]
-[; ;sample.c: 415: t32/=5;
+[; ;sample.c: 415: t32/=(sizeof(rsLoAvgBuf)/sizeof(rsLoAvgBuf[0]));
 "415
-[e =/ _t32 -> -> 5 `uc `ul ]
+[e =/ _t32 -> / -> # _rsLoAvgBuf `ui -> # *U + &U _rsLoAvgBuf * -> -> -> 0 `i `ui `ux -> -> # *U &U _rsLoAvgBuf `ui `ux `ui `ul ]
 [; ;sample.c: 416: return (uint16_t)t32;
 "416
 [e ) -> _t32 `ui ]
@@ -5934,11 +5934,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;sample.c: 421: int32_t y0,y1,x0,x1;
 [; ;sample.c: 422: uint8_t i;
 [; ;sample.c: 423: int32_t t32;
-[; ;sample.c: 424: for (i = 0; i < 20-1; i++) {
+[; ;sample.c: 424: for (i = 0; i < 30-1; i++) {
 "424
 {
 [e = _i -> -> 0 `i `uc ]
-[e $ < -> _i `i - -> 20 `i -> 1 `i 665  ]
+[e $ < -> _i `i - -> 30 `i -> 1 `i 665  ]
 [e $U 666  ]
 [e :U 665 ]
 {
@@ -5969,16 +5969,16 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 "424
 [e ++ _i -> -> 1 `i `uc ]
-[e $ < -> _i `i - -> 20 `i -> 1 `i 665  ]
+[e $ < -> _i `i - -> 30 `i -> 1 `i 665  ]
 [e :U 666 ]
 "430
 }
 [; ;sample.c: 429: }
 [; ;sample.c: 430: }
-[; ;sample.c: 432: if (i > 20-2)i=20-2;
+[; ;sample.c: 432: if (i > 30-2)i=30-2;
 "432
-[e $ ! > -> _i `i - -> 20 `i -> 2 `i 672  ]
-[e = _i -> - -> 20 `i -> 2 `i `uc ]
+[e $ ! > -> _i `i - -> 30 `i -> 2 `i 672  ]
+[e = _i -> - -> 30 `i -> 2 `i `uc ]
 [e :U 672 ]
 [; ;sample.c: 433: y1=sysData.calibVoMV[i+1];
 "433
@@ -5992,12 +5992,18 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;sample.c: 438: x0=sysData.calibRsAdc[i];
 "438
 [e = _x0 -> *U + &U . _sysData 7 * -> _i `ux -> -> # *U &U . _sysData 7 `ui `ux `l ]
-[; ;sample.c: 441: if(x1==x0)return y0;
-"441
-[e $ ! == _x1 _x0 673  ]
+[; ;sample.c: 440: if(x<=x0 && i==0)return y0;
+"440
+[e $ ! && <= -> _x `l _x0 == -> _i `i -> 0 `i 673  ]
 [e ) -> _y0 `ui ]
 [e $UE 664  ]
 [e :U 673 ]
+[; ;sample.c: 441: if(x1==x0)return y0;
+"441
+[e $ ! == _x1 _x0 674  ]
+[e ) -> _y0 `ui ]
+[e $UE 664  ]
+[e :U 674 ]
 [; ;sample.c: 444: t32=(x-x0);
 "444
 [e = _t32 - -> _x `l _x0 ]
@@ -6012,9 +6018,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _t32 + _t32 _y0 ]
 [; ;sample.c: 448: if(t32<0)t32=0;
 "448
-[e $ ! < _t32 -> -> 0 `i `l 674  ]
+[e $ ! < _t32 -> -> 0 `i `l 675  ]
 [e = _t32 -> -> 0 `i `l ]
-[e :U 674 ]
+[e :U 675 ]
 [; ;sample.c: 449: return (uint16_t)t32;
 "449
 [e ) -> _t32 `ui ]
@@ -6040,14 +6046,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _t16 _rtAdcValueRsLo ]
 [; ;sample.c: 457: if(t16>24000)t16=24000;
 "457
-[e $ ! > _t16 -> -> 24000 `i `ui 676  ]
+[e $ ! > _t16 -> -> 24000 `i `ui 677  ]
 [e = _t16 -> -> 24000 `i `ui ]
-[e :U 676 ]
+[e :U 677 ]
 [; ;sample.c: 458: if(t16<6400)t16=6400;
 "458
-[e $ ! < _t16 -> -> 6400 `i `ui 677  ]
+[e $ ! < _t16 -> -> 6400 `i `ui 678  ]
 [e = _t16 -> -> 6400 `i `ui ]
-[e :U 677 ]
+[e :U 678 ]
 [; ;sample.c: 459: t32=t16;
 "459
 [e = _t32 -> _t16 `ul ]
@@ -6062,17 +6068,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e =>> _t32 -> 13 `i ]
 [; ;sample.c: 464: if(t32>65535)t32=65535;
 "464
-[e $ ! > _t32 -> -> 65535 `l `ul 678  ]
+[e $ ! > _t32 -> -> 65535 `l `ul 679  ]
 [e = _t32 -> -> 65535 `l `ul ]
-[e :U 678 ]
+[e :U 679 ]
 [; ;sample.c: 465: t16=(uint16_t)t32;
 "465
 [e = _t16 -> _t32 `ui ]
 [; ;sample.c: 466: return t16;
 "466
 [e ) _t16 ]
-[e $UE 675  ]
+[e $UE 676  ]
 [; ;sample.c: 483: }
 "483
-[e :UE 675 ]
+[e :UE 676 ]
 }

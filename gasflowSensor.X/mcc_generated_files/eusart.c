@@ -55,7 +55,8 @@
 void EUSART_Initialize(void)
 {
     // Set the EUSART module to the options selected in the user interface.
-
+    PIE1bits.RCIE = 0;
+    PIE1bits.TXIE = 0;
     // ABDOVF no_overflow; SCKP Non-Inverted; BRG16 16bit_generator; WUE disabled; ABDEN disabled; 
     BAUDCON = 0x08;
 
@@ -74,6 +75,7 @@ void EUSART_Initialize(void)
     //SPBRGH = 0x03;
     SPBRGH = 0x01;
 	PIE1bits.RCIE = 1;
+    PIR1bits.TXIF=0;
 
 }
 

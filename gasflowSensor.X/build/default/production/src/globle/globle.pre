@@ -6447,6 +6447,7 @@ asm("isRunInBoot equ 0xfff");
 extern volatile unsigned char isRunInBoot @ 0xfff;
 
 # 3 "src/globle/globle.c"
+volatile unsigned char isRunInBoot @ 0xfff;
 volatile uint32_t globalTicker=0x00ul;
 volatile uint8_t Event=0;
 

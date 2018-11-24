@@ -6550,16 +6550,27 @@ uint16_t pidKp;
 uint16_t pidTi;
 uint16_t pidTd;
 
-uint16_t calibRsAdc[20];
-uint16_t calibVoMV[20];
+uint16_t calibRsAdc[30];
+uint16_t calibVoMV[30];
 uint16_t crc16;
 }sysData_t;
-extern sysData_t sysData;
+extern volatile sysData_t sysData;
 
 extern uint16_t sys_data_init(void);
 extern void sys_data_save(void);
 
 # 37 "src/app/../api/modbus.h"
+typedef struct{
+uint8_t addr;
+uint8_t func;
+uint8_t addr_hi;
+uint8_t addr_lo;
+uint8_t len_hi;
+uint8_t len_lo;
+uint8_t data[2];
+
+}st_modbusWriteMultReg_t;
+
 typedef struct{
 uint8_t addr;
 uint8_t func;
@@ -6593,22 +6604,25 @@ uint8_t data_lo;
 uint16_t crc16;
 }st_modbusWriteSingleClib;
 
-# 74
+# 85
 extern uint8_t modbusBuf[];
 extern void modbus_response_process(uint8_t* rbuf,uint16_t rlen);
 
 # 15 "src/app/main.c"
 uint8_t str[16];
-uint32_t tx;
+
 void main(void)
 {
 __nop();
-
+isRunInBoot=0xaa;
 SYSTEM_Initialize();
 do{ (INTCONbits.GIE = 1); (INTCONbits.PEIE = 1); }while(0);;
 
 
+TXSTAbits.TXEN=0;
 sys_data_init();
+m_mem_cpy(str,(uint8_t*)"VER1.00\r\n");
+uart_send_str(str);
 
 if(sysData.pidSetFlg0 != 0x55 || sysData.pidSetFlg1 != 0xaa){
 pidBbSm=0;
@@ -6654,10 +6668,13 @@ pid_pwm1_idrv_b_b();
 if(pidBbSm>=5){
 sysData.pidSetFlg0 = 0x55;
 sysData.pidSetFlg1 = 0xaa;
-sysData.pidKp=PidKp;
-sysData.pidTd=PidTd;
-sysData.pidTi=PidTi;
+sysData.pidKp=(uint16_t)PidKp;
+sysData.pidTd=(uint16_t)PidTd;
+sysData.pidTi=(uint16_t)PidTi;
 sys_data_save();
+modbusBuf[0]=0x55;
+modbusBuf[1]=0xaa;
+uart_send_len(modbusBuf,2);
 }
 }
 
@@ -6666,7 +6683,7 @@ sys_data_save();
 if(Event & (1<<3)){
 Event &= ~(1<<3);
 
-# 109
+# 129
 }
 
 if(Event & (1<<0)){
@@ -6682,6 +6699,7 @@ uart_received_start();
 
 __nop();
 }
+
 
 
 }

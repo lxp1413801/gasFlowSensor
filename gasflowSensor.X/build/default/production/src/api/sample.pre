@@ -6550,11 +6550,11 @@ uint16_t pidKp;
 uint16_t pidTi;
 uint16_t pidTd;
 
-uint16_t calibRsAdc[20];
-uint16_t calibVoMV[20];
+uint16_t calibRsAdc[30];
+uint16_t calibVoMV[30];
 uint16_t crc16;
 }sysData_t;
-extern sysData_t sysData;
+extern volatile sysData_t sysData;
 
 extern uint16_t sys_data_init(void);
 extern void sys_data_save(void);
@@ -6846,8 +6846,8 @@ int16_t t16,ei;
 t16=voExpectAdcValue-rtAdcValueVoFb;
 ei=t16/150;
 if(ei==0){
-if(t16>32)ei=1;
-if(t16<-32)ei=-1;
+if(t16>16)ei=1;
+if(t16<-16)ei=-1;
 }
 
 pwm2Ei=pwm2Ei+ei;
@@ -6867,19 +6867,19 @@ set_vout_pwm2_duty(t16);
 uint16_t voExpectMv;
 uint16_t voExpectAdcValue=0x00;
 uint16_t rsLoAvg=0;
-uint16_t rsLoAvgBuf[5]={0};
+uint16_t rsLoAvgBuf[6]={0};
 uint16_t calc_rs_lo_avg(uint16_t x)
 {
 uint8_t i;
 uint32_t t32=0;
 
-for(i=0;i<4;i++){
+for(i=0;i<sizeof(rsLoAvgBuf)/sizeof(rsLoAvgBuf[0])-1;i++){
 rsLoAvgBuf[i]=rsLoAvgBuf[i+1];
 t32+=rsLoAvgBuf[i];
 }
 rsLoAvgBuf[i]=x;
 t32+=x;
-t32/=5;
+t32/=(sizeof(rsLoAvgBuf)/sizeof(rsLoAvgBuf[0]));
 return (uint16_t)t32;
 }
 uint16_t calc_expect_vout_adc_value(uint16_t x)
@@ -6888,7 +6888,7 @@ uint8_t index=0;
 int32_t y0,y1,x0,x1;
 uint8_t i;
 int32_t t32;
-for (i = 0; i < 20-1; i++) {
+for (i = 0; i < 30-1; i++) {
 if(sysData.calibRsAdc[i]<sysData.calibRsAdc[i+1]){
 if (x <= sysData.calibRsAdc[i+1])break;
 }else{
@@ -6896,7 +6896,7 @@ if (x >= sysData.calibRsAdc[i+1])break;
 }
 }
 
-if (i > 20-2)i=20-2;
+if (i > 30-2)i=30-2;
 y1=sysData.calibVoMV[i+1];
 y0=sysData.calibVoMV[i];
 
@@ -6904,7 +6904,7 @@ y0=sysData.calibVoMV[i];
 x1=sysData.calibRsAdc[i+1];
 x0=sysData.calibRsAdc[i];
 
-
+if(x<=x0 && i==0)return y0;
 if(x1==x0)return y0;
 
 

@@ -41,6 +41,17 @@ extern "C"{
 		uint8_t 	addr_lo;
 		uint8_t		len_hi;
 		uint8_t		len_lo;
+		uint8_t		data[2];
+		//uint8_t		data_lo;
+	}st_modbusWriteMultReg_t;
+    
+	typedef struct{
+		uint8_t 	addr;
+		uint8_t		func;
+		uint8_t		addr_hi;
+		uint8_t 	addr_lo;
+		uint8_t		len_hi;
+		uint8_t		len_lo;
 	}st_modbusComReqStructDef;
 	typedef struct{
 		uint8_t 	addr;

@@ -116,7 +116,7 @@ uint16_t crc_sum(uint8_t *message, uint16_t len)
 uint16_t crc_sum( uint8_t* buf, uint16_t len)
 {
 	uint16_t crc=0xFFFF;
-	uint16_t i, j, Data;
+	uint16_t i, j;
 	for ( j=0; j<len;j++){
 		crc=crc ^*buf++;
 		for ( i=0; i<8; i++){

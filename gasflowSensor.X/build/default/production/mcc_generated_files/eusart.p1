@@ -1,5 +1,13 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"2840 C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic16f1575.h
+"1048 C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic16f1575.h
+[s S63 :1 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S63 . TMR1IE TMR2IE . TXIE RCIE ADIE TMR1GIE ]
+"1047
+[u S62 `S63 1 ]
+[n S62 . . ]
+"1058
+[v _PIE1bits `VS62 ~T0 @X0 0 e@145 ]
+"2840
 [v _BAUDCON `Vuc ~T0 @X0 0 e@415 ]
 "2718
 [v _RCSTA `Vuc ~T0 @X0 0 e@413 ]
@@ -9,14 +17,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _SPBRGL `Vuc ~T0 @X0 0 e@411 ]
 "2699
 [v _SPBRGH `Vuc ~T0 @X0 0 e@412 ]
-"1048
-[s S63 :1 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S63 . TMR1IE TMR2IE . TXIE RCIE ADIE TMR1GIE ]
-"1047
-[u S62 `S63 1 ]
-[n S62 . . ]
-"1058
-[v _PIE1bits `VS62 ~T0 @X0 0 e@145 ]
 "518
 [s S34 :1 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S34 . TMR1IF TMR2IF . TXIF RCIF ADIF TMR1GIF ]
@@ -4661,103 +4661,112 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;eusart.c: 56: {
 [e :U _EUSART_Initialize ]
 [f ]
-[; ;eusart.c: 60: BAUDCON = 0x08;
-"60
+[; ;eusart.c: 58: PIE1bits.RCIE = 0;
+"58
+[e = . . _PIE1bits 0 4 -> -> 0 `i `uc ]
+[; ;eusart.c: 59: PIE1bits.TXIE = 0;
+"59
+[e = . . _PIE1bits 0 3 -> -> 0 `i `uc ]
+[; ;eusart.c: 61: BAUDCON = 0x08;
+"61
 [e = _BAUDCON -> -> 8 `i `uc ]
-[; ;eusart.c: 63: RCSTA = 0x90;
-"63
+[; ;eusart.c: 64: RCSTA = 0x90;
+"64
 [e = _RCSTA -> -> 144 `i `uc ]
-[; ;eusart.c: 66: TXSTA = 0x24;
-"66
+[; ;eusart.c: 67: TXSTA = 0x24;
+"67
 [e = _TXSTA -> -> 36 `i `uc ]
-[; ;eusart.c: 70: SPBRGL = 0xA0;
-"70
+[; ;eusart.c: 71: SPBRGL = 0xA0;
+"71
 [e = _SPBRGL -> -> 160 `i `uc ]
-[; ;eusart.c: 75: SPBRGH = 0x01;
-"75
-[e = _SPBRGH -> -> 1 `i `uc ]
-[; ;eusart.c: 76: PIE1bits.RCIE = 1;
+[; ;eusart.c: 76: SPBRGH = 0x01;
 "76
+[e = _SPBRGH -> -> 1 `i `uc ]
+[; ;eusart.c: 77: PIE1bits.RCIE = 1;
+"77
 [e = . . _PIE1bits 0 4 -> -> 1 `i `uc ]
-[; ;eusart.c: 78: }
+[; ;eusart.c: 78: PIR1bits.TXIF=0;
 "78
+[e = . . _PIR1bits 0 3 -> -> 0 `i `uc ]
+[; ;eusart.c: 80: }
+"80
 [e :UE 594 ]
 }
-"81
+"83
 [v _EUSART_Read `(uc ~T0 @X0 1 ef ]
-"82
+"84
 {
-[; ;eusart.c: 81: uint8_t EUSART_Read(void)
-[; ;eusart.c: 82: {
+[; ;eusart.c: 83: uint8_t EUSART_Read(void)
+[; ;eusart.c: 84: {
 [e :U _EUSART_Read ]
 [f ]
-[; ;eusart.c: 84: while(!PIR1bits.RCIF)
-"84
+[; ;eusart.c: 86: while(!PIR1bits.RCIF)
+"86
 [e $U 596  ]
 [e :U 597 ]
-[; ;eusart.c: 85: {
-"85
+[; ;eusart.c: 87: {
+"87
 {
-"86
+"88
 }
 [e :U 596 ]
-"84
+"86
 [e $ ! != -> . . _PIR1bits 0 4 `i -> -> -> 0 `i `Vuc `i 597  ]
 [e :U 598 ]
-[; ;eusart.c: 86: }
-[; ;eusart.c: 89: if(1 == RCSTAbits.OERR)
-"89
+[; ;eusart.c: 88: }
+[; ;eusart.c: 91: if(1 == RCSTAbits.OERR)
+"91
 [e $ ! == -> 1 `i -> . . _RCSTAbits 0 1 `i 599  ]
-[; ;eusart.c: 90: {
-"90
+[; ;eusart.c: 92: {
+"92
 {
-[; ;eusart.c: 93: RCSTAbits.SPEN = 0;
-"93
-[e = . . _RCSTAbits 0 7 -> -> 0 `i `uc ]
-[; ;eusart.c: 94: RCSTAbits.SPEN = 1;
-"94
-[e = . . _RCSTAbits 0 7 -> -> 1 `i `uc ]
+[; ;eusart.c: 95: RCSTAbits.SPEN = 0;
 "95
+[e = . . _RCSTAbits 0 7 -> -> 0 `i `uc ]
+[; ;eusart.c: 96: RCSTAbits.SPEN = 1;
+"96
+[e = . . _RCSTAbits 0 7 -> -> 1 `i `uc ]
+"97
 }
 [e :U 599 ]
-[; ;eusart.c: 95: }
-[; ;eusart.c: 97: return RCREG;
-"97
+[; ;eusart.c: 97: }
+[; ;eusart.c: 99: return RCREG;
+"99
 [e ) _RCREG ]
 [e $UE 595  ]
-[; ;eusart.c: 98: }
-"98
+[; ;eusart.c: 100: }
+"100
 [e :UE 595 ]
 }
-"100
-[v _EUSART_Write `(v ~T0 @X0 1 ef1`uc ]
-"101
-{
-[; ;eusart.c: 100: void EUSART_Write(uint8_t txData)
-[; ;eusart.c: 101: {
-[e :U _EUSART_Write ]
-"100
-[v _txData `uc ~T0 @X0 1 r1 ]
-"101
-[f ]
-[; ;eusart.c: 102: while(0 == PIR1bits.TXIF)
 "102
-[e $U 601  ]
-[e :U 602 ]
-[; ;eusart.c: 103: {
+[v _EUSART_Write `(v ~T0 @X0 1 ef1`uc ]
 "103
 {
+[; ;eusart.c: 102: void EUSART_Write(uint8_t txData)
+[; ;eusart.c: 103: {
+[e :U _EUSART_Write ]
+"102
+[v _txData `uc ~T0 @X0 1 r1 ]
+"103
+[f ]
+[; ;eusart.c: 104: while(0 == PIR1bits.TXIF)
 "104
+[e $U 601  ]
+[e :U 602 ]
+[; ;eusart.c: 105: {
+"105
+{
+"106
 }
 [e :U 601 ]
-"102
+"104
 [e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 602  ]
 [e :U 603 ]
-[; ;eusart.c: 104: }
-[; ;eusart.c: 106: TXREG = txData;
-"106
+[; ;eusart.c: 106: }
+[; ;eusart.c: 108: TXREG = txData;
+"108
 [e = _TXREG _txData ]
-[; ;eusart.c: 107: }
-"107
+[; ;eusart.c: 109: }
+"109
 [e :UE 600 ]
 }

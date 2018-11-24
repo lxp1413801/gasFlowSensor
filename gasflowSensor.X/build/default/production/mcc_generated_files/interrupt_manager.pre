@@ -6555,6 +6555,12 @@ eusartRxCount++;
 }
 eusartRxIdleTime_ms=1;
 }
+
+if( PIR1bits.TXIF == 1)
+{
+PIR1bits.TXIF=0;
+}
+
 if(INTCONbits.PEIE == 1 && PIE3bits.PWM2IE == 1 && PIR3bits.PWM2IF == 1){
 
 PIR3bits.PWM2IF = 0;
@@ -6572,6 +6578,9 @@ PWM1DCH = (pwm1DutyForIdrv>>8);
 PWM1DCL = (pwm1DutyForIdrv);
 }
 }
+
+
+
 else
 {
 

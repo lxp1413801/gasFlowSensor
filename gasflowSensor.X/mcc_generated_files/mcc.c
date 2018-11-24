@@ -46,6 +46,8 @@
 // Configuration bits: selected in the GUI
 
 // CONFIG1
+#ifdef IS_APP
+#else
 #pragma config FOSC = INTOSC    // Oscillator Selection Bits->INTOSC oscillator; I/O function on CLKIN pin
 #pragma config WDTE = OFF    // Watchdog Timer Enable->WDT disabled
 #pragma config PWRTE = OFF    // Power-up Timer Enable->PWRT disabled
@@ -56,13 +58,13 @@
 
 // CONFIG2
 #pragma config WRT = OFF    // Flash Memory Self-Write Protection->Write protection off
-#pragma config PPS1WAY = ON    // PPSLOCK bit One-Way Set Enable bit->PPSLOCKED Bit Can Be Cleared & Set Once
+#pragma config PPS1WAY = OFF    // PPSLOCK bit One-Way Set Enable bit->PPSLOCKED Bit Can Be Cleared & Set Once
 #pragma config PLLEN = OFF    // PLL Enable->4x PLL disabled
 #pragma config STVREN = ON    // Stack Overflow/Underflow Reset Enable->Stack Overflow or Underflow will cause a Reset
 #pragma config BORV = LO    // Brown-out Reset Voltage Selection->Brown-out Reset Voltage (Vbor), low trip point selected.
 #pragma config LPBOREN = OFF    // Low Power Brown-out Reset enable bit->LPBOR is disabled
 #pragma config LVP = ON    // Low-Voltage Programming Enable->Low-voltage programming enabled
-
+#endif
 #include "mcc.h"
 
 void SYSTEM_Initialize(void)
@@ -81,10 +83,12 @@ void SYSTEM_Initialize(void)
 
 void OSCILLATOR_Initialize(void)
 {
+    #ifndef IS_APP
     // SCS FOSC; SPLLEN disabled; IRCF 16MHz_HF; 
     OSCCON = 0x78;
     // TUN 0; 
     OSCTUNE = 0x00;
+    #endif
 }
 
 void WDT_Initialize(void)

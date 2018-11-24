@@ -4696,14 +4696,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; <" isRunInBoot equ 0xfff ;# ">
 [; ;globle.h: 38: extern volatile unsigned char isRunInBoot @ 0xfff;
 "3 src/globle/globle.c
+[v _isRunInBoot `Vuc ~T0 @X0 1 e@4095 ]
+[; ;globle.c: 3: volatile unsigned char isRunInBoot @ 0xfff;
+"4
 [v _globalTicker `Vul ~T0 @X0 1 e ]
 [i _globalTicker
 -> 0 `ul
 ]
-[; ;globle.c: 3: volatile uint32_t globalTicker=0x00ul;
-"4
+[; ;globle.c: 4: volatile uint32_t globalTicker=0x00ul;
+"5
 [v _Event `Vuc ~T0 @X0 1 e ]
 [i _Event
 -> -> 0 `i `uc
 ]
-[; ;globle.c: 4: volatile uint8_t Event=0;
+[; ;globle.c: 5: volatile uint8_t Event=0;

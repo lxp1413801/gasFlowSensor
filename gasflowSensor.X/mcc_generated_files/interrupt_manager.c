@@ -97,6 +97,12 @@ void interrupt INTERRUPT_InterruptManager (void)
 		}		
 		eusartRxIdleTime_ms=1;		
     }
+    
+    if( PIR1bits.TXIF == 1)
+    {
+        PIR1bits.TXIF=0;
+    }    
+    
     if(INTCONbits.PEIE == 1 && PIE3bits.PWM2IE == 1 && PIR3bits.PWM2IF == 1){
         //PWM2_ISR();
         PIR3bits.PWM2IF = 0;
@@ -113,7 +119,10 @@ void interrupt INTERRUPT_InterruptManager (void)
             PWM1DCH = (pwm1DutyForIdrv>>8);	//writing 8 MSBs to PWMPRH register
             PWM1DCL = (pwm1DutyForIdrv);	//writing 8 LSBs to PWMPRL register	             
         }
-    }    
+    }   
+
+    
+    
     else
     {
         //Unhandled Interrupt

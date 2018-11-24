@@ -3,6 +3,7 @@
 #include "../includes/includes.h"
 #include "sysData.h"
 #include "../depend/crc16.h"
+#include "../app/main.h"
 uint8_t modbusBuf[EUSART_RX_BUFFER_SIZE];
 void modbus_response_illgeal_function(uint8_t* buf,uint8_t errcode)
 {
@@ -83,7 +84,7 @@ uint16_t getRegisterVal(uint16_t addr,uint16_t *tempData)
 	//uint32_t TEMP;
 	tempAddr = addr & 0xff;
     switch(tempAddr){
-		case 0x01:*tempData = 0x5555; break;
+		case 0x01:*tempData = APP_VER; break;
 		case 0x02:*tempData=sysData.id;break;
 		case 0x03:*tempData=(sysData.pidSetFlg1<<8 | sysData.pidSetFlg0);break;
 		case 0x04:*tempData=sysData.pidKp;break;
@@ -157,6 +158,24 @@ void modbus_response_write_single_register(uint8_t* rbuf)
     crc_append(rbuf,6);
     uart_send_len(rbuf,8);      
 }
+
+void modbus_response_write_mult_register(uint8_t* rbuf)
+{
+    uint8_t startAddr,len;
+    st_modbusWriteMultReg_t* stb=(st_modbusWriteMultReg_t*)rbuf;
+    if(stb->addr!=sysData.id ||  stb->addr==0)return;
+    startAddr=stb->addr_lo;
+    len=stb->len_lo;
+    if(len!=3)return ;
+    if(startAddr!=4)return;
+    sysData.pidKp=(stb->data[0]<<8)|(stb->data[1]);
+    sysData.pidTi=(stb->data[2]<<8)|(stb->data[3]);
+    sysData.pidTd=(stb->data[4]<<8)|(stb->data[5]);
+    sys_data_save();
+    crc_append(rbuf,sizeof(st_modbusWriteMultReg_t)-2);
+    uart_send_len(rbuf,sizeof(st_modbusWriteMultReg_t));     
+}
+
 void modbus_response_command(uint8_t* rbuf){
     uint8_t i;
 	uint16_t startAddr=0;
@@ -202,6 +221,9 @@ void modbus_response_process(uint8_t* rbuf,uint16_t rlen){
         case FUNC_WRITE_SINGLE_REGISTER_EX:
              modbus_response_write_single_register(rbuf);
              break;
+        case FUNC_WRITE_MULTIPLE_REGISTERS:
+            modbus_response_write_mult_register(rbuf);
+            break;
 		/*
 		case FUNC_WRITE_FLASH_SYSDATA:
 			modbus_response_write_flash_sys(rbuf);

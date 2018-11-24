@@ -1,6 +1,6 @@
 Version 3.2 HI-TECH Software Intermediate Code
 "24 src/api/../api/sysData.h
-[s S594 `uc 1 `uc 1 `uc 1 `uc 1 `ui 1 `ui 1 `ui 1 `ui -> 20 `i `ui -> 20 `i `ui 1 ]
+[s S594 `uc 1 `uc 1 `uc 1 `uc 1 `ui 1 `ui 1 `ui 1 `ui -> 30 `i `ui -> 30 `i `ui 1 ]
 [n S594 . pidSetFlg0 pidSetFlg1 id reverse pidKp pidTi pidTd calibRsAdc calibVoMV crc16 ]
 "188 src/api/../../mcc_generated_files/memory.h
 [v _FLASH_EraseBlock `(v ~T0 @X0 0 ef1`ui ]
@@ -36,10 +36,16 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _PMDATH `Vuc ~T0 @X0 0 e@404 ]
 "2597
 [v _PMCON2 `Vuc ~T0 @X0 0 e@406 ]
+"12 src/api/../depend/crc16.h
+[v _crc_append `(v ~T0 @X0 0 ef2`*uc`ui ]
+"33 src/api/../includes/../api/sample.h
+[v _PidKp `l ~T0 @X0 0 e ]
+"34
+[v _PidTi `l ~T0 @X0 0 e ]
+"35
+[v _PidTd `l ~T0 @X0 0 e ]
 "11 src/api/../depend/crc16.h
 [v _crc_verify `(uc ~T0 @X0 0 ef2`*uc`ui ]
-"12
-[v _crc_append `(v ~T0 @X0 0 ef2`*uc`ui ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -4730,372 +4736,378 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;sysData.h: 29: uint16_t pidKp;
 [; ;sysData.h: 30: uint16_t pidTi;
 [; ;sysData.h: 31: uint16_t pidTd;
-[; ;sysData.h: 33: uint16_t calibRsAdc[20];
-[; ;sysData.h: 34: uint16_t calibVoMV[20];
+[; ;sysData.h: 33: uint16_t calibRsAdc[30];
+[; ;sysData.h: 34: uint16_t calibVoMV[30];
 [; ;sysData.h: 35: uint16_t crc16;
 [; ;sysData.h: 36: }sysData_t;
-[; ;sysData.h: 37: extern sysData_t sysData;
+[; ;sysData.h: 37: extern volatile sysData_t sysData;
 [; ;sysData.h: 39: extern uint16_t sys_data_init(void);
 [; ;sysData.h: 40: extern void sys_data_save(void);
 [; ;crc16.h: 10: extern uint16_t crc_sum(uint8_t *puchMsg, uint16_t usDataLen);
 [; ;crc16.h: 11: extern uint8_t crc_verify(uint8_t* message, uint16_t n);
 [; ;crc16.h: 12: extern void crc_append( uint8_t* message, uint16_t n);
-"6 src/api/sysData.c
-[v _sysData `S594 ~T0 @X0 1 e ]
-[; ;sysData.c: 6: sysData_t sysData;
-"8
-[v _my_flash_read_system_erase `(v ~T0 @X0 1 ef ]
+"7 src/api/sysData.c
+[v _sysData `VS594 ~T0 @X0 1 e ]
+[; ;sysData.c: 7: volatile sysData_t sysData;
 "9
+[v _my_flash_read_system_erase `(v ~T0 @X0 1 ef ]
+"10
 {
-[; ;sysData.c: 8: void my_flash_read_system_erase(void)
-[; ;sysData.c: 9: {
+[; ;sysData.c: 9: void my_flash_read_system_erase(void)
+[; ;sysData.c: 10: {
 [e :U _my_flash_read_system_erase ]
 [f ]
-[; ;sysData.c: 15: FLASH_EraseBlock(0x1f80);
-"15
-[e ( _FLASH_EraseBlock (1 -> -> 8064 `i `ui ]
-[; ;sysData.c: 16: FLASH_EraseBlock(0x1f80+32);
+[; ;sysData.c: 16: FLASH_EraseBlock(0x1f00);
 "16
-[e ( _FLASH_EraseBlock (1 -> + -> 8064 `i -> 32 `i `ui ]
-[; ;sysData.c: 17: FLASH_EraseBlock(0x1f80+64);
+[e ( _FLASH_EraseBlock (1 -> -> 7936 `i `ui ]
+[; ;sysData.c: 17: FLASH_EraseBlock(0x1f00+32);
 "17
-[e ( _FLASH_EraseBlock (1 -> + -> 8064 `i -> 64 `i `ui ]
-[; ;sysData.c: 18: FLASH_EraseBlock(0x1f80+96);
+[e ( _FLASH_EraseBlock (1 -> + -> 7936 `i -> 32 `i `ui ]
+[; ;sysData.c: 18: FLASH_EraseBlock(0x1f00+64);
 "18
-[e ( _FLASH_EraseBlock (1 -> + -> 8064 `i -> 96 `i `ui ]
-[; ;sysData.c: 19: }
+[e ( _FLASH_EraseBlock (1 -> + -> 7936 `i -> 64 `i `ui ]
+[; ;sysData.c: 19: FLASH_EraseBlock(0x1f00+96);
 "19
+[e ( _FLASH_EraseBlock (1 -> + -> 7936 `i -> 96 `i `ui ]
+[; ;sysData.c: 20: FLASH_EraseBlock(0x1f00+128);
+"20
+[e ( _FLASH_EraseBlock (1 -> + -> 7936 `i -> 128 `i `ui ]
+[; ;sysData.c: 21: }
+"21
 [e :UE 595 ]
 }
-"21
+"23
 [v _my_flash_system_read `(v ~T0 @X0 1 ef2`*uc`ui ]
-"22
+"24
 {
-[; ;sysData.c: 21: void my_flash_system_read(uint8_t* buf,uint16_t len)
-[; ;sysData.c: 22: {
+[; ;sysData.c: 23: void my_flash_system_read(uint8_t* buf,uint16_t len)
+[; ;sysData.c: 24: {
 [e :U _my_flash_system_read ]
-"21
+"23
 [v _buf `*uc ~T0 @X0 1 r1 ]
 [v _len `ui ~T0 @X0 1 r2 ]
-"22
-[f ]
-"23
-[v _flashAddr `ui ~T0 @X0 1 a ]
-[; ;sysData.c: 23: uint16_t flashAddr=0x1f80;
-[e = _flashAddr -> -> 8064 `i `ui ]
 "24
-[v _i `ui ~T0 @X0 1 a ]
+[f ]
+"25
+[v _flashAddr `ui ~T0 @X0 1 a ]
+[; ;sysData.c: 25: uint16_t flashAddr=0x1f00;
+[e = _flashAddr -> -> 7936 `i `ui ]
 "26
-[v _GIEBitValue `uc ~T0 @X0 1 a ]
-[; ;sysData.c: 24: uint16_t i;
-[; ;sysData.c: 26: uint8_t GIEBitValue = INTCONbits.GIE;
-[e = _GIEBitValue . . _INTCONbits 0 7 ]
-[; ;sysData.c: 28: INTCONbits.GIE = 0;
+[v _i `ui ~T0 @X0 1 a ]
 "28
-[e = . . _INTCONbits 0 7 -> -> 0 `i `uc ]
-[; ;sysData.c: 30: for(i=0;i<len;i++){
+[v _GIEBitValue `uc ~T0 @X0 1 a ]
+[; ;sysData.c: 26: uint16_t i;
+[; ;sysData.c: 28: uint8_t GIEBitValue = INTCONbits.GIE;
+[e = _GIEBitValue . . _INTCONbits 0 7 ]
+[; ;sysData.c: 30: INTCONbits.GIE = 0;
 "30
+[e = . . _INTCONbits 0 7 -> -> 0 `i `uc ]
+[; ;sysData.c: 32: for(i=0;i<len;i++){
+"32
 {
 [e = _i -> -> 0 `i `ui ]
 [e $U 600  ]
 [e :U 597 ]
 {
-[; ;sysData.c: 32: PMADRL = (flashAddr & 0x00FF);
-"32
+[; ;sysData.c: 34: PMADRL = (flashAddr & 0x00FF);
+"34
 [e = _PMADRL -> & _flashAddr -> -> 255 `i `ui `uc ]
-[; ;sysData.c: 33: PMADRH = ((flashAddr & 0xFF00) >> 8);
-"33
-[e = _PMADRH -> >> & _flashAddr -> 65280 `ui -> 8 `i `uc ]
-[; ;sysData.c: 35: PMCON1bits.CFGS = 0;
+[; ;sysData.c: 35: PMADRH = ((flashAddr & 0xFF00) >> 8);
 "35
-[e = . . _PMCON1bits 0 6 -> -> 0 `i `uc ]
-[; ;sysData.c: 36: PMCON1bits.RD = 1;
-"36
-[e = . . _PMCON1bits 0 0 -> -> 1 `i `uc ]
-[; ;sysData.c: 37: __nop();
+[e = _PMADRH -> >> & _flashAddr -> 65280 `ui -> 8 `i `uc ]
+[; ;sysData.c: 37: PMCON1bits.CFGS = 0;
 "37
-[e ( ___nop ..  ]
-[; ;sysData.c: 38: __nop();
+[e = . . _PMCON1bits 0 6 -> -> 0 `i `uc ]
+[; ;sysData.c: 38: PMCON1bits.RD = 1;
 "38
-[e ( ___nop ..  ]
-[; ;sysData.c: 39: buf[i]=PMDATL;
+[e = . . _PMCON1bits 0 0 -> -> 1 `i `uc ]
+[; ;sysData.c: 39: __nop();
 "39
-[e = *U + _buf * -> _i `ux -> -> # *U _buf `ui `ux _PMDATL ]
-[; ;sysData.c: 40: flashAddr++;
+[e ( ___nop ..  ]
+[; ;sysData.c: 40: __nop();
 "40
-[e ++ _flashAddr -> -> 1 `i `ui ]
+[e ( ___nop ..  ]
+[; ;sysData.c: 41: buf[i]=PMDATL;
 "41
+[e = *U + _buf * -> _i `ux -> -> # *U _buf `ui `ux _PMDATL ]
+[; ;sysData.c: 42: flashAddr++;
+"42
+[e ++ _flashAddr -> -> 1 `i `ui ]
+"43
 }
-"30
+"32
 [e ++ _i -> -> 1 `i `ui ]
 [e :U 600 ]
 [e $ < _i _len 597  ]
 [e :U 598 ]
-"41
-}
-[; ;sysData.c: 41: }
-[; ;sysData.c: 42: INTCONbits.GIE = GIEBitValue;
-"42
-[e = . . _INTCONbits 0 7 _GIEBitValue ]
-[; ;sysData.c: 43: }
 "43
+}
+[; ;sysData.c: 43: }
+[; ;sysData.c: 44: INTCONbits.GIE = GIEBitValue;
+"44
+[e = . . _INTCONbits 0 7 _GIEBitValue ]
+[; ;sysData.c: 45: }
+"45
 [e :UE 596 ]
 }
-"45
+"47
 [v _my_flash_system_write `(ui ~T0 @X0 1 ef2`*uc`ui ]
-"46
+"48
 {
-[; ;sysData.c: 45: uint16_t my_flash_system_write(uint8_t* buf,uint16_t len)
-[; ;sysData.c: 46: {
+[; ;sysData.c: 47: uint16_t my_flash_system_write(uint8_t* buf,uint16_t len)
+[; ;sysData.c: 48: {
 [e :U _my_flash_system_write ]
-"45
+"47
 [v _buf `*uc ~T0 @X0 1 r1 ]
 [v _len `ui ~T0 @X0 1 r2 ]
-"46
-[f ]
-"47
-[v _blocNum `ui ~T0 @X0 1 a ]
-[; ;sysData.c: 47: uint16_t blocNum=0;
-[e = _blocNum -> -> 0 `i `ui ]
 "48
+[f ]
+"49
+[v _blocNum `ui ~T0 @X0 1 a ]
+[; ;sysData.c: 49: uint16_t blocNum=0;
+[e = _blocNum -> -> 0 `i `ui ]
+"50
 [v _loc `ui ~T0 @X0 1 a ]
 [v _j `ui ~T0 @X0 1 a ]
 [v _i `ui ~T0 @X0 1 a ]
-[; ;sysData.c: 48: uint16_t loc,j,i=0;
+[; ;sysData.c: 50: uint16_t loc,j,i=0;
 [e = _i -> -> 0 `i `ui ]
-"49
+"51
 [v _flashAddr `ui ~T0 @X0 1 a ]
-[; ;sysData.c: 49: uint16_t flashAddr=0x1f80;
-[e = _flashAddr -> -> 8064 `i `ui ]
-"50
-[v _GIEBitValue `uc ~T0 @X0 1 a ]
-[; ;sysData.c: 50: uint8_t GIEBitValue=INTCONbits.GIE;
-[e = _GIEBitValue . . _INTCONbits 0 7 ]
-[; ;sysData.c: 52: blocNum=len/32;
+[; ;sysData.c: 51: uint16_t flashAddr=0x1f00;
+[e = _flashAddr -> -> 7936 `i `ui ]
 "52
+[v _GIEBitValue `uc ~T0 @X0 1 a ]
+[; ;sysData.c: 52: uint8_t GIEBitValue=INTCONbits.GIE;
+[e = _GIEBitValue . . _INTCONbits 0 7 ]
+[; ;sysData.c: 54: blocNum=len/32;
+"54
 [e = _blocNum / _len -> -> 32 `i `ui ]
-[; ;sysData.c: 53: if(len%32)blocNum++;
-"53
+[; ;sysData.c: 55: if(len%32)blocNum++;
+"55
 [e $ ! != % _len -> -> 32 `i `ui -> -> 0 `i `ui 602  ]
 [e ++ _blocNum -> -> 1 `i `ui ]
 [e :U 602 ]
-[; ;sysData.c: 55: INTCONbits.GIE = 0;
-"55
-[e = . . _INTCONbits 0 7 -> -> 0 `i `uc ]
-[; ;sysData.c: 56: loc=0;
-"56
-[e = _loc -> -> 0 `i `ui ]
-[; ;sysData.c: 57: for(j=0;j<blocNum;j++){
+[; ;sysData.c: 57: INTCONbits.GIE = 0;
 "57
+[e = . . _INTCONbits 0 7 -> -> 0 `i `uc ]
+[; ;sysData.c: 58: loc=0;
+"58
+[e = _loc -> -> 0 `i `ui ]
+[; ;sysData.c: 59: for(j=0;j<blocNum;j++){
+"59
 {
 [e = _j -> -> 0 `i `ui ]
 [e $U 606  ]
 [e :U 603 ]
 {
-[; ;sysData.c: 58: PMCON1bits.CFGS = 0;
-"58
-[e = . . _PMCON1bits 0 6 -> -> 0 `i `uc ]
-[; ;sysData.c: 59: PMCON1bits.WREN = 1;
-"59
-[e = . . _PMCON1bits 0 2 -> -> 1 `i `uc ]
-[; ;sysData.c: 60: PMCON1bits.LWLO = 1;
+[; ;sysData.c: 60: PMCON1bits.CFGS = 0;
 "60
-[e = . . _PMCON1bits 0 5 -> -> 1 `i `uc ]
-[; ;sysData.c: 62: for(i=0;i<32;i++){
+[e = . . _PMCON1bits 0 6 -> -> 0 `i `uc ]
+[; ;sysData.c: 61: PMCON1bits.WREN = 1;
+"61
+[e = . . _PMCON1bits 0 2 -> -> 1 `i `uc ]
+[; ;sysData.c: 62: PMCON1bits.LWLO = 1;
 "62
+[e = . . _PMCON1bits 0 5 -> -> 1 `i `uc ]
+[; ;sysData.c: 64: for(i=0;i<32;i++){
+"64
 {
 [e = _i -> -> 0 `i `ui ]
 [e $ < _i -> -> 32 `i `ui 607  ]
 [e $U 608  ]
 [e :U 607 ]
 {
-[; ;sysData.c: 64: PMADRL = (flashAddr & 0xFF);
-"64
-[e = _PMADRL -> & _flashAddr -> -> 255 `i `ui `uc ]
-[; ;sysData.c: 66: PMADRH = ((flashAddr & 0xFF00) >> 8);
+[; ;sysData.c: 66: PMADRL = (flashAddr & 0xFF);
 "66
+[e = _PMADRL -> & _flashAddr -> -> 255 `i `ui `uc ]
+[; ;sysData.c: 68: PMADRH = ((flashAddr & 0xFF00) >> 8);
+"68
 [e = _PMADRH -> >> & _flashAddr -> 65280 `ui -> 8 `i `uc ]
-[; ;sysData.c: 69: if(loc<len){
-"69
+[; ;sysData.c: 71: if(loc<len){
+"71
 [e $ ! < _loc _len 610  ]
 {
-[; ;sysData.c: 70: PMDATL = buf[loc];
-"70
+[; ;sysData.c: 72: PMDATL = buf[loc];
+"72
 [e = _PMDATL *U + _buf * -> _loc `ux -> -> # *U _buf `ui `ux ]
-"71
+"73
 }
-[; ;sysData.c: 71: }else{
+[; ;sysData.c: 73: }else{
 [e $U 611  ]
 [e :U 610 ]
 {
-[; ;sysData.c: 72: PMDATL = 0x00;
-"72
+[; ;sysData.c: 74: PMDATL = 0x00;
+"74
 [e = _PMDATL -> -> 0 `i `uc ]
-"73
+"75
 }
 [e :U 611 ]
-[; ;sysData.c: 73: }
-[; ;sysData.c: 74: loc++;
-"74
-[e ++ _loc -> -> 1 `i `ui ]
-[; ;sysData.c: 75: PMDATH = 0x00;
-"75
-[e = _PMDATH -> -> 0 `i `uc ]
-[; ;sysData.c: 76: if((i%32) == 32 -1 ){
+[; ;sysData.c: 75: }
+[; ;sysData.c: 76: loc++;
 "76
+[e ++ _loc -> -> 1 `i `ui ]
+[; ;sysData.c: 77: PMDATH = 0x00;
+"77
+[e = _PMDATH -> -> 0 `i `uc ]
+[; ;sysData.c: 78: if((i%32) == 32 -1 ){
+"78
 [e $ ! == % _i -> -> 32 `i `ui -> - -> 32 `i -> 1 `i `ui 612  ]
 {
-[; ;sysData.c: 77: PMCON1bits.LWLO = 0;
-"77
+[; ;sysData.c: 79: PMCON1bits.LWLO = 0;
+"79
 [e = . . _PMCON1bits 0 5 -> -> 0 `i `uc ]
-"78
+"80
 }
 [e :U 612 ]
-[; ;sysData.c: 78: }
-[; ;sysData.c: 80: PMCON2 = 0x55;
-"80
-[e = _PMCON2 -> -> 85 `i `uc ]
-[; ;sysData.c: 81: PMCON2 = 0xAA;
-"81
-[e = _PMCON2 -> -> 170 `i `uc ]
-[; ;sysData.c: 82: PMCON1bits.WR = 1;
+[; ;sysData.c: 80: }
+[; ;sysData.c: 82: PMCON2 = 0x55;
 "82
-[e = . . _PMCON1bits 0 1 -> -> 1 `i `uc ]
-[; ;sysData.c: 83: __nop();
+[e = _PMCON2 -> -> 85 `i `uc ]
+[; ;sysData.c: 83: PMCON2 = 0xAA;
 "83
-[e ( ___nop ..  ]
-[; ;sysData.c: 84: __nop();
+[e = _PMCON2 -> -> 170 `i `uc ]
+[; ;sysData.c: 84: PMCON1bits.WR = 1;
 "84
-[e ( ___nop ..  ]
-[; ;sysData.c: 85: flashAddr++;
+[e = . . _PMCON1bits 0 1 -> -> 1 `i `uc ]
+[; ;sysData.c: 85: __nop();
 "85
-[e ++ _flashAddr -> -> 1 `i `ui ]
+[e ( ___nop ..  ]
+[; ;sysData.c: 86: __nop();
 "86
+[e ( ___nop ..  ]
+[; ;sysData.c: 87: flashAddr++;
+"87
+[e ++ _flashAddr -> -> 1 `i `ui ]
+"88
 }
-"62
+"64
 [e ++ _i -> -> 1 `i `ui ]
 [e $ < _i -> -> 32 `i `ui 607  ]
 [e :U 608 ]
-"86
-}
-[; ;sysData.c: 86: }
-[; ;sysData.c: 87: PMCON1bits.WREN = 0;
-"87
-[e = . . _PMCON1bits 0 2 -> -> 0 `i `uc ]
 "88
 }
-"57
+[; ;sysData.c: 88: }
+[; ;sysData.c: 89: PMCON1bits.WREN = 0;
+"89
+[e = . . _PMCON1bits 0 2 -> -> 0 `i `uc ]
+"90
+}
+"59
 [e ++ _j -> -> 1 `i `ui ]
 [e :U 606 ]
 [e $ < _j _blocNum 603  ]
 [e :U 604 ]
-"88
+"90
 }
-[; ;sysData.c: 88: }
-[; ;sysData.c: 89: INTCONbits.GIE = GIEBitValue;
-"89
-[e = . . _INTCONbits 0 7 _GIEBitValue ]
-[; ;sysData.c: 91: return 0;
+[; ;sysData.c: 90: }
+[; ;sysData.c: 91: INTCONbits.GIE = GIEBitValue;
 "91
+[e = . . _INTCONbits 0 7 _GIEBitValue ]
+[; ;sysData.c: 93: return 0;
+"93
 [e ) -> -> 0 `i `ui ]
 [e $UE 601  ]
-[; ;sysData.c: 92: }
-"92
+[; ;sysData.c: 94: }
+"94
 [e :UE 601 ]
 }
-"94
-[v _sys_data_init `(ui ~T0 @X0 1 ef ]
 "95
-{
-[; ;sysData.c: 94: uint16_t sys_data_init(void)
-[; ;sysData.c: 95: {
-[e :U _sys_data_init ]
-[f ]
-"96
-[v _ret `ui ~T0 @X0 1 a ]
-[v _i `ui ~T0 @X0 1 a ]
-[; ;sysData.c: 96: uint16_t ret,i;
-[; ;sysData.c: 97: my_flash_system_read((uint8_t*)&sysData,sizeof(sysData_t));
-"97
-[e ( _my_flash_system_read (2 , -> &U _sysData `*uc -> # `S594 `ui ]
-[; ;sysData.c: 98: ret=crc_verify((uint8_t*)&sysData,sizeof(sysData_t));
-"98
-[e = _ret -> ( _crc_verify (2 , -> &U _sysData `*uc -> # `S594 `ui `ui ]
-[; ;sysData.c: 99: if(!ret){
-"99
-[e $ ! ! != _ret -> -> 0 `i `ui 614  ]
-{
-[; ;sysData.c: 100: sysData.pidSetFlg0=0xff;
-"100
-[e = . _sysData 0 -> -> 255 `i `uc ]
-[; ;sysData.c: 101: sysData.pidSetFlg1=0xff;
-"101
-[e = . _sysData 1 -> -> 255 `i `uc ]
-[; ;sysData.c: 102: sysData.id=0xff;
-"102
-[e = . _sysData 2 -> -> 255 `i `uc ]
-[; ;sysData.c: 103: for(i=0;i<20;i++){
-"103
-{
-[e = _i -> -> 0 `i `ui ]
-[e $ < _i -> -> 20 `i `ui 615  ]
-[e $U 616  ]
-[e :U 615 ]
-{
-[; ;sysData.c: 105: sysData.calibRsAdc[i]=6400+i*720;
-"105
-[e = *U + &U . _sysData 7 * -> _i `ux -> -> # *U &U . _sysData 7 `ui `ux + -> -> 6400 `i `ui * _i -> -> 720 `i `ui ]
-[; ;sysData.c: 106: sysData.calibVoMV[i]=i*333;
-"106
-[e = *U + &U . _sysData 8 * -> _i `ux -> -> # *U &U . _sysData 8 `ui `ux * _i -> -> 333 `i `ui ]
-"107
-}
-"103
-[e ++ _i -> -> 1 `i `ui ]
-[e $ < _i -> -> 20 `i `ui 615  ]
-[e :U 616 ]
-"107
-}
-[; ;sysData.c: 107: }
-[; ;sysData.c: 108: crc_append((uint8_t*)&sysData,sizeof(sysData_t)-2);
-"108
-[e ( _crc_append (2 , -> &U _sysData `*uc - -> # `S594 `ui -> -> 2 `i `ui ]
-[; ;sysData.c: 110: my_flash_read_system_erase();
-"110
-[e ( _my_flash_read_system_erase ..  ]
-[; ;sysData.c: 111: my_flash_system_write((uint8_t*)&sysData,sizeof(sysData_t));
-"111
-[e ( _my_flash_system_write (2 , -> &U _sysData `*uc -> # `S594 `ui ]
-"115
-}
-[e :U 614 ]
-[; ;sysData.c: 115: }
-[; ;sysData.c: 116: return ret;
-"116
-[e ) _ret ]
-[e $UE 613  ]
-[; ;sysData.c: 117: }
-"117
-[e :UE 613 ]
-}
-"119
 [v _sys_data_save `(v ~T0 @X0 1 ef ]
-"120
+"96
 {
-[; ;sysData.c: 119: void sys_data_save(void)
-[; ;sysData.c: 120: {
+[; ;sysData.c: 95: void sys_data_save(void)
+[; ;sysData.c: 96: {
 [e :U _sys_data_save ]
 [f ]
-[; ;sysData.c: 121: crc_append((uint8_t*)&sysData,sizeof(sysData_t)-2);
-"121
+[; ;sysData.c: 97: crc_append((uint8_t*)&sysData,sizeof(sysData_t)-2);
+"97
 [e ( _crc_append (2 , -> &U _sysData `*uc - -> # `S594 `ui -> -> 2 `i `ui ]
-[; ;sysData.c: 122: my_flash_read_system_erase();
-"122
+[; ;sysData.c: 98: my_flash_read_system_erase();
+"98
 [e ( _my_flash_read_system_erase ..  ]
-[; ;sysData.c: 123: my_flash_system_write((uint8_t*)&sysData,sizeof(sysData_t));
-"123
+[; ;sysData.c: 99: my_flash_system_write((uint8_t*)&sysData,sizeof(sysData_t));
+"99
 [e ( _my_flash_system_write (2 , -> &U _sysData `*uc -> # `S594 `ui ]
-[; ;sysData.c: 124: }
-"124
-[e :UE 618 ]
+[; ;sysData.c: 100: PidKp=sysData.pidKp;
+"100
+[e = _PidKp -> . _sysData 4 `l ]
+[; ;sysData.c: 101: PidTi=sysData.pidTi;
+"101
+[e = _PidTi -> . _sysData 5 `l ]
+[; ;sysData.c: 102: PidTd=sysData.pidTd;;
+"102
+[e = _PidTd -> . _sysData 6 `l ]
+[; ;sysData.c: 103: }
+"103
+[e :UE 613 ]
+}
+"104
+[v _sys_data_init `(ui ~T0 @X0 1 ef ]
+"105
+{
+[; ;sysData.c: 104: uint16_t sys_data_init(void)
+[; ;sysData.c: 105: {
+[e :U _sys_data_init ]
+[f ]
+"106
+[v _ret `ui ~T0 @X0 1 a ]
+[v _i `ui ~T0 @X0 1 a ]
+[; ;sysData.c: 106: uint16_t ret,i;
+[; ;sysData.c: 107: my_flash_system_read((uint8_t*)&sysData,sizeof(sysData_t));
+"107
+[e ( _my_flash_system_read (2 , -> &U _sysData `*uc -> # `S594 `ui ]
+[; ;sysData.c: 108: ret=crc_verify((uint8_t*)&sysData,sizeof(sysData_t));
+"108
+[e = _ret -> ( _crc_verify (2 , -> &U _sysData `*uc -> # `S594 `ui `ui ]
+[; ;sysData.c: 109: if(!ret){
+"109
+[e $ ! ! != _ret -> -> 0 `i `ui 615  ]
+{
+[; ;sysData.c: 110: sysData.pidSetFlg0=0xff;
+"110
+[e = . _sysData 0 -> -> 255 `i `uc ]
+[; ;sysData.c: 111: sysData.pidSetFlg1=0xff;
+"111
+[e = . _sysData 1 -> -> 255 `i `uc ]
+[; ;sysData.c: 112: sysData.id=0xff;
+"112
+[e = . _sysData 2 -> -> 255 `i `uc ]
+[; ;sysData.c: 113: for(i=0;i<30;i++){
+"113
+{
+[e = _i -> -> 0 `i `ui ]
+[e $ < _i -> -> 30 `i `ui 616  ]
+[e $U 617  ]
+[e :U 616 ]
+{
+[; ;sysData.c: 115: sysData.calibRsAdc[i]=6400+i*720;
+"115
+[e = *U + &U . _sysData 7 * -> _i `ux -> -> # *U &U . _sysData 7 `ui `ux + -> -> 6400 `i `ui * _i -> -> 720 `i `ui ]
+[; ;sysData.c: 116: sysData.calibVoMV[i]=i*333;
+"116
+[e = *U + &U . _sysData 8 * -> _i `ux -> -> # *U &U . _sysData 8 `ui `ux * _i -> -> 333 `i `ui ]
+"117
+}
+"113
+[e ++ _i -> -> 1 `i `ui ]
+[e $ < _i -> -> 30 `i `ui 616  ]
+[e :U 617 ]
+"117
+}
+[; ;sysData.c: 117: }
+[; ;sysData.c: 118: sys_data_save();
+"118
+[e ( _sys_data_save ..  ]
+"126
+}
+[e :U 615 ]
+[; ;sysData.c: 126: }
+[; ;sysData.c: 128: return ret;
+"128
+[e ) _ret ]
+[e $UE 614  ]
+[; ;sysData.c: 129: }
+"129
+[e :UE 614 ]
 }

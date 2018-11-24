@@ -1,12 +1,12 @@
 Version 3.2 HI-TECH Software Intermediate Code
-"45 src/api/modbus.h
-[s S2 `uc 1 `uc 1 `uc 1 `uc 1 ]
-[n S2 . addr func errcord crc16 ]
+"56 src/api/modbus.h
+[s S3 `uc 1 `uc 1 `uc 1 `uc 1 ]
+[n S3 . addr func errcord crc16 ]
 "24 src/api/sysData.h
-[s S598 `uc 1 `uc 1 `uc 1 `uc 1 `ui 1 `ui 1 `ui 1 `ui -> 20 `i `ui -> 20 `i `ui 1 ]
-[n S598 . pidSetFlg0 pidSetFlg1 id reverse pidKp pidTi pidTd calibRsAdc calibVoMV crc16 ]
+[s S599 `uc 1 `uc 1 `uc 1 `uc 1 `ui 1 `ui 1 `ui 1 `ui -> 30 `i `ui -> 30 `i `ui 1 ]
+[n S599 . pidSetFlg0 pidSetFlg1 id reverse pidKp pidTi pidTd calibRsAdc calibVoMV crc16 ]
 "37
-[v _sysData `S598 ~T0 @X0 0 e ]
+[v _sysData `VS599 ~T0 @X0 0 e ]
 "12 src/api/../depend/crc16.h
 [v _crc_append `(v ~T0 @X0 0 ef2`*uc`ui ]
 "23 src/api/../includes/../api/my_uart.h
@@ -29,13 +29,16 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _voExpectMv `ui ~T0 @X0 0 e ]
 "53
 [v _voExpectAdcValue `ui ~T0 @X0 0 e ]
-"37 src/api/modbus.h
-[s S1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 ]
-[n S1 . addr func addr_hi addr_lo len_hi len_lo ]
+"48 src/api/modbus.h
+[s S2 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 ]
+[n S2 . addr func addr_hi addr_lo len_hi len_lo ]
 "57 src/api/../includes/../api/sample.h
 [v _rsLoAvg `ui ~T0 @X0 0 e ]
 "40 src/api/sysData.h
 [v _sys_data_save `(v ~T0 @X0 0 ef ]
+"37 src/api/modbus.h
+[s S1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc 1 `uc -> 2 `i ]
+[n S1 . addr func addr_hi addr_lo len_hi len_lo data ]
 "11 src/api/../depend/crc16.h
 [v _crc_verify `(uc ~T0 @X0 0 ef2`*uc`ui ]
 [; ;stdint.h: 13: typedef signed char int8_t;
@@ -73,33 +76,42 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;modbus.h: 41: uint8_t addr_lo;
 [; ;modbus.h: 42: uint8_t len_hi;
 [; ;modbus.h: 43: uint8_t len_lo;
-[; ;modbus.h: 44: }st_modbusComReqStructDef;
-[; ;modbus.h: 45: typedef struct{
-[; ;modbus.h: 46: uint8_t addr;
-[; ;modbus.h: 47: uint8_t func;
-[; ;modbus.h: 48: uint8_t errcord;
-[; ;modbus.h: 49: uint8_t crc16;
-[; ;modbus.h: 50: }st_modbusErrRespStructDef;
-[; ;modbus.h: 51: typedef struct{
-[; ;modbus.h: 52: uint8_t addr;
-[; ;modbus.h: 53: uint8_t func;
-[; ;modbus.h: 54: uint8_t addr_hi;
-[; ;modbus.h: 55: uint8_t addr_lo;
-[; ;modbus.h: 56: uint8_t len_hi;
-[; ;modbus.h: 57: uint8_t len_lo;
-[; ;modbus.h: 58: uint16_t crc16;
-[; ;modbus.h: 59: }st_modbusReadClib;
-[; ;modbus.h: 60: typedef struct{
-[; ;modbus.h: 61: uint8_t addr;
-[; ;modbus.h: 62: uint8_t func;
-[; ;modbus.h: 63: uint8_t addr_hi;
-[; ;modbus.h: 64: uint8_t addr_lo;
-[; ;modbus.h: 65: uint8_t data_hi;
-[; ;modbus.h: 66: uint8_t data_lo;
-[; ;modbus.h: 67: uint16_t crc16;
-[; ;modbus.h: 68: }st_modbusWriteSingleClib;
-[; ;modbus.h: 74: extern uint8_t modbusBuf[];
-[; ;modbus.h: 75: extern void modbus_response_process(uint8_t* rbuf,uint16_t rlen);
+[; ;modbus.h: 44: uint8_t data[2];
+[; ;modbus.h: 46: }st_modbusWriteMultReg_t;
+[; ;modbus.h: 48: typedef struct{
+[; ;modbus.h: 49: uint8_t addr;
+[; ;modbus.h: 50: uint8_t func;
+[; ;modbus.h: 51: uint8_t addr_hi;
+[; ;modbus.h: 52: uint8_t addr_lo;
+[; ;modbus.h: 53: uint8_t len_hi;
+[; ;modbus.h: 54: uint8_t len_lo;
+[; ;modbus.h: 55: }st_modbusComReqStructDef;
+[; ;modbus.h: 56: typedef struct{
+[; ;modbus.h: 57: uint8_t addr;
+[; ;modbus.h: 58: uint8_t func;
+[; ;modbus.h: 59: uint8_t errcord;
+[; ;modbus.h: 60: uint8_t crc16;
+[; ;modbus.h: 61: }st_modbusErrRespStructDef;
+[; ;modbus.h: 62: typedef struct{
+[; ;modbus.h: 63: uint8_t addr;
+[; ;modbus.h: 64: uint8_t func;
+[; ;modbus.h: 65: uint8_t addr_hi;
+[; ;modbus.h: 66: uint8_t addr_lo;
+[; ;modbus.h: 67: uint8_t len_hi;
+[; ;modbus.h: 68: uint8_t len_lo;
+[; ;modbus.h: 69: uint16_t crc16;
+[; ;modbus.h: 70: }st_modbusReadClib;
+[; ;modbus.h: 71: typedef struct{
+[; ;modbus.h: 72: uint8_t addr;
+[; ;modbus.h: 73: uint8_t func;
+[; ;modbus.h: 74: uint8_t addr_hi;
+[; ;modbus.h: 75: uint8_t addr_lo;
+[; ;modbus.h: 76: uint8_t data_hi;
+[; ;modbus.h: 77: uint8_t data_lo;
+[; ;modbus.h: 78: uint16_t crc16;
+[; ;modbus.h: 79: }st_modbusWriteSingleClib;
+[; ;modbus.h: 85: extern uint8_t modbusBuf[];
+[; ;modbus.h: 86: extern void modbus_response_process(uint8_t* rbuf,uint16_t rlen);
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -4757,592 +4769,664 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;sysData.h: 29: uint16_t pidKp;
 [; ;sysData.h: 30: uint16_t pidTi;
 [; ;sysData.h: 31: uint16_t pidTd;
-[; ;sysData.h: 33: uint16_t calibRsAdc[20];
-[; ;sysData.h: 34: uint16_t calibVoMV[20];
+[; ;sysData.h: 33: uint16_t calibRsAdc[30];
+[; ;sysData.h: 34: uint16_t calibVoMV[30];
 [; ;sysData.h: 35: uint16_t crc16;
 [; ;sysData.h: 36: }sysData_t;
-[; ;sysData.h: 37: extern sysData_t sysData;
+[; ;sysData.h: 37: extern volatile sysData_t sysData;
 [; ;sysData.h: 39: extern uint16_t sys_data_init(void);
 [; ;sysData.h: 40: extern void sys_data_save(void);
 [; ;crc16.h: 10: extern uint16_t crc_sum(uint8_t *puchMsg, uint16_t usDataLen);
 [; ;crc16.h: 11: extern uint8_t crc_verify(uint8_t* message, uint16_t n);
 [; ;crc16.h: 12: extern void crc_append( uint8_t* message, uint16_t n);
-"6 src/api/modbus.c
+"7 src/api/modbus.c
 [v _modbusBuf `uc ~T0 @X0 -> 64 `i e ]
-[; ;modbus.c: 6: uint8_t modbusBuf[64];
-"7
-[v _modbus_response_illgeal_function `(v ~T0 @X0 1 ef2`*uc`uc ]
+[; ;modbus.c: 7: uint8_t modbusBuf[64];
 "8
+[v _modbus_response_illgeal_function `(v ~T0 @X0 1 ef2`*uc`uc ]
+"9
 {
-[; ;modbus.c: 7: void modbus_response_illgeal_function(uint8_t* buf,uint8_t errcode)
-[; ;modbus.c: 8: {
+[; ;modbus.c: 8: void modbus_response_illgeal_function(uint8_t* buf,uint8_t errcode)
+[; ;modbus.c: 9: {
 [e :U _modbus_response_illgeal_function ]
-"7
+"8
 [v _buf `*uc ~T0 @X0 1 r1 ]
 [v _errcode `uc ~T0 @X0 1 r2 ]
-"8
-[f ]
 "9
-[v _pmdbs `*S2 ~T0 @X0 1 a ]
-[; ;modbus.c: 9: st_modbusErrRespStructDef* pmdbs=(st_modbusErrRespStructDef*)buf;
-[e = _pmdbs -> _buf `*S2 ]
-[; ;modbus.c: 10: if(pmdbs->addr==0x00)return;
+[f ]
 "10
-[e $ ! == -> . *U _pmdbs 0 `i -> 0 `i 600  ]
-[e $UE 599  ]
-[e :U 600 ]
-[; ;modbus.c: 11: pmdbs->addr=sysData.id;
+[v _pmdbs `*S3 ~T0 @X0 1 a ]
+[; ;modbus.c: 10: st_modbusErrRespStructDef* pmdbs=(st_modbusErrRespStructDef*)buf;
+[e = _pmdbs -> _buf `*S3 ]
+[; ;modbus.c: 11: if(pmdbs->addr==0x00)return;
 "11
-[e = . *U _pmdbs 0 . _sysData 2 ]
-[; ;modbus.c: 12: if(errcode){
-"12
-[e $ ! != -> _errcode `i -> -> -> 0 `i `uc `i 601  ]
-{
-[; ;modbus.c: 13: pmdbs->func+=0x80;
-"13
-[e =+ . *U _pmdbs 1 -> -> 128 `i `uc ]
-"14
-}
+[e $ ! == -> . *U _pmdbs 0 `i -> 0 `i 601  ]
+[e $UE 600  ]
 [e :U 601 ]
-[; ;modbus.c: 14: }
-[; ;modbus.c: 15: pmdbs->errcord=errcode;
-"15
-[e = . *U _pmdbs 2 _errcode ]
-[; ;modbus.c: 16: crc_append(buf,3);
-"16
-[e ( _crc_append (2 , _buf -> -> 3 `i `ui ]
-[; ;modbus.c: 17: uart_send_len(buf,5);
-"17
-[e ( _uart_send_len (2 , _buf -> -> 5 `i `uc ]
-[; ;modbus.c: 18: }
-"18
-[e :UE 599 ]
-}
-"79
-[v _getRegisterVal `(ui ~T0 @X0 1 ef2`ui`*ui ]
-"80
+[; ;modbus.c: 12: pmdbs->addr=sysData.id;
+"12
+[e = . *U _pmdbs 0 . _sysData 2 ]
+[; ;modbus.c: 13: if(errcode){
+"13
+[e $ ! != -> _errcode `i -> -> -> 0 `i `uc `i 602  ]
 {
-[; ;modbus.c: 79: uint16_t getRegisterVal(uint16_t addr,uint16_t *tempData)
-[; ;modbus.c: 80: {
+[; ;modbus.c: 14: pmdbs->func+=0x80;
+"14
+[e =+ . *U _pmdbs 1 -> -> 128 `i `uc ]
+"15
+}
+[e :U 602 ]
+[; ;modbus.c: 15: }
+[; ;modbus.c: 16: pmdbs->errcord=errcode;
+"16
+[e = . *U _pmdbs 2 _errcode ]
+[; ;modbus.c: 17: crc_append(buf,3);
+"17
+[e ( _crc_append (2 , _buf -> -> 3 `i `ui ]
+[; ;modbus.c: 18: uart_send_len(buf,5);
+"18
+[e ( _uart_send_len (2 , _buf -> -> 5 `i `uc ]
+[; ;modbus.c: 19: }
+"19
+[e :UE 600 ]
+}
+"80
+[v _getRegisterVal `(ui ~T0 @X0 1 ef2`ui`*ui ]
+"81
+{
+[; ;modbus.c: 80: uint16_t getRegisterVal(uint16_t addr,uint16_t *tempData)
+[; ;modbus.c: 81: {
 [e :U _getRegisterVal ]
-"79
+"80
 [v _addr `ui ~T0 @X0 1 r1 ]
 [v _tempData `*ui ~T0 @X0 1 r2 ]
-"80
-[f ]
 "81
-[v _t16 `ui ~T0 @X0 1 a ]
-[; ;modbus.c: 81: uint16_t t16 = 0;
-[e = _t16 -> -> 0 `i `ui ]
+[f ]
 "82
+[v _t16 `ui ~T0 @X0 1 a ]
+[; ;modbus.c: 82: uint16_t t16 = 0;
+[e = _t16 -> -> 0 `i `ui ]
+"83
 [v _tempAddr `uc ~T0 @X0 1 a ]
-[; ;modbus.c: 82: uint8_t tempAddr;
-[; ;modbus.c: 84: tempAddr = addr & 0xff;
-"84
-[e = _tempAddr -> & _addr -> -> 255 `i `ui `uc ]
-[; ;modbus.c: 85: switch(tempAddr){
+[; ;modbus.c: 83: uint8_t tempAddr;
+[; ;modbus.c: 85: tempAddr = addr & 0xff;
 "85
-[e $U 604  ]
-{
-[; ;modbus.c: 86: case 0x01:*tempData = 0x5555; break;
+[e = _tempAddr -> & _addr -> -> 255 `i `ui `uc ]
+[; ;modbus.c: 86: switch(tempAddr){
 "86
-[e :U 605 ]
-[e = *U _tempData -> -> 21845 `i `ui ]
-[e $U 603  ]
-[; ;modbus.c: 87: case 0x02:*tempData=sysData.id;break;
+[e $U 605  ]
+{
+[; ;modbus.c: 87: case 0x01:*tempData = 0100; break;
 "87
 [e :U 606 ]
-[e = *U _tempData -> . _sysData 2 `ui ]
-[e $U 603  ]
-[; ;modbus.c: 88: case 0x03:*tempData=(sysData.pidSetFlg1<<8 | sysData.pidSetFlg0);break;
+[e = *U _tempData -> -> 64 `i `ui ]
+[e $U 604  ]
+[; ;modbus.c: 88: case 0x02:*tempData=sysData.id;break;
 "88
 [e :U 607 ]
-[e = *U _tempData -> | << -> . _sysData 1 `i -> 8 `i -> . _sysData 0 `i `ui ]
-[e $U 603  ]
-[; ;modbus.c: 89: case 0x04:*tempData=sysData.pidKp;break;
+[e = *U _tempData -> . _sysData 2 `ui ]
+[e $U 604  ]
+[; ;modbus.c: 89: case 0x03:*tempData=(sysData.pidSetFlg1<<8 | sysData.pidSetFlg0);break;
 "89
 [e :U 608 ]
-[e = *U _tempData . _sysData 4 ]
-[e $U 603  ]
-[; ;modbus.c: 90: case 0x05:*tempData=sysData.pidTi;break;
+[e = *U _tempData -> | << -> . _sysData 1 `i -> 8 `i -> . _sysData 0 `i `ui ]
+[e $U 604  ]
+[; ;modbus.c: 90: case 0x04:*tempData=sysData.pidKp;break;
 "90
 [e :U 609 ]
-[e = *U _tempData . _sysData 5 ]
-[e $U 603  ]
-[; ;modbus.c: 91: case 0x06:*tempData=sysData.pidTd;break;
+[e = *U _tempData . _sysData 4 ]
+[e $U 604  ]
+[; ;modbus.c: 91: case 0x05:*tempData=sysData.pidTi;break;
 "91
 [e :U 610 ]
-[e = *U _tempData . _sysData 6 ]
-[e $U 603  ]
-[; ;modbus.c: 92: case 0x07:*tempData=rtAdcValueRsLo; break;
+[e = *U _tempData . _sysData 5 ]
+[e $U 604  ]
+[; ;modbus.c: 92: case 0x06:*tempData=sysData.pidTd;break;
 "92
 [e :U 611 ]
-[e = *U _tempData _rtAdcValueRsLo ]
-[e $U 603  ]
-[; ;modbus.c: 93: case 0x08:*tempData=rtAdcValueRsHi;break;
+[e = *U _tempData . _sysData 6 ]
+[e $U 604  ]
+[; ;modbus.c: 93: case 0x07:*tempData=rtAdcValueRsLo; break;
 "93
 [e :U 612 ]
-[e = *U _tempData _rtAdcValueRsHi ]
-[e $U 603  ]
-[; ;modbus.c: 94: case 0x09:*tempData=rtAdcValueRcLo;break;
+[e = *U _tempData _rtAdcValueRsLo ]
+[e $U 604  ]
+[; ;modbus.c: 94: case 0x08:*tempData=rtAdcValueRsHi;break;
 "94
 [e :U 613 ]
-[e = *U _tempData _rtAdcValueRcLo ]
-[e $U 603  ]
-[; ;modbus.c: 95: case 0x0a:*tempData=rtAdcValueRcHi;break;
+[e = *U _tempData _rtAdcValueRsHi ]
+[e $U 604  ]
+[; ;modbus.c: 95: case 0x09:*tempData=rtAdcValueRcLo;break;
 "95
 [e :U 614 ]
-[e = *U _tempData _rtAdcValueRcHi ]
-[e $U 603  ]
-[; ;modbus.c: 96: case 0x0b:*tempData=resRc;break;
+[e = *U _tempData _rtAdcValueRcLo ]
+[e $U 604  ]
+[; ;modbus.c: 96: case 0x0a:*tempData=rtAdcValueRcHi;break;
 "96
 [e :U 615 ]
-[e = *U _tempData -> _resRc `ui ]
-[e $U 603  ]
-[; ;modbus.c: 97: case 0x0c:*tempData=resRs;break;
+[e = *U _tempData _rtAdcValueRcHi ]
+[e $U 604  ]
+[; ;modbus.c: 97: case 0x0b:*tempData=resRc;break;
 "97
 [e :U 616 ]
-[e = *U _tempData -> _resRs `ui ]
-[e $U 603  ]
-[; ;modbus.c: 98: case 0x0d:*tempData=rtAdcValueVoFb;break;
+[e = *U _tempData -> _resRc `ui ]
+[e $U 604  ]
+[; ;modbus.c: 98: case 0x0c:*tempData=resRs;break;
 "98
 [e :U 617 ]
-[e = *U _tempData _rtAdcValueVoFb ]
-[e $U 603  ]
-[; ;modbus.c: 99: case 0x0e:*tempData=voExpectMv;break;
+[e = *U _tempData -> _resRs `ui ]
+[e $U 604  ]
+[; ;modbus.c: 99: case 0x0d:*tempData=rtAdcValueVoFb;break;
 "99
 [e :U 618 ]
-[e = *U _tempData _voExpectMv ]
-[e $U 603  ]
-[; ;modbus.c: 100: case 0x0f:*tempData=voExpectAdcValue;break;
+[e = *U _tempData _rtAdcValueVoFb ]
+[e $U 604  ]
+[; ;modbus.c: 100: case 0x0e:*tempData=voExpectMv;break;
 "100
 [e :U 619 ]
-[e = *U _tempData _voExpectAdcValue ]
-[e $U 603  ]
-[; ;modbus.c: 101: default: *tempData=0x55aa;break;
+[e = *U _tempData _voExpectMv ]
+[e $U 604  ]
+[; ;modbus.c: 101: case 0x0f:*tempData=voExpectAdcValue;break;
 "101
 [e :U 620 ]
+[e = *U _tempData _voExpectAdcValue ]
+[e $U 604  ]
+[; ;modbus.c: 102: default: *tempData=0x55aa;break;
+"102
+[e :U 621 ]
 [e = *U _tempData -> -> 21930 `i `ui ]
-[e $U 603  ]
-"102
-}
-[; ;modbus.c: 102: }
-[e $U 603  ]
-"85
-[e :U 604 ]
-[e [\ _tempAddr , $ -> -> 1 `i `uc 605
- , $ -> -> 2 `i `uc 606
- , $ -> -> 3 `i `uc 607
- , $ -> -> 4 `i `uc 608
- , $ -> -> 5 `i `uc 609
- , $ -> -> 6 `i `uc 610
- , $ -> -> 7 `i `uc 611
- , $ -> -> 8 `i `uc 612
- , $ -> -> 9 `i `uc 613
- , $ -> -> 10 `i `uc 614
- , $ -> -> 11 `i `uc 615
- , $ -> -> 12 `i `uc 616
- , $ -> -> 13 `i `uc 617
- , $ -> -> 14 `i `uc 618
- , $ -> -> 15 `i `uc 619
- 620 ]
-"102
-[e :U 603 ]
-[; ;modbus.c: 103: if(tempAddr>0x0f && tempAddr < 0x10+20*2){
+[e $U 604  ]
 "103
-[e $ ! && > -> _tempAddr `i -> 15 `i < -> _tempAddr `i + -> 16 `i * -> 20 `i -> 2 `i 621  ]
-{
-[; ;modbus.c: 104: tempAddr-=0x10;
+}
+[; ;modbus.c: 103: }
+[e $U 604  ]
+"86
+[e :U 605 ]
+[e [\ _tempAddr , $ -> -> 1 `i `uc 606
+ , $ -> -> 2 `i `uc 607
+ , $ -> -> 3 `i `uc 608
+ , $ -> -> 4 `i `uc 609
+ , $ -> -> 5 `i `uc 610
+ , $ -> -> 6 `i `uc 611
+ , $ -> -> 7 `i `uc 612
+ , $ -> -> 8 `i `uc 613
+ , $ -> -> 9 `i `uc 614
+ , $ -> -> 10 `i `uc 615
+ , $ -> -> 11 `i `uc 616
+ , $ -> -> 12 `i `uc 617
+ , $ -> -> 13 `i `uc 618
+ , $ -> -> 14 `i `uc 619
+ , $ -> -> 15 `i `uc 620
+ 621 ]
+"103
+[e :U 604 ]
+[; ;modbus.c: 104: if(tempAddr>0x0f && tempAddr < 0x10+30*2){
 "104
-[e =- _tempAddr -> -> 16 `i `uc ]
-[; ;modbus.c: 105: if(tempAddr & 0x01){
+[e $ ! && > -> _tempAddr `i -> 15 `i < -> _tempAddr `i + -> 16 `i * -> 30 `i -> 2 `i 622  ]
+{
+[; ;modbus.c: 105: tempAddr-=0x10;
 "105
-[e $ ! != & -> _tempAddr `i -> 1 `i -> 0 `i 622  ]
-{
-[; ;modbus.c: 106: *tempData=sysData.calibVoMV[tempAddr>>1];
+[e =- _tempAddr -> -> 16 `i `uc ]
+[; ;modbus.c: 106: if(tempAddr & 0x01){
 "106
-[e = *U _tempData *U + &U . _sysData 8 * -> -> >> -> _tempAddr `i -> 1 `i `ui `ux -> -> # *U &U . _sysData 8 `ui `ux ]
-"107
-}
-[; ;modbus.c: 107: }else{
-[e $U 623  ]
-[e :U 622 ]
+[e $ ! != & -> _tempAddr `i -> 1 `i -> 0 `i 623  ]
 {
-[; ;modbus.c: 108: *tempData=sysData.calibRsAdc[tempAddr>>1];
+[; ;modbus.c: 107: *tempData=sysData.calibVoMV[tempAddr>>1];
+"107
+[e = *U _tempData *U + &U . _sysData 8 * -> -> >> -> _tempAddr `i -> 1 `i `ui `ux -> -> # *U &U . _sysData 8 `ui `ux ]
 "108
-[e = *U _tempData *U + &U . _sysData 7 * -> -> >> -> _tempAddr `i -> 1 `i `ui `ux -> -> # *U &U . _sysData 7 `ui `ux ]
-"109
 }
+[; ;modbus.c: 108: }else{
+[e $U 624  ]
 [e :U 623 ]
+{
+[; ;modbus.c: 109: *tempData=sysData.calibRsAdc[tempAddr>>1];
+"109
+[e = *U _tempData *U + &U . _sysData 7 * -> -> >> -> _tempAddr `i -> 1 `i `ui `ux -> -> # *U &U . _sysData 7 `ui `ux ]
 "110
 }
-[e :U 621 ]
-[; ;modbus.c: 109: }
-[; ;modbus.c: 110: }
-[; ;modbus.c: 111: return t16;
+[e :U 624 ]
 "111
-[e ) _t16 ]
-[e $UE 602  ]
-[; ;modbus.c: 112: }
-"112
-[e :UE 602 ]
 }
-"114
+[e :U 622 ]
+[; ;modbus.c: 110: }
+[; ;modbus.c: 111: }
+[; ;modbus.c: 112: return t16;
+"112
+[e ) _t16 ]
+[e $UE 603  ]
+[; ;modbus.c: 113: }
+"113
+[e :UE 603 ]
+}
+"115
 [v _modbus_response_write_single_register `(v ~T0 @X0 1 ef1`*uc ]
-"115
-{
-[; ;modbus.c: 114: void modbus_response_write_single_register(uint8_t* rbuf)
-[; ;modbus.c: 115: {
-[e :U _modbus_response_write_single_register ]
-"114
-[v _rbuf `*uc ~T0 @X0 1 r1 ]
-"115
-[f ]
 "116
-[v _startAddr `ui ~T0 @X0 1 a ]
-[; ;modbus.c: 116: uint16_t startAddr=0;
-[e = _startAddr -> -> 0 `i `ui ]
+{
+[; ;modbus.c: 115: void modbus_response_write_single_register(uint8_t* rbuf)
+[; ;modbus.c: 116: {
+[e :U _modbus_response_write_single_register ]
+"115
+[v _rbuf `*uc ~T0 @X0 1 r1 ]
+"116
+[f ]
 "117
+[v _startAddr `ui ~T0 @X0 1 a ]
+[; ;modbus.c: 117: uint16_t startAddr=0;
+[e = _startAddr -> -> 0 `i `ui ]
+"118
 [v _t16 `ui ~T0 @X0 1 a ]
 [v _i `ui ~T0 @X0 1 a ]
-"118
-[v _fiSave `uc ~T0 @X0 1 a ]
-[; ;modbus.c: 117: uint16_t t16,i;
-[; ;modbus.c: 118: uint8_t fiSave=0;
-[e = _fiSave -> -> 0 `i `uc ]
 "119
-[v _pmdbs `*S1 ~T0 @X0 1 a ]
-[; ;modbus.c: 119: st_modbusComReqStructDef* pmdbs=(st_modbusComReqStructDef*)rbuf;
-[e = _pmdbs -> _rbuf `*S1 ]
-[; ;modbus.c: 120: if(pmdbs->addr!=sysData.id && pmdbs->addr!=0)return;
+[v _fiSave `uc ~T0 @X0 1 a ]
+[; ;modbus.c: 118: uint16_t t16,i;
+[; ;modbus.c: 119: uint8_t fiSave=0;
+[e = _fiSave -> -> 0 `i `uc ]
 "120
-[e $ ! && != -> . *U _pmdbs 0 `i -> . _sysData 2 `i != -> . *U _pmdbs 0 `i -> 0 `i 625  ]
-[e $UE 624  ]
-[e :U 625 ]
-[; ;modbus.c: 121: if(sysData.id==253 && pmdbs->addr==0)return;
+[v _pmdbs `*S2 ~T0 @X0 1 a ]
+[; ;modbus.c: 120: st_modbusComReqStructDef* pmdbs=(st_modbusComReqStructDef*)rbuf;
+[e = _pmdbs -> _rbuf `*S2 ]
+[; ;modbus.c: 121: if(pmdbs->addr!=sysData.id && pmdbs->addr!=0)return;
 "121
-[e $ ! && == -> . _sysData 2 `i -> 253 `i == -> . *U _pmdbs 0 `i -> 0 `i 626  ]
-[e $UE 624  ]
+[e $ ! && != -> . *U _pmdbs 0 `i -> . _sysData 2 `i != -> . *U _pmdbs 0 `i -> 0 `i 626  ]
+[e $UE 625  ]
 [e :U 626 ]
-[; ;modbus.c: 122: startAddr=pmdbs->addr_hi;
+[; ;modbus.c: 122: if(sysData.id==253 && pmdbs->addr==0)return;
 "122
-[e = _startAddr -> . *U _pmdbs 2 `ui ]
-[; ;modbus.c: 123: startAddr<<=8;
-"123
-[e =<< _startAddr -> 8 `i ]
-[; ;modbus.c: 124: startAddr |= pmdbs->addr_lo;
-"124
-[e =| _startAddr -> . *U _pmdbs 3 `ui ]
-[; ;modbus.c: 125: startAddr = startAddr & 0xff;
-"125
-[e = _startAddr & _startAddr -> -> 255 `i `ui ]
-[; ;modbus.c: 126: if(startAddr==0x02){
-"126
-[e $ ! == _startAddr -> -> 2 `i `ui 627  ]
-{
-[; ;modbus.c: 127: sysData.id=rbuf[5];
-"127
-[e = . _sysData 2 *U + _rbuf * -> -> 5 `i `x -> -> # *U _rbuf `i `x ]
-[; ;modbus.c: 128: fiSave=1;
-"128
-[e = _fiSave -> -> 1 `i `uc ]
-"129
-}
-[; ;modbus.c: 129: }else if(startAddr==0x03){
-[e $U 628  ]
+[e $ ! && == -> . _sysData 2 `i -> 253 `i == -> . *U _pmdbs 0 `i -> 0 `i 627  ]
+[e $UE 625  ]
 [e :U 627 ]
-[e $ ! == _startAddr -> -> 3 `i `ui 629  ]
+[; ;modbus.c: 123: startAddr=pmdbs->addr_hi;
+"123
+[e = _startAddr -> . *U _pmdbs 2 `ui ]
+[; ;modbus.c: 124: startAddr<<=8;
+"124
+[e =<< _startAddr -> 8 `i ]
+[; ;modbus.c: 125: startAddr |= pmdbs->addr_lo;
+"125
+[e =| _startAddr -> . *U _pmdbs 3 `ui ]
+[; ;modbus.c: 126: startAddr = startAddr & 0xff;
+"126
+[e = _startAddr & _startAddr -> -> 255 `i `ui ]
+[; ;modbus.c: 127: if(startAddr==0x02){
+"127
+[e $ ! == _startAddr -> -> 2 `i `ui 628  ]
 {
-[; ;modbus.c: 130: sysData.pidSetFlg1=rbuf[4];
-"130
-[e = . _sysData 1 *U + _rbuf * -> -> 4 `i `x -> -> # *U _rbuf `i `x ]
-[; ;modbus.c: 131: sysData.pidSetFlg0=rbuf[5];
-"131
-[e = . _sysData 0 *U + _rbuf * -> -> 5 `i `x -> -> # *U _rbuf `i `x ]
-[; ;modbus.c: 132: fiSave=1;
-"132
+[; ;modbus.c: 128: sysData.id=rbuf[5];
+"128
+[e = . _sysData 2 *U + _rbuf * -> -> 5 `i `x -> -> # *U _rbuf `i `x ]
+[; ;modbus.c: 129: fiSave=1;
+"129
 [e = _fiSave -> -> 1 `i `uc ]
-"133
+"130
 }
-[; ;modbus.c: 133: }else if(startAddr>0x0f && startAddr < 0x10+20*2){
-[e $U 630  ]
-[e :U 629 ]
-[e $ ! && > _startAddr -> -> 15 `i `ui < _startAddr -> + -> 16 `i * -> 20 `i -> 2 `i `ui 631  ]
+[; ;modbus.c: 130: }else if(startAddr==0x03){
+[e $U 629  ]
+[e :U 628 ]
+[e $ ! == _startAddr -> -> 3 `i `ui 630  ]
 {
-[; ;modbus.c: 134: startAddr-=0x10;
+[; ;modbus.c: 131: sysData.pidSetFlg1=rbuf[4];
+"131
+[e = . _sysData 1 *U + _rbuf * -> -> 4 `i `x -> -> # *U _rbuf `i `x ]
+[; ;modbus.c: 132: sysData.pidSetFlg0=rbuf[5];
+"132
+[e = . _sysData 0 *U + _rbuf * -> -> 5 `i `x -> -> # *U _rbuf `i `x ]
+[; ;modbus.c: 133: fiSave=1;
+"133
+[e = _fiSave -> -> 1 `i `uc ]
 "134
-[e =- _startAddr -> -> 16 `i `ui ]
-[; ;modbus.c: 135: if(startAddr & 0x01){
+}
+[; ;modbus.c: 134: }else if(startAddr>0x0f && startAddr < 0x10+30*2){
+[e $U 631  ]
+[e :U 630 ]
+[e $ ! && > _startAddr -> -> 15 `i `ui < _startAddr -> + -> 16 `i * -> 30 `i -> 2 `i `ui 632  ]
+{
+[; ;modbus.c: 135: startAddr-=0x10;
 "135
-[e $ ! != & _startAddr -> -> 1 `i `ui -> -> 0 `i `ui 632  ]
-{
-[; ;modbus.c: 136: t16=rbuf[4];
+[e =- _startAddr -> -> 16 `i `ui ]
+[; ;modbus.c: 136: if(startAddr & 0x01){
 "136
-[e = _t16 -> *U + _rbuf * -> -> 4 `i `x -> -> # *U _rbuf `i `x `ui ]
-[; ;modbus.c: 137: t16<<=8;
-"137
-[e =<< _t16 -> 8 `i ]
-[; ;modbus.c: 138: t16 |= rbuf[5];
-"138
-[e =| _t16 -> *U + _rbuf * -> -> 5 `i `x -> -> # *U _rbuf `i `x `ui ]
-[; ;modbus.c: 139: sysData.calibVoMV[startAddr>>1]=t16;
-"139
-[e = *U + &U . _sysData 8 * -> >> _startAddr -> 1 `i `ux -> -> # *U &U . _sysData 8 `ui `ux _t16 ]
-[; ;modbus.c: 140: sysData.calibRsAdc[startAddr>>1]=rsLoAvg;
-"140
-[e = *U + &U . _sysData 7 * -> >> _startAddr -> 1 `i `ux -> -> # *U &U . _sysData 7 `ui `ux _rsLoAvg ]
-[; ;modbus.c: 142: if(rbuf[1]==0x26){
-"142
-[e $ ! == -> *U + _rbuf * -> -> 1 `i `x -> -> # *U _rbuf `i `x `i -> 38 `i 633  ]
+[e $ ! != & _startAddr -> -> 1 `i `ui -> -> 0 `i `ui 633  ]
 {
-[; ;modbus.c: 143: for(i=(startAddr>>1)+1;i<20;i++){
+[; ;modbus.c: 137: t16=rbuf[4];
+"137
+[e = _t16 -> *U + _rbuf * -> -> 4 `i `x -> -> # *U _rbuf `i `x `ui ]
+[; ;modbus.c: 138: t16<<=8;
+"138
+[e =<< _t16 -> 8 `i ]
+[; ;modbus.c: 139: t16 |= rbuf[5];
+"139
+[e =| _t16 -> *U + _rbuf * -> -> 5 `i `x -> -> # *U _rbuf `i `x `ui ]
+[; ;modbus.c: 140: sysData.calibVoMV[startAddr>>1]=t16;
+"140
+[e = *U + &U . _sysData 8 * -> >> _startAddr -> 1 `i `ux -> -> # *U &U . _sysData 8 `ui `ux _t16 ]
+[; ;modbus.c: 141: sysData.calibRsAdc[startAddr>>1]=rsLoAvg;
+"141
+[e = *U + &U . _sysData 7 * -> >> _startAddr -> 1 `i `ux -> -> # *U &U . _sysData 7 `ui `ux _rsLoAvg ]
+[; ;modbus.c: 143: if(rbuf[1]==0x26){
 "143
+[e $ ! == -> *U + _rbuf * -> -> 1 `i `x -> -> # *U _rbuf `i `x `i -> 38 `i 634  ]
+{
+[; ;modbus.c: 144: for(i=(startAddr>>1)+1;i<30;i++){
+"144
 {
 [e = _i + >> _startAddr -> 1 `i -> -> 1 `i `ui ]
-[e $ < _i -> -> 20 `i `ui 634  ]
-[e $U 635  ]
-[e :U 634 ]
-{
-[; ;modbus.c: 144: sysData.calibVoMV[i]=t16;
-"144
-[e = *U + &U . _sysData 8 * -> _i `ux -> -> # *U &U . _sysData 8 `ui `ux _t16 ]
-[; ;modbus.c: 145: sysData.calibRsAdc[i]=rsLoAvg;
-"145
-[e = *U + &U . _sysData 7 * -> _i `ux -> -> # *U &U . _sysData 7 `ui `ux _rsLoAvg ]
-"146
-}
-"143
-[e ++ _i -> -> 1 `i `ui ]
-[e $ < _i -> -> 20 `i `ui 634  ]
+[e $ < _i -> -> 30 `i `ui 635  ]
+[e $U 636  ]
 [e :U 635 ]
+{
+[; ;modbus.c: 145: sysData.calibVoMV[i]=t16;
+"145
+[e = *U + &U . _sysData 8 * -> _i `ux -> -> # *U &U . _sysData 8 `ui `ux _t16 ]
+[; ;modbus.c: 146: sysData.calibRsAdc[i]=rsLoAvg;
 "146
-}
+[e = *U + &U . _sysData 7 * -> _i `ux -> -> # *U &U . _sysData 7 `ui `ux _rsLoAvg ]
 "147
 }
-[e :U 633 ]
-[; ;modbus.c: 146: }
-[; ;modbus.c: 147: }
-[; ;modbus.c: 148: fiSave=1;
-"148
-[e = _fiSave -> -> 1 `i `uc ]
-"149
+"144
+[e ++ _i -> -> 1 `i `ui ]
+[e $ < _i -> -> 30 `i `ui 635  ]
+[e :U 636 ]
+"147
 }
-[e :U 632 ]
+"148
+}
+[e :U 634 ]
+[; ;modbus.c: 147: }
+[; ;modbus.c: 148: }
+[; ;modbus.c: 149: fiSave=1;
+"149
+[e = _fiSave -> -> 1 `i `uc ]
 "150
 }
-[; ;modbus.c: 149: }
-[; ;modbus.c: 150: }else{
-[e $U 637  ]
-[e :U 631 ]
+[e :U 633 ]
+"151
+}
+[; ;modbus.c: 150: }
+[; ;modbus.c: 151: }else{
+[e $U 638  ]
+[e :U 632 ]
 {
-[; ;modbus.c: 152: return;
-"152
-[e $UE 624  ]
+[; ;modbus.c: 153: return;
 "153
-}
-[e :U 637 ]
-[e :U 630 ]
-[e :U 628 ]
-[; ;modbus.c: 153: }
-[; ;modbus.c: 154: if(fiSave)sys_data_save();
+[e $UE 625  ]
 "154
-[e $ ! != -> _fiSave `i -> -> -> 0 `i `uc `i 638  ]
-[e ( _sys_data_save ..  ]
-[e :U 638 ]
-[; ;modbus.c: 155: if(pmdbs->addr==0)return;
-"155
-[e $ ! == -> . *U _pmdbs 0 `i -> 0 `i 639  ]
-[e $UE 624  ]
-[e :U 639 ]
-[; ;modbus.c: 156: rbuf[0]=sysData.id;
-"156
-[e = *U + _rbuf * -> -> 0 `i `x -> -> # *U _rbuf `i `x . _sysData 2 ]
-[; ;modbus.c: 157: crc_append(rbuf,6);
-"157
-[e ( _crc_append (2 , _rbuf -> -> 6 `i `ui ]
-[; ;modbus.c: 158: uart_send_len(rbuf,8);
-"158
-[e ( _uart_send_len (2 , _rbuf -> -> 8 `i `uc ]
-[; ;modbus.c: 159: }
-"159
-[e :UE 624 ]
 }
+[e :U 638 ]
+[e :U 631 ]
+[e :U 629 ]
+[; ;modbus.c: 154: }
+[; ;modbus.c: 155: if(fiSave)sys_data_save();
+"155
+[e $ ! != -> _fiSave `i -> -> -> 0 `i `uc `i 639  ]
+[e ( _sys_data_save ..  ]
+[e :U 639 ]
+[; ;modbus.c: 156: if(pmdbs->addr==0)return;
+"156
+[e $ ! == -> . *U _pmdbs 0 `i -> 0 `i 640  ]
+[e $UE 625  ]
+[e :U 640 ]
+[; ;modbus.c: 157: rbuf[0]=sysData.id;
+"157
+[e = *U + _rbuf * -> -> 0 `i `x -> -> # *U _rbuf `i `x . _sysData 2 ]
+[; ;modbus.c: 158: crc_append(rbuf,6);
+"158
+[e ( _crc_append (2 , _rbuf -> -> 6 `i `ui ]
+[; ;modbus.c: 159: uart_send_len(rbuf,8);
+"159
+[e ( _uart_send_len (2 , _rbuf -> -> 8 `i `uc ]
+[; ;modbus.c: 160: }
 "160
+[e :UE 625 ]
+}
+"162
+[v _modbus_response_write_mult_register `(v ~T0 @X0 1 ef1`*uc ]
+"163
+{
+[; ;modbus.c: 162: void modbus_response_write_mult_register(uint8_t* rbuf)
+[; ;modbus.c: 163: {
+[e :U _modbus_response_write_mult_register ]
+"162
+[v _rbuf `*uc ~T0 @X0 1 r1 ]
+"163
+[f ]
+"164
+[v _startAddr `uc ~T0 @X0 1 a ]
+[v _len `uc ~T0 @X0 1 a ]
+"165
+[v _stb `*S1 ~T0 @X0 1 a ]
+[; ;modbus.c: 164: uint8_t startAddr,len;
+[; ;modbus.c: 165: st_modbusWriteMultReg_t* stb=(st_modbusWriteMultReg_t*)rbuf;
+[e = _stb -> _rbuf `*S1 ]
+[; ;modbus.c: 166: if(stb->addr!=sysData.id || stb->addr==0)return;
+"166
+[e $ ! || != -> . *U _stb 0 `i -> . _sysData 2 `i == -> . *U _stb 0 `i -> 0 `i 642  ]
+[e $UE 641  ]
+[e :U 642 ]
+[; ;modbus.c: 167: startAddr=stb->addr_lo;
+"167
+[e = _startAddr . *U _stb 3 ]
+[; ;modbus.c: 168: len=stb->len_lo;
+"168
+[e = _len . *U _stb 5 ]
+[; ;modbus.c: 169: if(len!=3)return ;
+"169
+[e $ ! != -> _len `i -> 3 `i 643  ]
+[e $UE 641  ]
+[e :U 643 ]
+[; ;modbus.c: 170: if(startAddr!=4)return;
+"170
+[e $ ! != -> _startAddr `i -> 4 `i 644  ]
+[e $UE 641  ]
+[e :U 644 ]
+[; ;modbus.c: 171: sysData.pidKp=(stb->data[0]<<8)|(stb->data[1]);
+"171
+[e = . _sysData 4 -> | << -> *U + &U . *U _stb 6 * -> -> -> 0 `i `ui `ux -> -> # *U &U . *U _stb 6 `ui `ux `i -> 8 `i -> *U + &U . *U _stb 6 * -> -> -> 1 `i `ui `ux -> -> # *U &U . *U _stb 6 `ui `ux `i `ui ]
+[; ;modbus.c: 172: sysData.pidTi=(stb->data[2]<<8)|(stb->data[3]);
+"172
+[e = . _sysData 5 -> | << -> *U + &U . *U _stb 6 * -> -> -> 2 `i `ui `ux -> -> # *U &U . *U _stb 6 `ui `ux `i -> 8 `i -> *U + &U . *U _stb 6 * -> -> -> 3 `i `ui `ux -> -> # *U &U . *U _stb 6 `ui `ux `i `ui ]
+[; ;modbus.c: 173: sysData.pidTd=(stb->data[4]<<8)|(stb->data[5]);
+"173
+[e = . _sysData 6 -> | << -> *U + &U . *U _stb 6 * -> -> -> 4 `i `ui `ux -> -> # *U &U . *U _stb 6 `ui `ux `i -> 8 `i -> *U + &U . *U _stb 6 * -> -> -> 5 `i `ui `ux -> -> # *U &U . *U _stb 6 `ui `ux `i `ui ]
+[; ;modbus.c: 174: sys_data_save();
+"174
+[e ( _sys_data_save ..  ]
+[; ;modbus.c: 175: crc_append(rbuf,sizeof(st_modbusWriteMultReg_t)-2);
+"175
+[e ( _crc_append (2 , _rbuf - -> # `S1 `ui -> -> 2 `i `ui ]
+[; ;modbus.c: 176: uart_send_len(rbuf,sizeof(st_modbusWriteMultReg_t));
+"176
+[e ( _uart_send_len (2 , _rbuf -> -> # `S1 `ui `uc ]
+[; ;modbus.c: 177: }
+"177
+[e :UE 641 ]
+}
+"179
 [v _modbus_response_command `(v ~T0 @X0 1 ef1`*uc ]
 {
-[; ;modbus.c: 160: void modbus_response_command(uint8_t* rbuf){
+[; ;modbus.c: 179: void modbus_response_command(uint8_t* rbuf){
 [e :U _modbus_response_command ]
 [v _rbuf `*uc ~T0 @X0 1 r1 ]
 [f ]
-"161
+"180
 [v _i `uc ~T0 @X0 1 a ]
-"162
+"181
 [v _startAddr `ui ~T0 @X0 1 a ]
-[; ;modbus.c: 161: uint8_t i;
-[; ;modbus.c: 162: uint16_t startAddr=0;
+[; ;modbus.c: 180: uint8_t i;
+[; ;modbus.c: 181: uint16_t startAddr=0;
 [e = _startAddr -> -> 0 `i `ui ]
-"163
+"182
 [v _tempData `ui ~T0 @X0 1 a ]
 [v _tmpAddr `ui ~T0 @X0 1 a ]
-"164
+"183
 [v _len `uc ~T0 @X0 1 a ]
-[; ;modbus.c: 163: uint16_t tempData,tmpAddr;
-[; ;modbus.c: 164: uint8_t len=0;
+[; ;modbus.c: 182: uint16_t tempData,tmpAddr;
+[; ;modbus.c: 183: uint8_t len=0;
 [e = _len -> -> 0 `i `uc ]
-"165
-[v _pmdbs `*S1 ~T0 @X0 1 a ]
-[; ;modbus.c: 165: st_modbusComReqStructDef* pmdbs=(st_modbusComReqStructDef*)rbuf;
-[e = _pmdbs -> _rbuf `*S1 ]
-[; ;modbus.c: 166: if(pmdbs->addr!=sysData.id || pmdbs->addr==0)return;
-"166
-[e $ ! || != -> . *U _pmdbs 0 `i -> . _sysData 2 `i == -> . *U _pmdbs 0 `i -> 0 `i 641  ]
-[e $UE 640  ]
-[e :U 641 ]
-[; ;modbus.c: 167: startAddr=pmdbs->addr_hi;
-"167
+"184
+[v _pmdbs `*S2 ~T0 @X0 1 a ]
+[; ;modbus.c: 184: st_modbusComReqStructDef* pmdbs=(st_modbusComReqStructDef*)rbuf;
+[e = _pmdbs -> _rbuf `*S2 ]
+[; ;modbus.c: 185: if(pmdbs->addr!=sysData.id || pmdbs->addr==0)return;
+"185
+[e $ ! || != -> . *U _pmdbs 0 `i -> . _sysData 2 `i == -> . *U _pmdbs 0 `i -> 0 `i 646  ]
+[e $UE 645  ]
+[e :U 646 ]
+[; ;modbus.c: 186: startAddr=pmdbs->addr_hi;
+"186
 [e = _startAddr -> . *U _pmdbs 2 `ui ]
-[; ;modbus.c: 168: startAddr<<=8;
-"168
+[; ;modbus.c: 187: startAddr<<=8;
+"187
 [e =<< _startAddr -> 8 `i ]
-[; ;modbus.c: 169: startAddr |= pmdbs->addr_lo;
-"169
+[; ;modbus.c: 188: startAddr |= pmdbs->addr_lo;
+"188
 [e =| _startAddr -> . *U _pmdbs 3 `ui ]
-[; ;modbus.c: 170: tmpAddr=startAddr;
-"170
+[; ;modbus.c: 189: tmpAddr=startAddr;
+"189
 [e = _tmpAddr _startAddr ]
-[; ;modbus.c: 171: len = pmdbs->len_lo;
-"171
+[; ;modbus.c: 190: len = pmdbs->len_lo;
+"190
 [e = _len . *U _pmdbs 5 ]
-[; ;modbus.c: 172: len<<=1;
-"172
+[; ;modbus.c: 191: len<<=1;
+"191
 [e =<< _len -> 1 `i ]
-[; ;modbus.c: 173: if(len>32)len=32;
-"173
-[e $ ! > -> _len `i -> 32 `i 642  ]
+[; ;modbus.c: 192: if(len>32)len=32;
+"192
+[e $ ! > -> _len `i -> 32 `i 647  ]
 [e = _len -> -> 32 `i `uc ]
-[e :U 642 ]
-[; ;modbus.c: 174: for(i=0;i<len;i=i+2,tmpAddr++){
-"174
+[e :U 647 ]
+[; ;modbus.c: 193: for(i=0;i<len;i=i+2,tmpAddr++){
+"193
 {
 [e = _i -> -> 0 `i `uc ]
-[e $U 646  ]
-[e :U 643 ]
+[e $U 651  ]
+[e :U 648 ]
 {
-[; ;modbus.c: 175: getRegisterVal(tmpAddr,&tempData);
-"175
+[; ;modbus.c: 194: getRegisterVal(tmpAddr,&tempData);
+"194
 [e ( _getRegisterVal (2 , _tmpAddr &U _tempData ]
-[; ;modbus.c: 176: rbuf[i+3] = tempData >> 8;
-"176
+[; ;modbus.c: 195: rbuf[i+3] = tempData >> 8;
+"195
 [e = *U + _rbuf * -> + -> _i `i -> 3 `i `x -> -> # *U _rbuf `i `x -> >> _tempData -> 8 `i `uc ]
-[; ;modbus.c: 177: rbuf[i+4] = tempData & 0xff;
-"177
+[; ;modbus.c: 196: rbuf[i+4] = tempData & 0xff;
+"196
 [e = *U + _rbuf * -> + -> _i `i -> 4 `i `x -> -> # *U _rbuf `i `x -> & _tempData -> -> 255 `i `ui `uc ]
-"179
+"198
 }
-"174
+"193
 [e ; = _i -> + -> _i `i -> 2 `i `uc ++ _tmpAddr -> -> 1 `i `ui ]
-[e :U 646 ]
-[e $ < -> _i `i -> _len `i 643  ]
-[e :U 644 ]
-"179
+[e :U 651 ]
+[e $ < -> _i `i -> _len `i 648  ]
+[e :U 649 ]
+"198
 }
-[; ;modbus.c: 179: }
-[; ;modbus.c: 180: rbuf[0] = sysData.id;
-"180
+[; ;modbus.c: 198: }
+[; ;modbus.c: 199: rbuf[0] = sysData.id;
+"199
 [e = *U + _rbuf * -> -> 0 `i `x -> -> # *U _rbuf `i `x . _sysData 2 ]
-[; ;modbus.c: 181: rbuf[1] = 3;
-"181
+[; ;modbus.c: 200: rbuf[1] = 3;
+"200
 [e = *U + _rbuf * -> -> 1 `i `x -> -> # *U _rbuf `i `x -> -> 3 `i `uc ]
-[; ;modbus.c: 182: rbuf[2] = len;
-"182
+[; ;modbus.c: 201: rbuf[2] = len;
+"201
 [e = *U + _rbuf * -> -> 2 `i `x -> -> # *U _rbuf `i `x _len ]
-[; ;modbus.c: 183: len += 3;
-"183
+[; ;modbus.c: 202: len += 3;
+"202
 [e =+ _len -> -> 3 `i `uc ]
-[; ;modbus.c: 184: crc_append(rbuf,len);
-"184
+[; ;modbus.c: 203: crc_append(rbuf,len);
+"203
 [e ( _crc_append (2 , _rbuf -> _len `ui ]
-[; ;modbus.c: 185: len += 2;
-"185
+[; ;modbus.c: 204: len += 2;
+"204
 [e =+ _len -> -> 2 `i `uc ]
-[; ;modbus.c: 186: uart_send_len(rbuf,len);
-"186
+[; ;modbus.c: 205: uart_send_len(rbuf,len);
+"205
 [e ( _uart_send_len (2 , _rbuf _len ]
-[; ;modbus.c: 188: }
-"188
-[e :UE 640 ]
+[; ;modbus.c: 207: }
+"207
+[e :UE 645 ]
 }
-"189
+"208
 [v _modbus_response_process `(v ~T0 @X0 1 ef2`*uc`ui ]
 {
-[; ;modbus.c: 189: void modbus_response_process(uint8_t* rbuf,uint16_t rlen){
+[; ;modbus.c: 208: void modbus_response_process(uint8_t* rbuf,uint16_t rlen){
 [e :U _modbus_response_process ]
 [v _rbuf `*uc ~T0 @X0 1 r1 ]
 [v _rlen `ui ~T0 @X0 1 r2 ]
 [f ]
-"190
+"209
 [v _resp `uc ~T0 @X0 1 a ]
-[; ;modbus.c: 190: uint8_t resp=0;
+[; ;modbus.c: 209: uint8_t resp=0;
 [e = _resp -> -> 0 `i `uc ]
-"191
-[v _pmdbs `*S1 ~T0 @X0 1 a ]
-[; ;modbus.c: 191: st_modbusComReqStructDef* pmdbs=(st_modbusComReqStructDef*)rbuf;
-[e = _pmdbs -> _rbuf `*S1 ]
-[; ;modbus.c: 194: if((pmdbs->addr!=sysData.id) && (pmdbs->addr!=0x00))return;
-"194
-[e $ ! && != -> . *U _pmdbs 0 `i -> . _sysData 2 `i != -> . *U _pmdbs 0 `i -> 0 `i 648  ]
-[e $UE 647  ]
-[e :U 648 ]
-[; ;modbus.c: 195: if(!(crc_verify(rbuf,rlen)))return ;
-"195
-[e $ ! ! != -> ( _crc_verify (2 , _rbuf _rlen `i -> -> -> 0 `i `uc `i 649  ]
-[e $UE 647  ]
-[e :U 649 ]
-[; ;modbus.c: 197: switch(pmdbs->func){
-"197
-[e $U 651  ]
-{
-[; ;modbus.c: 198: case 0x03:
-"198
-[e :U 652 ]
-[; ;modbus.c: 199: modbus_response_command(rbuf);
-"199
-[e ( _modbus_response_command (1 _rbuf ]
-[; ;modbus.c: 200: break;
-"200
-[e $U 650  ]
-[; ;modbus.c: 201: case 0x06:
-"201
+"210
+[v _pmdbs `*S2 ~T0 @X0 1 a ]
+[; ;modbus.c: 210: st_modbusComReqStructDef* pmdbs=(st_modbusComReqStructDef*)rbuf;
+[e = _pmdbs -> _rbuf `*S2 ]
+[; ;modbus.c: 213: if((pmdbs->addr!=sysData.id) && (pmdbs->addr!=0x00))return;
+"213
+[e $ ! && != -> . *U _pmdbs 0 `i -> . _sysData 2 `i != -> . *U _pmdbs 0 `i -> 0 `i 653  ]
+[e $UE 652  ]
 [e :U 653 ]
-"202
+[; ;modbus.c: 214: if(!(crc_verify(rbuf,rlen)))return ;
+"214
+[e $ ! ! != -> ( _crc_verify (2 , _rbuf _rlen `i -> -> -> 0 `i `uc `i 654  ]
+[e $UE 652  ]
 [e :U 654 ]
-[; ;modbus.c: 202: case 0x26:
-[; ;modbus.c: 203: modbus_response_write_single_register(rbuf);
-"203
+[; ;modbus.c: 216: switch(pmdbs->func){
+"216
+[e $U 656  ]
+{
+[; ;modbus.c: 217: case 0x03:
+"217
+[e :U 657 ]
+[; ;modbus.c: 218: modbus_response_command(rbuf);
+"218
+[e ( _modbus_response_command (1 _rbuf ]
+[; ;modbus.c: 219: break;
+"219
+[e $U 655  ]
+[; ;modbus.c: 220: case 0x06:
+"220
+[e :U 658 ]
+"221
+[e :U 659 ]
+[; ;modbus.c: 221: case 0x26:
+[; ;modbus.c: 222: modbus_response_write_single_register(rbuf);
+"222
 [e ( _modbus_response_write_single_register (1 _rbuf ]
-[; ;modbus.c: 204: break;
-"204
-[e $U 650  ]
-[; ;modbus.c: 227: default:
-"227
-[e :U 655 ]
-[; ;modbus.c: 228: modbus_response_illgeal_function(rbuf,0x01);break;
-"228
+[; ;modbus.c: 223: break;
+"223
+[e $U 655  ]
+[; ;modbus.c: 224: case 0x10:
+"224
+[e :U 660 ]
+[; ;modbus.c: 225: modbus_response_write_mult_register(rbuf);
+"225
+[e ( _modbus_response_write_mult_register (1 _rbuf ]
+[; ;modbus.c: 226: break;
+"226
+[e $U 655  ]
+[; ;modbus.c: 249: default:
+"249
+[e :U 661 ]
+[; ;modbus.c: 250: modbus_response_illgeal_function(rbuf,0x01);break;
+"250
 [e ( _modbus_response_illgeal_function (2 , _rbuf -> -> 1 `i `uc ]
-[e $U 650  ]
-"229
+[e $U 655  ]
+"251
 }
-[; ;modbus.c: 229: }
-[e $U 650  ]
-"197
-[e :U 651 ]
-[e [\ . *U _pmdbs 1 , $ -> -> 3 `i `uc 652
- , $ -> -> 6 `i `uc 653
- , $ -> -> 38 `i `uc 654
- 655 ]
-"229
-[e :U 650 ]
-[; ;modbus.c: 230: }
-"230
-[e :UE 647 ]
+[; ;modbus.c: 251: }
+[e $U 655  ]
+"216
+[e :U 656 ]
+[e [\ . *U _pmdbs 1 , $ -> -> 3 `i `uc 657
+ , $ -> -> 6 `i `uc 658
+ , $ -> -> 38 `i `uc 659
+ , $ -> -> 16 `i `uc 660
+ 661 ]
+"251
+[e :U 655 ]
+[; ;modbus.c: 252: }
+"252
+[e :UE 652 ]
 }

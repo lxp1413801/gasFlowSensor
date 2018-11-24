@@ -4777,161 +4777,161 @@ Version 3.2 HI-TECH Software Intermediate Code
 "17
 [e :UE 595 ]
 }
-"19
+"21
 [v _uart_send_str `(v ~T0 @X0 1 ef1`*uc ]
-"20
-{
-[; ;my_uart.c: 19: void uart_send_str(uint8_t* str)
-[; ;my_uart.c: 20: {
-[e :U _uart_send_str ]
-"19
-[v _str `*uc ~T0 @X0 1 r1 ]
-"20
-[f ]
-[; ;my_uart.c: 22: if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
 "22
+{
+[; ;my_uart.c: 21: void uart_send_str(uint8_t* str)
+[; ;my_uart.c: 22: {
+[e :U _uart_send_str ]
+"21
+[v _str `*uc ~T0 @X0 1 r1 ]
+"22
+[f ]
+[; ;my_uart.c: 24: if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
+"24
 [e $ ! ! != -> . . _TXSTAbits 0 5 `i -> -> -> 0 `i `Vuc `i 600  ]
 [e = . . _TXSTAbits 0 5 -> -> 1 `i `uc ]
 [e :U 600 ]
-[; ;my_uart.c: 23: while(0 == PIR1bits.TXIF);
-"23
+[; ;my_uart.c: 25: while(0 == PIR1bits.TXIF);
+"25
 [e $U 601  ]
 [e :U 602 ]
 [e :U 601 ]
 [e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 602  ]
 [e :U 603 ]
-[; ;my_uart.c: 24: while(*str!='\0'){
-"24
+[; ;my_uart.c: 26: while(*str!='\0'){
+"26
 [e $U 604  ]
 [e :U 605 ]
 {
-[; ;my_uart.c: 25: while(0 == PIR1bits.TXIF);
-"25
+[; ;my_uart.c: 27: while(0 == PIR1bits.TXIF);
+"27
 [e $U 607  ]
 [e :U 608 ]
 [e :U 607 ]
 [e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 608  ]
 [e :U 609 ]
-[; ;my_uart.c: 26: TXREG = *str;
-"26
+[; ;my_uart.c: 28: TXREG = *str;
+"28
 [e = _TXREG *U _str ]
-[; ;my_uart.c: 27: str++;
-"27
+[; ;my_uart.c: 29: str++;
+"29
 [e ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x ]
-"33
+"35
 }
 [e :U 604 ]
-"24
+"26
 [e $ != -> *U _str `ui -> 0 `ui 605  ]
 [e :U 606 ]
-[; ;my_uart.c: 33: }
-[; ;my_uart.c: 34: while(0 == PIR1bits.TXIF);
-"34
+[; ;my_uart.c: 35: }
+[; ;my_uart.c: 36: while(0 == PIR1bits.TXIF);
+"36
 [e $U 610  ]
 [e :U 611 ]
 [e :U 610 ]
 [e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 611  ]
 [e :U 612 ]
-[; ;my_uart.c: 35: }
-"35
+[; ;my_uart.c: 37: }
+"37
 [e :UE 599 ]
 }
-"37
+"39
 [v _uart_send_len `(v ~T0 @X0 1 ef2`*uc`uc ]
-"38
+"40
 {
-[; ;my_uart.c: 37: void uart_send_len(uint8_t* buf,uint8_t len)
-[; ;my_uart.c: 38: {
+[; ;my_uart.c: 39: void uart_send_len(uint8_t* buf,uint8_t len)
+[; ;my_uart.c: 40: {
 [e :U _uart_send_len ]
-"37
+"39
 [v _buf `*uc ~T0 @X0 1 r1 ]
 [v _len `uc ~T0 @X0 1 r2 ]
-"38
-[f ]
-"39
-[v _i `uc ~T0 @X0 1 a ]
-[; ;my_uart.c: 39: uint8_t i;
-[; ;my_uart.c: 40: if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
 "40
+[f ]
+"41
+[v _i `uc ~T0 @X0 1 a ]
+[; ;my_uart.c: 41: uint8_t i;
+[; ;my_uart.c: 42: if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
+"42
 [e $ ! ! != -> . . _TXSTAbits 0 5 `i -> -> -> 0 `i `Vuc `i 614  ]
 [e = . . _TXSTAbits 0 5 -> -> 1 `i `uc ]
 [e :U 614 ]
-[; ;my_uart.c: 41: while(0 == PIR1bits.TXIF);
-"41
+[; ;my_uart.c: 43: while(0 == PIR1bits.TXIF);
+"43
 [e $U 615  ]
 [e :U 616 ]
 [e :U 615 ]
 [e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 616  ]
 [e :U 617 ]
-[; ;my_uart.c: 42: for(i=0;i<len;i++){
-"42
+[; ;my_uart.c: 44: for(i=0;i<len;i++){
+"44
 {
 [e = _i -> -> 0 `i `uc ]
 [e $U 621  ]
 [e :U 618 ]
 {
-[; ;my_uart.c: 43: while(0 == PIR1bits.TXIF);
-"43
+[; ;my_uart.c: 45: while(0 == PIR1bits.TXIF);
+"45
 [e $U 622  ]
 [e :U 623 ]
 [e :U 622 ]
 [e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 623  ]
 [e :U 624 ]
-[; ;my_uart.c: 44: TXREG = buf[i];
-"44
+[; ;my_uart.c: 46: TXREG = buf[i];
+"46
 [e = _TXREG *U + _buf * -> _i `ux -> -> # *U _buf `ui `ux ]
-"45
+"47
 }
-"42
+"44
 [e ++ _i -> -> 1 `i `uc ]
 [e :U 621 ]
 [e $ < -> _i `i -> _len `i 618  ]
 [e :U 619 ]
-"45
+"47
 }
-[; ;my_uart.c: 45: }
-[; ;my_uart.c: 46: while(0 == PIR1bits.TXIF);
-"46
+[; ;my_uart.c: 47: }
+[; ;my_uart.c: 48: while(0 == PIR1bits.TXIF);
+"48
 [e $U 625  ]
 [e :U 626 ]
 [e :U 625 ]
 [e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 626  ]
 [e :U 627 ]
-[; ;my_uart.c: 47: }
-"47
+[; ;my_uart.c: 49: }
+"49
 [e :UE 613 ]
 }
-"49
+"51
 [v _uart_received_start `(v ~T0 @X0 1 ef ]
-"50
+"52
 {
-[; ;my_uart.c: 49: void uart_received_start(void)
-[; ;my_uart.c: 50: {
+[; ;my_uart.c: 51: void uart_received_start(void)
+[; ;my_uart.c: 52: {
 [e :U _uart_received_start ]
 [f ]
-[; ;my_uart.c: 51: eusartRxCount=0;
-"51
-[e = _eusartRxCount -> -> 0 `i `uc ]
-[; ;my_uart.c: 52: RCSTAbits.CREN=0;
-"52
-[e = . . _RCSTAbits 0 4 -> -> 0 `i `uc ]
-[; ;my_uart.c: 53: PIE1bits.RCIE = 0;
+[; ;my_uart.c: 53: eusartRxCount=0;
 "53
-[e = . . _PIE1bits 0 4 -> -> 0 `i `uc ]
-[; ;my_uart.c: 54: PIR1bits.RCIF=0;
+[e = _eusartRxCount -> -> 0 `i `uc ]
+[; ;my_uart.c: 54: RCSTAbits.CREN=0;
 "54
-[e = . . _PIR1bits 0 4 -> -> 0 `i `uc ]
-[; ;my_uart.c: 56: RCSTAbits.CREN=1;
+[e = . . _RCSTAbits 0 4 -> -> 0 `i `uc ]
+[; ;my_uart.c: 55: PIE1bits.RCIE = 0;
+"55
+[e = . . _PIE1bits 0 4 -> -> 0 `i `uc ]
+[; ;my_uart.c: 56: PIR1bits.RCIF=0;
 "56
+[e = . . _PIR1bits 0 4 -> -> 0 `i `uc ]
+[; ;my_uart.c: 58: RCSTAbits.CREN=1;
+"58
 [e = . . _RCSTAbits 0 4 -> -> 1 `i `uc ]
-[; ;my_uart.c: 57: PIE1bits.RCIE = 1;
-"57
-[e = . . _PIE1bits 0 4 -> -> 1 `i `uc ]
-[; ;my_uart.c: 59: eusartRxIdleTime_ms=0;
+[; ;my_uart.c: 59: PIE1bits.RCIE = 1;
 "59
+[e = . . _PIE1bits 0 4 -> -> 1 `i `uc ]
+[; ;my_uart.c: 61: eusartRxIdleTime_ms=0;
+"61
 [e = _eusartRxIdleTime_ms -> -> 0 `i `uc ]
-[; ;my_uart.c: 60: }
-"60
+[; ;my_uart.c: 62: }
+"62
 [e :UE 628 ]
 }
-[; ;my_uart.c: 62: void uart_received_process(uint8_t* buf,uint8_t len);
+[; ;my_uart.c: 64: void uart_received_process(uint8_t* buf,uint8_t len);

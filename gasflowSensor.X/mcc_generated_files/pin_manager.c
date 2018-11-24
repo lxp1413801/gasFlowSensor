@@ -81,12 +81,7 @@ void PIN_MANAGER_Initialize(void)
     */   
     ODCONA = 0x00;
     ODCONC = 0x00;
-    
 
-
-   
-    
-    
     bool state = (unsigned char)GIE;
     GIE = 0;
     PPSLOCK = 0x55;

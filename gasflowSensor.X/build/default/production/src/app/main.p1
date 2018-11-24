@@ -3,6 +3,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 "28 C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic.h
 [v ___nop `(v ~T0 @X0 0 ef ]
 [p i ___nop ]
+"38 src/app/../includes/../globle/globle.h
+[v _isRunInBoot `Vuc ~T0 @X0 0 e@4095 ]
 "75 src/app/../../mcc_generated_files/mcc.h
 [v _SYSTEM_Initialize `(v ~T0 @X0 0 ef ]
 "343 C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic16f1575.h
@@ -16,13 +18,25 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S26 . . . ]
 "360
 [v _INTCONbits `VS26 ~T0 @X0 0 e@11 ]
+"2785
+[s S157 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S157 . TX9D TRMT BRGH SENDB SYNC TXEN TX9 CSRC ]
+"2784
+[u S156 `S157 1 ]
+[n S156 . . ]
+"2796
+[v _TXSTAbits `VS156 ~T0 @X0 0 e@414 ]
 "39 src/app/../api/sysData.h
 [v _sys_data_init `(ui ~T0 @X0 0 ef ]
-"24
-[s S595 `uc 1 `uc 1 `uc 1 `uc 1 `ui 1 `ui 1 `ui 1 `ui -> 20 `i `ui -> 20 `i `ui 1 ]
+"8 src/app/../includes/../depend/m_string.h
+[v _m_mem_cpy `(v ~T0 @X0 0 ef2`*uc`*uc ]
+"22 src/app/../includes/../api/my_uart.h
+[v _uart_send_str `(v ~T0 @X0 0 ef1`*uc ]
+"24 src/app/../api/sysData.h
+[s S595 `uc 1 `uc 1 `uc 1 `uc 1 `ui 1 `ui 1 `ui 1 `ui -> 30 `i `ui -> 30 `i `ui 1 ]
 [n S595 . pidSetFlg0 pidSetFlg1 id reverse pidKp pidTi pidTd calibRsAdc calibVoMV crc16 ]
 "37
-[v _sysData `S595 ~T0 @X0 0 e ]
+[v _sysData `VS595 ~T0 @X0 0 e ]
 "31 src/app/../includes/../api/sample.h
 [v _pidBbSm `uc ~T0 @X0 0 e ]
 "33
@@ -37,7 +51,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _rtAdcValueRsLo `ui ~T0 @X0 0 e ]
 "21
 [v _adc_sample `(ui ~T0 @X0 0 ef3`uc`uc`uc ]
-"40 src/app/main.c
+"43 src/app/main.c
 [c E4865 2 4 5 6 7 29 30 31 .. ]
 [n E4865 . channel_AN2 channel_AN4 channel_AN5 channel_AN6 channel_AN7 channel_Temp channel_DAC channel_FVR  ]
 "9 src/app/../includes/../api/sample.h
@@ -74,15 +88,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _pid_pwm1_idrv_b_b `(v ~T0 @X0 0 ef ]
 "40 src/app/../api/sysData.h
 [v _sys_data_save `(v ~T0 @X0 0 ef ]
-"19 src/app/../includes/../api/my_uart.h
+"85 src/app/../api/modbus.h
+[v _modbusBuf `uc ~T0 @X0 -> 0 `x e ]
+"23 src/app/../includes/../api/my_uart.h
+[v _uart_send_len `(v ~T0 @X0 0 ef2`*uc`uc ]
+"19
 [v _eusartRxCount `Vuc ~T0 @X0 0 e ]
 "9 src/app/../includes/../depend/m_string.h
 [v _m_mem_cpy_len `(v ~T0 @X0 0 ef3`*uc`*uc`ui ]
-"74 src/app/../api/modbus.h
-[v _modbusBuf `uc ~T0 @X0 -> 0 `x e ]
 "18 src/app/../includes/../api/my_uart.h
 [v _eusartRxBuffer `Vuc ~T0 @X0 -> 0 `x e ]
-"75 src/app/../api/modbus.h
+"86 src/app/../api/modbus.h
 [v _modbus_response_process `(v ~T0 @X0 0 ef2`*uc`ui ]
 "25 src/app/../includes/../api/my_uart.h
 [v _uart_received_start `(v ~T0 @X0 0 ef ]
@@ -4849,11 +4865,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;sysData.h: 29: uint16_t pidKp;
 [; ;sysData.h: 30: uint16_t pidTi;
 [; ;sysData.h: 31: uint16_t pidTd;
-[; ;sysData.h: 33: uint16_t calibRsAdc[20];
-[; ;sysData.h: 34: uint16_t calibVoMV[20];
+[; ;sysData.h: 33: uint16_t calibRsAdc[30];
+[; ;sysData.h: 34: uint16_t calibVoMV[30];
 [; ;sysData.h: 35: uint16_t crc16;
 [; ;sysData.h: 36: }sysData_t;
-[; ;sysData.h: 37: extern sysData_t sysData;
+[; ;sysData.h: 37: extern volatile sysData_t sysData;
 [; ;sysData.h: 39: extern uint16_t sys_data_init(void);
 [; ;sysData.h: 40: extern void sys_data_save(void);
 [; ;modbus.h: 37: typedef struct{
@@ -4863,39 +4879,45 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;modbus.h: 41: uint8_t addr_lo;
 [; ;modbus.h: 42: uint8_t len_hi;
 [; ;modbus.h: 43: uint8_t len_lo;
-[; ;modbus.h: 44: }st_modbusComReqStructDef;
-[; ;modbus.h: 45: typedef struct{
-[; ;modbus.h: 46: uint8_t addr;
-[; ;modbus.h: 47: uint8_t func;
-[; ;modbus.h: 48: uint8_t errcord;
-[; ;modbus.h: 49: uint8_t crc16;
-[; ;modbus.h: 50: }st_modbusErrRespStructDef;
-[; ;modbus.h: 51: typedef struct{
-[; ;modbus.h: 52: uint8_t addr;
-[; ;modbus.h: 53: uint8_t func;
-[; ;modbus.h: 54: uint8_t addr_hi;
-[; ;modbus.h: 55: uint8_t addr_lo;
-[; ;modbus.h: 56: uint8_t len_hi;
-[; ;modbus.h: 57: uint8_t len_lo;
-[; ;modbus.h: 58: uint16_t crc16;
-[; ;modbus.h: 59: }st_modbusReadClib;
-[; ;modbus.h: 60: typedef struct{
-[; ;modbus.h: 61: uint8_t addr;
-[; ;modbus.h: 62: uint8_t func;
-[; ;modbus.h: 63: uint8_t addr_hi;
-[; ;modbus.h: 64: uint8_t addr_lo;
-[; ;modbus.h: 65: uint8_t data_hi;
-[; ;modbus.h: 66: uint8_t data_lo;
-[; ;modbus.h: 67: uint16_t crc16;
-[; ;modbus.h: 68: }st_modbusWriteSingleClib;
-[; ;modbus.h: 74: extern uint8_t modbusBuf[];
-[; ;modbus.h: 75: extern void modbus_response_process(uint8_t* rbuf,uint16_t rlen);
+[; ;modbus.h: 44: uint8_t data[2];
+[; ;modbus.h: 46: }st_modbusWriteMultReg_t;
+[; ;modbus.h: 48: typedef struct{
+[; ;modbus.h: 49: uint8_t addr;
+[; ;modbus.h: 50: uint8_t func;
+[; ;modbus.h: 51: uint8_t addr_hi;
+[; ;modbus.h: 52: uint8_t addr_lo;
+[; ;modbus.h: 53: uint8_t len_hi;
+[; ;modbus.h: 54: uint8_t len_lo;
+[; ;modbus.h: 55: }st_modbusComReqStructDef;
+[; ;modbus.h: 56: typedef struct{
+[; ;modbus.h: 57: uint8_t addr;
+[; ;modbus.h: 58: uint8_t func;
+[; ;modbus.h: 59: uint8_t errcord;
+[; ;modbus.h: 60: uint8_t crc16;
+[; ;modbus.h: 61: }st_modbusErrRespStructDef;
+[; ;modbus.h: 62: typedef struct{
+[; ;modbus.h: 63: uint8_t addr;
+[; ;modbus.h: 64: uint8_t func;
+[; ;modbus.h: 65: uint8_t addr_hi;
+[; ;modbus.h: 66: uint8_t addr_lo;
+[; ;modbus.h: 67: uint8_t len_hi;
+[; ;modbus.h: 68: uint8_t len_lo;
+[; ;modbus.h: 69: uint16_t crc16;
+[; ;modbus.h: 70: }st_modbusReadClib;
+[; ;modbus.h: 71: typedef struct{
+[; ;modbus.h: 72: uint8_t addr;
+[; ;modbus.h: 73: uint8_t func;
+[; ;modbus.h: 74: uint8_t addr_hi;
+[; ;modbus.h: 75: uint8_t addr_lo;
+[; ;modbus.h: 76: uint8_t data_hi;
+[; ;modbus.h: 77: uint8_t data_lo;
+[; ;modbus.h: 78: uint16_t crc16;
+[; ;modbus.h: 79: }st_modbusWriteSingleClib;
+[; ;modbus.h: 85: extern uint8_t modbusBuf[];
+[; ;modbus.h: 86: extern void modbus_response_process(uint8_t* rbuf,uint16_t rlen);
 "15 src/app/main.c
 [v _str `uc ~T0 @X0 -> 16 `i e ]
 [; ;main.c: 15: uint8_t str[16];
-"16
-[v _tx `ul ~T0 @X0 1 e ]
-[; ;main.c: 16: uint32_t tx;
 "17
 [v _main `(v ~T0 @X0 1 ef ]
 "18
@@ -4907,205 +4929,228 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 19: __nop();
 "19
 [e ( ___nop ..  ]
+[; ;main.c: 20: isRunInBoot=0xaa;
+"20
+[e = _isRunInBoot -> -> 170 `i `uc ]
 [; ;main.c: 21: SYSTEM_Initialize();
 "21
 [e ( _SYSTEM_Initialize ..  ]
 [; ;main.c: 22: do{ (INTCONbits.GIE = 1); (INTCONbits.PEIE = 1); }while(0);;
 "22
-[e :U 603 ]
+[e :U 604 ]
 {
 [e = . . _INTCONbits 0 7 -> -> 1 `i `uc ]
 [e = . . _INTCONbits 0 6 -> -> 1 `i `uc ]
 }
-[e :U 602 ]
-[; ;main.c: 25: sys_data_init();
+[e :U 603 ]
+[; ;main.c: 25: TXSTAbits.TXEN=0;
 "25
+[e = . . _TXSTAbits 0 5 -> -> 0 `i `uc ]
+[; ;main.c: 26: sys_data_init();
+"26
 [e ( _sys_data_init ..  ]
-[; ;main.c: 27: if(sysData.pidSetFlg0 != 0x55 || sysData.pidSetFlg1 != 0xaa){
+[; ;main.c: 27: m_mem_cpy(str,(uint8_t*)"VER1.00\r\n");
 "27
-[e $ ! || != -> . _sysData 0 `i -> 85 `i != -> . _sysData 1 `i -> 170 `i 604  ]
-{
-[; ;main.c: 28: pidBbSm=0;
+[e ( _m_mem_cpy (2 , &U _str -> :s 1C `*uc ]
+[; ;main.c: 28: uart_send_str(str);
 "28
-[e = _pidBbSm -> -> 0 `i `uc ]
-"29
-}
-[; ;main.c: 29: }else{
-[e $U 605  ]
-[e :U 604 ]
-{
-[; ;main.c: 30: pidBbSm=5;
+[e ( _uart_send_str (1 &U _str ]
+[; ;main.c: 30: if(sysData.pidSetFlg0 != 0x55 || sysData.pidSetFlg1 != 0xaa){
 "30
-[e = _pidBbSm -> -> 5 `i `uc ]
-[; ;main.c: 31: PidKp=sysData.pidKp;
+[e $ ! || != -> . _sysData 0 `i -> 85 `i != -> . _sysData 1 `i -> 170 `i 605  ]
+{
+[; ;main.c: 31: pidBbSm=0;
 "31
-[e = _PidKp -> . _sysData 4 `l ]
-[; ;main.c: 32: PidTd=sysData.pidTd;
+[e = _pidBbSm -> -> 0 `i `uc ]
 "32
-[e = _PidTd -> . _sysData 6 `l ]
-[; ;main.c: 33: PidTi=sysData.pidTi;
-"33
-[e = _PidTi -> . _sysData 5 `l ]
-"34
 }
+[; ;main.c: 32: }else{
+[e $U 606  ]
 [e :U 605 ]
-[; ;main.c: 34: }
-[; ;main.c: 36: while (1){
+{
+[; ;main.c: 33: pidBbSm=5;
+"33
+[e = _pidBbSm -> -> 5 `i `uc ]
+[; ;main.c: 34: PidKp=sysData.pidKp;
+"34
+[e = _PidKp -> . _sysData 4 `l ]
+[; ;main.c: 35: PidTd=sysData.pidTd;
+"35
+[e = _PidTd -> . _sysData 6 `l ]
+[; ;main.c: 36: PidTi=sysData.pidTi;
 "36
-[e :U 607 ]
-{
-[; ;main.c: 37: if(Event & (1<<2)){
+[e = _PidTi -> . _sysData 5 `l ]
 "37
-[e $ ! != & -> _Event `i << -> 1 `i -> 2 `i -> 0 `i 609  ]
-{
-[; ;main.c: 38: Event &= ~(1<<2);
-"38
-[e =& _Event -> ~ << -> 1 `i -> 2 `i `uc ]
-[; ;main.c: 40: rtAdcValueRsLo=adc_sample(channel_AN6,1,32);
-"40
-[e = _rtAdcValueRsLo ( _adc_sample (3 , , -> . `E4865 3 `uc -> -> 1 `i `uc -> -> 32 `i `uc ]
-[; ;main.c: 42: rtAdcValueRsHi=adc_sample(channel_AN5,3,32);
-"42
-[e = _rtAdcValueRsHi ( _adc_sample (3 , , -> . `E4865 2 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
-[; ;main.c: 45: rtAdcValueRcLo=adc_sample(channel_AN4,3,32);
-"45
-[e = _rtAdcValueRcLo ( _adc_sample (3 , , -> . `E4865 1 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
-[; ;main.c: 46: rtAdcValueRcLo>>=1;
-"46
-[e =>> _rtAdcValueRcLo -> 1 `i ]
-[; ;main.c: 47: rtAdcValueRcHi=adc_sample(channel_AN2,3,32);
-"47
-[e = _rtAdcValueRcHi ( _adc_sample (3 , , -> . `E4865 0 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
-[; ;main.c: 48: rtAdcValueRcHi>>=1;
-"48
-[e =>> _rtAdcValueRcHi -> 1 `i ]
-[; ;main.c: 50: rtAdcValueVoFb=adc_sample(channel_AN7,3,32);
-"50
-[e = _rtAdcValueVoFb ( _adc_sample (3 , , -> . `E4865 4 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
-[; ;main.c: 51: rtAdcValueVoFb>>=1;
-"51
-[e =>> _rtAdcValueVoFb -> 1 `i ]
-[; ;main.c: 53: resRc=calc_temp_rc();
-"53
-[e = _resRc ( _calc_temp_rc ..  ]
-[; ;main.c: 54: resRs=calc_temp_rs();
-"54
-[e = _resRs ( _calc_temp_rs ..  ]
-[; ;main.c: 56: __nop();
-"56
-[e ( ___nop ..  ]
-[; ;main.c: 57: if(pidBbSm>=5){
-"57
-[e $ ! >= -> _pidBbSm `i -> 5 `i 610  ]
-{
-[; ;main.c: 58: pid_pwm1_idrv_run();
-"58
-[e ( _pid_pwm1_idrv_run ..  ]
-[; ;main.c: 61: rsLoAvg=calc_rs_lo_avg(rtAdcValueRsLo);
-"61
-[e = _rsLoAvg ( _calc_rs_lo_avg (1 _rtAdcValueRsLo ]
-[; ;main.c: 62: voExpectMv=calc_expect_vout_adc_value(rsLoAvg);
-"62
-[e = _voExpectMv ( _calc_expect_vout_adc_value (1 _rsLoAvg ]
-[; ;main.c: 63: voExpectAdcValue=(voExpectMv<<1);
-"63
-[e = _voExpectAdcValue << _voExpectMv -> 1 `i ]
-[; ;main.c: 64: pid_pwm2_vout_run();
-"64
-[e ( _pid_pwm2_vout_run ..  ]
-"65
-}
-[; ;main.c: 65: }else{
-[e $U 611  ]
-[e :U 610 ]
-{
-[; ;main.c: 66: pid_pwm1_idrv_b_b();
-"66
-[e ( _pid_pwm1_idrv_b_b ..  ]
-[; ;main.c: 68: if(pidBbSm>=5){
-"68
-[e $ ! >= -> _pidBbSm `i -> 5 `i 612  ]
-{
-[; ;main.c: 69: sysData.pidSetFlg0 = 0x55;
-"69
-[e = . _sysData 0 -> -> 85 `i `uc ]
-[; ;main.c: 70: sysData.pidSetFlg1 = 0xaa;
-"70
-[e = . _sysData 1 -> -> 170 `i `uc ]
-[; ;main.c: 71: sysData.pidKp=PidKp;
-"71
-[e = . _sysData 4 -> _PidKp `ui ]
-[; ;main.c: 72: sysData.pidTd=PidTd;
-"72
-[e = . _sysData 6 -> _PidTd `ui ]
-[; ;main.c: 73: sysData.pidTi=PidTi;
-"73
-[e = . _sysData 5 -> _PidTi `ui ]
-[; ;main.c: 74: sys_data_save();
-"74
-[e ( _sys_data_save ..  ]
-"75
-}
-[e :U 612 ]
-"76
-}
-[e :U 611 ]
-"78
-}
-[e :U 609 ]
-[; ;main.c: 75: }
-[; ;main.c: 76: }
-[; ;main.c: 78: }
-[; ;main.c: 80: if(Event & (1<<3)){
-"80
-[e $ ! != & -> _Event `i << -> 1 `i -> 3 `i -> 0 `i 613  ]
-{
-[; ;main.c: 81: Event &= ~(1<<3);
-"81
-[e =& _Event -> ~ << -> 1 `i -> 3 `i `uc ]
-"109
-}
-[e :U 613 ]
-[; ;main.c: 109: }
-[; ;main.c: 111: if(Event & (1<<0)){
-"111
-[e $ ! != & -> _Event `i << -> 1 `i -> 0 `i -> 0 `i 614  ]
-{
-[; ;main.c: 112: Event &= ~ (1<<0);
-"112
-[e =& _Event -> ~ << -> 1 `i -> 0 `i `uc ]
-[; ;main.c: 113: if(eusartRxCount>0){
-"113
-[e $ ! > -> _eusartRxCount `i -> 0 `i 615  ]
-{
-[; ;main.c: 114: m_mem_cpy_len(modbusBuf,eusartRxBuffer,eusartRxCount);
-"114
-[e ( _m_mem_cpy_len (3 , , &U _modbusBuf -> &U _eusartRxBuffer `*uc -> _eusartRxCount `ui ]
-[; ;main.c: 115: modbus_response_process(modbusBuf,eusartRxCount);
-"115
-[e ( _modbus_response_process (2 , &U _modbusBuf -> _eusartRxCount `ui ]
-"117
-}
-[e :U 615 ]
-[; ;main.c: 117: }
-[; ;main.c: 119: uart_received_start();
-"119
-[e ( _uart_received_start ..  ]
-"120
-}
-[e :U 614 ]
-[; ;main.c: 120: }
-[; ;main.c: 122: __nop();
-"122
-[e ( ___nop ..  ]
-"123
 }
 [e :U 606 ]
-"36
-[e $U 607  ]
+[; ;main.c: 37: }
+[; ;main.c: 39: while (1){
+"39
 [e :U 608 ]
-[; ;main.c: 123: }
-[; ;main.c: 126: }
-"126
-[e :UE 600 ]
+{
+[; ;main.c: 40: if(Event & (1<<2)){
+"40
+[e $ ! != & -> _Event `i << -> 1 `i -> 2 `i -> 0 `i 610  ]
+{
+[; ;main.c: 41: Event &= ~(1<<2);
+"41
+[e =& _Event -> ~ << -> 1 `i -> 2 `i `uc ]
+[; ;main.c: 43: rtAdcValueRsLo=adc_sample(channel_AN6,1,32);
+"43
+[e = _rtAdcValueRsLo ( _adc_sample (3 , , -> . `E4865 3 `uc -> -> 1 `i `uc -> -> 32 `i `uc ]
+[; ;main.c: 45: rtAdcValueRsHi=adc_sample(channel_AN5,3,32);
+"45
+[e = _rtAdcValueRsHi ( _adc_sample (3 , , -> . `E4865 2 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
+[; ;main.c: 48: rtAdcValueRcLo=adc_sample(channel_AN4,3,32);
+"48
+[e = _rtAdcValueRcLo ( _adc_sample (3 , , -> . `E4865 1 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
+[; ;main.c: 49: rtAdcValueRcLo>>=1;
+"49
+[e =>> _rtAdcValueRcLo -> 1 `i ]
+[; ;main.c: 50: rtAdcValueRcHi=adc_sample(channel_AN2,3,32);
+"50
+[e = _rtAdcValueRcHi ( _adc_sample (3 , , -> . `E4865 0 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
+[; ;main.c: 51: rtAdcValueRcHi>>=1;
+"51
+[e =>> _rtAdcValueRcHi -> 1 `i ]
+[; ;main.c: 53: rtAdcValueVoFb=adc_sample(channel_AN7,3,32);
+"53
+[e = _rtAdcValueVoFb ( _adc_sample (3 , , -> . `E4865 4 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
+[; ;main.c: 54: rtAdcValueVoFb>>=1;
+"54
+[e =>> _rtAdcValueVoFb -> 1 `i ]
+[; ;main.c: 56: resRc=calc_temp_rc();
+"56
+[e = _resRc ( _calc_temp_rc ..  ]
+[; ;main.c: 57: resRs=calc_temp_rs();
+"57
+[e = _resRs ( _calc_temp_rs ..  ]
+[; ;main.c: 59: __nop();
+"59
+[e ( ___nop ..  ]
+[; ;main.c: 60: if(pidBbSm>=5){
+"60
+[e $ ! >= -> _pidBbSm `i -> 5 `i 611  ]
+{
+[; ;main.c: 61: pid_pwm1_idrv_run();
+"61
+[e ( _pid_pwm1_idrv_run ..  ]
+[; ;main.c: 64: rsLoAvg=calc_rs_lo_avg(rtAdcValueRsLo);
+"64
+[e = _rsLoAvg ( _calc_rs_lo_avg (1 _rtAdcValueRsLo ]
+[; ;main.c: 65: voExpectMv=calc_expect_vout_adc_value(rsLoAvg);
+"65
+[e = _voExpectMv ( _calc_expect_vout_adc_value (1 _rsLoAvg ]
+[; ;main.c: 66: voExpectAdcValue=(voExpectMv<<1);
+"66
+[e = _voExpectAdcValue << _voExpectMv -> 1 `i ]
+[; ;main.c: 67: pid_pwm2_vout_run();
+"67
+[e ( _pid_pwm2_vout_run ..  ]
+"68
 }
+[; ;main.c: 68: }else{
+[e $U 612  ]
+[e :U 611 ]
+{
+[; ;main.c: 69: pid_pwm1_idrv_b_b();
+"69
+[e ( _pid_pwm1_idrv_b_b ..  ]
+[; ;main.c: 71: if(pidBbSm>=5){
+"71
+[e $ ! >= -> _pidBbSm `i -> 5 `i 613  ]
+{
+[; ;main.c: 72: sysData.pidSetFlg0 = 0x55;
+"72
+[e = . _sysData 0 -> -> 85 `i `uc ]
+[; ;main.c: 73: sysData.pidSetFlg1 = 0xaa;
+"73
+[e = . _sysData 1 -> -> 170 `i `uc ]
+[; ;main.c: 74: sysData.pidKp=(uint16_t)PidKp;
+"74
+[e = . _sysData 4 -> _PidKp `ui ]
+[; ;main.c: 75: sysData.pidTd=(uint16_t)PidTd;
+"75
+[e = . _sysData 6 -> _PidTd `ui ]
+[; ;main.c: 76: sysData.pidTi=(uint16_t)PidTi;
+"76
+[e = . _sysData 5 -> _PidTi `ui ]
+[; ;main.c: 77: sys_data_save();
+"77
+[e ( _sys_data_save ..  ]
+[; ;main.c: 78: modbusBuf[0]=0x55;
+"78
+[e = *U + &U _modbusBuf * -> -> -> 0 `i `ui `ux -> -> # *U &U _modbusBuf `ui `ux -> -> 85 `i `uc ]
+[; ;main.c: 79: modbusBuf[1]=0xaa;
+"79
+[e = *U + &U _modbusBuf * -> -> -> 1 `i `ui `ux -> -> # *U &U _modbusBuf `ui `ux -> -> 170 `i `uc ]
+[; ;main.c: 80: uart_send_len(modbusBuf,2);
+"80
+[e ( _uart_send_len (2 , &U _modbusBuf -> -> 2 `i `uc ]
+"81
+}
+[e :U 613 ]
+"82
+}
+[e :U 612 ]
+"84
+}
+[e :U 610 ]
+[; ;main.c: 81: }
+[; ;main.c: 82: }
+[; ;main.c: 84: }
+[; ;main.c: 86: if(Event & (1<<3)){
+"86
+[e $ ! != & -> _Event `i << -> 1 `i -> 3 `i -> 0 `i 614  ]
+{
+[; ;main.c: 87: Event &= ~(1<<3);
+"87
+[e =& _Event -> ~ << -> 1 `i -> 3 `i `uc ]
+"129
+}
+[e :U 614 ]
+[; ;main.c: 129: }
+[; ;main.c: 131: if(Event & (1<<0)){
+"131
+[e $ ! != & -> _Event `i << -> 1 `i -> 0 `i -> 0 `i 615  ]
+{
+[; ;main.c: 132: Event &= ~ (1<<0);
+"132
+[e =& _Event -> ~ << -> 1 `i -> 0 `i `uc ]
+[; ;main.c: 133: if(eusartRxCount>0){
+"133
+[e $ ! > -> _eusartRxCount `i -> 0 `i 616  ]
+{
+[; ;main.c: 134: m_mem_cpy_len(modbusBuf,eusartRxBuffer,eusartRxCount);
+"134
+[e ( _m_mem_cpy_len (3 , , &U _modbusBuf -> &U _eusartRxBuffer `*uc -> _eusartRxCount `ui ]
+[; ;main.c: 135: modbus_response_process(modbusBuf,eusartRxCount);
+"135
+[e ( _modbus_response_process (2 , &U _modbusBuf -> _eusartRxCount `ui ]
+"137
+}
+[e :U 616 ]
+[; ;main.c: 137: }
+[; ;main.c: 139: uart_received_start();
+"139
+[e ( _uart_received_start ..  ]
+"140
+}
+[e :U 615 ]
+[; ;main.c: 140: }
+[; ;main.c: 142: __nop();
+"142
+[e ( ___nop ..  ]
+"143
+}
+[e :U 607 ]
+"39
+[e $U 608  ]
+[e :U 609 ]
+[; ;main.c: 143: }
+[; ;main.c: 147: }
+"147
+[e :UE 601 ]
+}
+[a 1C 86 69 82 49 46 48 48 13 10 0 ]
+

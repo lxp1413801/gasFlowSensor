@@ -6359,11 +6359,11 @@ uint16_t pidKp;
 uint16_t pidTi;
 uint16_t pidTd;
 
-uint16_t calibRsAdc[20];
-uint16_t calibVoMV[20];
+uint16_t calibRsAdc[30];
+uint16_t calibVoMV[30];
 uint16_t crc16;
 }sysData_t;
-extern sysData_t sysData;
+extern volatile sysData_t sysData;
 
 extern uint16_t sys_data_init(void);
 extern void sys_data_save(void);
@@ -6373,22 +6373,23 @@ extern uint16_t crc_sum(uint8_t *puchMsg, uint16_t usDataLen);
 extern uint8_t crc_verify(uint8_t* message, uint16_t n);
 extern void crc_append( uint8_t* message, uint16_t n);
 
-# 6 "src/api/sysData.c"
-sysData_t sysData;
+# 7 "src/api/sysData.c"
+volatile sysData_t sysData;
 
 void my_flash_read_system_erase(void)
 {
 
-# 15
-FLASH_EraseBlock(0x1f80);
-FLASH_EraseBlock(0x1f80+32);
-FLASH_EraseBlock(0x1f80+64);
-FLASH_EraseBlock(0x1f80+96);
+# 16
+FLASH_EraseBlock(0x1f00);
+FLASH_EraseBlock(0x1f00+32);
+FLASH_EraseBlock(0x1f00+64);
+FLASH_EraseBlock(0x1f00+96);
+FLASH_EraseBlock(0x1f00+128);
 }
 
 void my_flash_system_read(uint8_t* buf,uint16_t len)
 {
-uint16_t flashAddr=0x1f80;
+uint16_t flashAddr=0x1f00;
 uint16_t i;
 
 uint8_t GIEBitValue = INTCONbits.GIE;
@@ -6414,7 +6415,7 @@ uint16_t my_flash_system_write(uint8_t* buf,uint16_t len)
 {
 uint16_t blocNum=0;
 uint16_t loc,j,i=0;
-uint16_t flashAddr=0x1f80;
+uint16_t flashAddr=0x1f00;
 uint8_t GIEBitValue=INTCONbits.GIE;
 
 blocNum=len/32;
@@ -6458,7 +6459,15 @@ INTCONbits.GIE = GIEBitValue;
 
 return 0;
 }
-
+void sys_data_save(void)
+{
+crc_append((uint8_t*)&sysData,sizeof(sysData_t)-2);
+my_flash_read_system_erase();
+my_flash_system_write((uint8_t*)&sysData,sizeof(sysData_t));
+PidKp=sysData.pidKp;
+PidTi=sysData.pidTi;
+PidTd=sysData.pidTd;;
+}
 uint16_t sys_data_init(void)
 {
 uint16_t ret,i;
@@ -6468,26 +6477,16 @@ if(!ret){
 sysData.pidSetFlg0=0xff;
 sysData.pidSetFlg1=0xff;
 sysData.id=0xff;
-for(i=0;i<20;i++){
+for(i=0;i<30;i++){
 
 sysData.calibRsAdc[i]=6400+i*720;
 sysData.calibVoMV[i]=i*333;
 }
-crc_append((uint8_t*)&sysData,sizeof(sysData_t)-2);
+sys_data_save();
 
-my_flash_read_system_erase();
-my_flash_system_write((uint8_t*)&sysData,sizeof(sysData_t));
-
-
-
+# 126
 }
+
 return ret;
-}
-
-void sys_data_save(void)
-{
-crc_append((uint8_t*)&sysData,sizeof(sysData_t)-2);
-my_flash_read_system_erase();
-my_flash_system_write((uint8_t*)&sysData,sizeof(sysData_t));
 }
 

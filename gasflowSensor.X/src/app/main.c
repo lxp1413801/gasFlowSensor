@@ -13,17 +13,20 @@
 #include "../api/modbus.h"
 
 uint8_t str[16];
-uint32_t tx;
+
 void main(void)
 {
     __nop();
-    //isRunInBoot=0xaa;
+    isRunInBoot=0xaa;
     SYSTEM_Initialize();
     irq_global_enable();
 	//set_idrv_pwm1_duty(10);
 	//set_vout_pwm2_duty(10);
+    TXSTAbits.TXEN=0;
     sys_data_init();
-    
+    m_mem_cpy(str,(uint8_t*)"VER1.00\r\n");
+    uart_send_str(str);
+   
     if(sysData.pidSetFlg0 != 0x55 || sysData.pidSetFlg1 != 0xaa){
         pidBbSm=PID_BB_NONE;
     }else{
@@ -68,10 +71,13 @@ void main(void)
                 if(pidBbSm>=PID_BB_EXIT){
                     sysData.pidSetFlg0 = 0x55;
                     sysData.pidSetFlg1 = 0xaa;   
-                    sysData.pidKp=PidKp;
-                    sysData.pidTd=PidTd;
-                    sysData.pidTi=PidTi;
+                    sysData.pidKp=(uint16_t)PidKp;
+                    sysData.pidTd=(uint16_t)PidTd;
+                    sysData.pidTi=(uint16_t)PidTi;
                     sys_data_save();
+                    modbusBuf[0]=0x55;
+                    modbusBuf[1]=0xaa;
+                     uart_send_len(modbusBuf,2);   
                 }
             }
 			#endif
@@ -80,31 +86,45 @@ void main(void)
 		if(Event & flg_EVEN_TICKER_1000MS){
 			Event &= ~flg_EVEN_TICKER_1000MS;		
 			#if USART_MODE == USART_MODE_CONSLE
-			uart_send_str((uint8_t*)"Rc=");
+
+            m_mem_cpy(str,(uint8_t*)"Rc=");
+            uart_send_str(str);
 			m_int_2_str_ex(str,resRc,sizeof(str));
 			uart_send_str(str);
 			
-			uart_send_str((uint8_t*)"\tRs=");
+			//uart_send_str((uint8_t*)"\tRs=");
+            m_mem_cpy(str,(uint8_t*)"\tRs=");
+            uart_send_str(str);            
 			m_int_2_str_ex(str,resRs,sizeof(str));
 			uart_send_str(str);			
 
-			uart_send_str((uint8_t*)"\ti=");
+			//uart_send_str((uint8_t*)"\ti=");
+            m_mem_cpy(str,(uint8_t*)"\ti=");
+            uart_send_str(str);                   
 			m_int_2_str_ex(str,rtAdcValueRsLo,sizeof(str));
 			uart_send_str(str);	  
             
-			uart_send_str((uint8_t*)"\texp=");
+			//uart_send_str((uint8_t*)"\texp=");
+            m_mem_cpy(str,(uint8_t*)"\texp=");
+            uart_send_str(str);              
 			m_int_2_str_ex(str,voExpectAdcValue,sizeof(str));
 			uart_send_str(str);	  
             
-			uart_send_str((uint8_t*)"\tvo=");
+			//uart_send_str((uint8_t*)"\tvo=");
+            m_mem_cpy(str,(uint8_t*)"\tvo=");
+            uart_send_str(str);              
 			m_int_2_str_ex(str,voExpectMv,sizeof(str));
 			uart_send_str(str);	               
 			
-			uart_send_str((uint8_t*)"\tpwm=");
+			//uart_send_str((uint8_t*)"\tpwm=");
+            m_mem_cpy(str,(uint8_t*)"\tpwm=");
+            uart_send_str(str);            
 			m_int_2_str_ex(str,pwm2DutyForVout,sizeof(str));
 			uart_send_str(str);	               
             
-			uart_send_str((uint8_t*)"\r\n");
+			//uart_send_str((uint8_t*)"\r\n");
+            m_mem_cpy(str,(uint8_t*)"\r\n");
+            uart_send_str(str);               
             #endif
 		}
 		#if USART_MODE == USART_MODE_MODBUS
@@ -123,6 +143,7 @@ void main(void)
     }
     //asm("pagesel 0x1000");
     //asm("goto 0x1000");
+  
 }
 /**
  End of File

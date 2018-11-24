@@ -6472,6 +6472,8 @@ while(0 == PIR1bits.TXIF);
 TXREG = x;
 }
 
+
+
 void uart_send_str(uint8_t* str)
 {
 
@@ -6482,7 +6484,7 @@ while(0 == PIR1bits.TXIF);
 TXREG = *str;
 str++;
 
-# 33
+# 35
 }
 while(0 == PIR1bits.TXIF);
 }

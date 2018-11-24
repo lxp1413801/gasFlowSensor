@@ -17,40 +17,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _TMR2_Initialize `(v ~T0 @X0 0 ef ]
 "94 mcc_generated_files/eusart.h
 [v _EUSART_Initialize `(v ~T0 @X0 0 ef ]
-"1409 C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic16f1575.h
-[v _OSCCON `Vuc ~T0 @X0 0 e@153 ]
-"1352
-[v _OSCTUNE `Vuc ~T0 @X0 0 e@152 ]
-"1294
+"1294 C:\Program Files (x86)\Microchip\xc8\v1.37\include\pic16f1575.h
 [v _WDTCON `Vuc ~T0 @X0 0 e@151 ]
-"49 mcc_generated_files/mcc.c
-[p x FOSC=INTOSC ]
-"50
-[p x WDTE=OFF ]
-"51
-[p x PWRTE=OFF ]
-"52
-[p x MCLRE=ON ]
-"53
-[p x CP=OFF ]
-"54
-[p x BOREN=ON ]
-"55
-[p x CLKOUTEN=OFF ]
-"58
-[p x WRT=OFF ]
-"59
-[p x PPS1WAY=ON ]
-"60
-[p x PLLEN=OFF ]
-"61
-[p x STVREN=ON ]
-"62
-[p x BORV=LO ]
-"63
-[p x LPBOREN=OFF ]
-"64
-[p x LVP=ON ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -4741,75 +4709,69 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;mcc.h: 75: void SYSTEM_Initialize(void);
 [; ;mcc.h: 88: void OSCILLATOR_Initialize(void);
 [; ;mcc.h: 101: void WDT_Initialize(void);
-"68 mcc_generated_files/mcc.c
+"70 mcc_generated_files/mcc.c
 [v _SYSTEM_Initialize `(v ~T0 @X0 1 ef ]
-"69
+"71
 {
-[; ;mcc.c: 68: void SYSTEM_Initialize(void)
-[; ;mcc.c: 69: {
+[; ;mcc.c: 70: void SYSTEM_Initialize(void)
+[; ;mcc.c: 71: {
 [e :U _SYSTEM_Initialize ]
 [f ]
-[; ;mcc.c: 71: PIN_MANAGER_Initialize();
-"71
-[e ( _PIN_MANAGER_Initialize ..  ]
-[; ;mcc.c: 72: OSCILLATOR_Initialize();
-"72
-[e ( _OSCILLATOR_Initialize ..  ]
-[; ;mcc.c: 73: WDT_Initialize();
+[; ;mcc.c: 73: PIN_MANAGER_Initialize();
 "73
-[e ( _WDT_Initialize ..  ]
-[; ;mcc.c: 74: FVR_Initialize();
+[e ( _PIN_MANAGER_Initialize ..  ]
+[; ;mcc.c: 74: OSCILLATOR_Initialize();
 "74
-[e ( _FVR_Initialize ..  ]
-[; ;mcc.c: 75: PWM1_Initialize();
+[e ( _OSCILLATOR_Initialize ..  ]
+[; ;mcc.c: 75: WDT_Initialize();
 "75
-[e ( _PWM1_Initialize ..  ]
-[; ;mcc.c: 76: PWM2_Initialize();
+[e ( _WDT_Initialize ..  ]
+[; ;mcc.c: 76: FVR_Initialize();
 "76
-[e ( _PWM2_Initialize ..  ]
-[; ;mcc.c: 77: ADC1_Initialize();
+[e ( _FVR_Initialize ..  ]
+[; ;mcc.c: 77: PWM1_Initialize();
 "77
-[e ( _ADC1_Initialize ..  ]
-[; ;mcc.c: 78: TMR2_Initialize();
+[e ( _PWM1_Initialize ..  ]
+[; ;mcc.c: 78: PWM2_Initialize();
 "78
-[e ( _TMR2_Initialize ..  ]
-[; ;mcc.c: 79: EUSART_Initialize();
+[e ( _PWM2_Initialize ..  ]
+[; ;mcc.c: 79: ADC1_Initialize();
 "79
-[e ( _EUSART_Initialize ..  ]
-[; ;mcc.c: 80: }
+[e ( _ADC1_Initialize ..  ]
+[; ;mcc.c: 80: TMR2_Initialize();
 "80
+[e ( _TMR2_Initialize ..  ]
+[; ;mcc.c: 81: EUSART_Initialize();
+"81
+[e ( _EUSART_Initialize ..  ]
+[; ;mcc.c: 82: }
+"82
 [e :UE 595 ]
 }
-"82
+"84
 [v _OSCILLATOR_Initialize `(v ~T0 @X0 1 ef ]
-"83
+"85
 {
-[; ;mcc.c: 82: void OSCILLATOR_Initialize(void)
-[; ;mcc.c: 83: {
+[; ;mcc.c: 84: void OSCILLATOR_Initialize(void)
+[; ;mcc.c: 85: {
 [e :U _OSCILLATOR_Initialize ]
 [f ]
-[; ;mcc.c: 85: OSCCON = 0x78;
-"85
-[e = _OSCCON -> -> 120 `i `uc ]
-[; ;mcc.c: 87: OSCTUNE = 0x00;
-"87
-[e = _OSCTUNE -> -> 0 `i `uc ]
-[; ;mcc.c: 88: }
-"88
+[; ;mcc.c: 92: }
+"92
 [e :UE 596 ]
 }
-"90
+"94
 [v _WDT_Initialize `(v ~T0 @X0 1 ef ]
-"91
+"95
 {
-[; ;mcc.c: 90: void WDT_Initialize(void)
-[; ;mcc.c: 91: {
+[; ;mcc.c: 94: void WDT_Initialize(void)
+[; ;mcc.c: 95: {
 [e :U _WDT_Initialize ]
 [f ]
-[; ;mcc.c: 93: WDTCON = 0x16;
-"93
+[; ;mcc.c: 97: WDTCON = 0x16;
+"97
 [e = _WDTCON -> -> 22 `i `uc ]
-[; ;mcc.c: 94: }
-"94
+[; ;mcc.c: 98: }
+"98
 [e :UE 597 ]
 }

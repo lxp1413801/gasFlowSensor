@@ -69,8 +69,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 "119
 [v _i `ui ~T0 @X0 1 a ]
 [v _j `ui ~T0 @X0 1 a ]
-[v _Data `ui ~T0 @X0 1 a ]
-[; ;crc16.c: 119: uint16_t i, j, Data;
+[; ;crc16.c: 119: uint16_t i, j;
 [; ;crc16.c: 120: for ( j=0; j<len;j++){
 "120
 {

@@ -16,6 +16,8 @@ void uart_send_byte(uint8_t x)
 	TXREG = x;
 }
 #define some_nop()  do{__nop();__nop();__nop();__nop();}while(0); 
+
+
 void uart_send_str(uint8_t* str)
 {
     //TXSTAbits.TXEN=0;

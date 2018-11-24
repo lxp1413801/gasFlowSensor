@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group name="cs600_test">
+            <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/src/api/my_uart.c</file>
+            <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/src/depend/m_string.c</file>
+            <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/mcc_generated_files/memory.h</file>
+            <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/src/api/my_uart.h</file>
+            <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/src/globle/globle.c</file>
+            <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/mcc_generated_files/eusart.c</file>
+            <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/mcc_generated_files/pin_manager.c</file>
+            <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/src/api/iap.c</file>
+            <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/mcc_generated_files/mcc.c</file>
+            <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/src/globle/globle.h</file>
+            <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/src/app/boot_main.c</file>
+            <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/mcc_generated_files/eusart.h</file>
+            <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/mcc_generated_files/tmr2.c</file>
+            <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/mcc_generated_files/memory.c</file>
+            <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/mcc_generated_files/interrupt_manager.c</file>
+        </group>
+    </open-files>
+</project-private>

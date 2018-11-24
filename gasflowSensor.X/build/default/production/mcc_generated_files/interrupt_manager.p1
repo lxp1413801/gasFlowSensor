@@ -4980,73 +4980,86 @@ Version 3.2 HI-TECH Software Intermediate Code
 }
 [e :U 601 ]
 [; ;interrupt_manager.c: 99: }
-[; ;interrupt_manager.c: 100: if(INTCONbits.PEIE == 1 && PIE3bits.PWM2IE == 1 && PIR3bits.PWM2IF == 1){
-"100
-[e $ ! && && == -> . . _INTCONbits 0 6 `i -> 1 `i == -> . . _PIE3bits 0 2 `i -> 1 `i == -> . . _PIR3bits 0 2 `i -> 1 `i 604  ]
-{
-[; ;interrupt_manager.c: 102: PIR3bits.PWM2IF = 0;
+[; ;interrupt_manager.c: 101: if( PIR1bits.TXIF == 1)
+"101
+[e $ ! == -> . . _PIR1bits 0 3 `i -> 1 `i 604  ]
+[; ;interrupt_manager.c: 102: {
 "102
-[e = . . _PIR3bits 0 2 -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 103: if(PWM2INTFbits.PRIF){
-"103
-[e $ ! != -> . . _PWM2INTFbits 0 0 `i -> -> -> 0 `i `Vuc `i 605  ]
 {
-[; ;interrupt_manager.c: 104: PWM2INTFbits.PRIF=0;
+[; ;interrupt_manager.c: 103: PIR1bits.TXIF=0;
+"103
+[e = . . _PIR1bits 0 3 -> -> 0 `i `uc ]
 "104
-[e = . . _PWM2INTFbits 0 0 -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 105: PWM2DCH = (pwm2DutyForVout>>8);
-"105
-[e = _PWM2DCH -> >> _pwm2DutyForVout -> 8 `i `uc ]
-[; ;interrupt_manager.c: 106: PWM2DCL = (pwm2DutyForVout);
-"106
-[e = _PWM2DCL -> _pwm2DutyForVout `uc ]
-"107
-}
-[e :U 605 ]
-"108
 }
 [e :U 604 ]
-[; ;interrupt_manager.c: 107: }
-[; ;interrupt_manager.c: 108: }
-[; ;interrupt_manager.c: 109: if(INTCONbits.PEIE == 1 && PIE3bits.PWM1IE == 1 && PIR3bits.PWM1IF == 1){
+[; ;interrupt_manager.c: 104: }
+[; ;interrupt_manager.c: 106: if(INTCONbits.PEIE == 1 && PIE3bits.PWM2IE == 1 && PIR3bits.PWM2IF == 1){
+"106
+[e $ ! && && == -> . . _INTCONbits 0 6 `i -> 1 `i == -> . . _PIE3bits 0 2 `i -> 1 `i == -> . . _PIR3bits 0 2 `i -> 1 `i 605  ]
+{
+[; ;interrupt_manager.c: 108: PIR3bits.PWM2IF = 0;
+"108
+[e = . . _PIR3bits 0 2 -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 109: if(PWM2INTFbits.PRIF){
 "109
-[e $ ! && && == -> . . _INTCONbits 0 6 `i -> 1 `i == -> . . _PIE3bits 0 1 `i -> 1 `i == -> . . _PIR3bits 0 1 `i -> 1 `i 606  ]
+[e $ ! != -> . . _PWM2INTFbits 0 0 `i -> -> -> 0 `i `Vuc `i 606  ]
 {
-[; ;interrupt_manager.c: 110: PIR3bits.PWM1IF = 0;
+[; ;interrupt_manager.c: 110: PWM2INTFbits.PRIF=0;
 "110
-[e = . . _PIR3bits 0 1 -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 111: if(PWM1INTFbits.PRIF){
+[e = . . _PWM2INTFbits 0 0 -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 111: PWM2DCH = (pwm2DutyForVout>>8);
 "111
-[e $ ! != -> . . _PWM1INTFbits 0 0 `i -> -> -> 0 `i `Vuc `i 607  ]
-{
-[; ;interrupt_manager.c: 112: PWM1INTFbits.PRIF=0;
+[e = _PWM2DCH -> >> _pwm2DutyForVout -> 8 `i `uc ]
+[; ;interrupt_manager.c: 112: PWM2DCL = (pwm2DutyForVout);
 "112
-[e = . . _PWM1INTFbits 0 0 -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 113: PWM1DCH = (pwm1DutyForIdrv>>8);
+[e = _PWM2DCL -> _pwm2DutyForVout `uc ]
 "113
-[e = _PWM1DCH -> >> _pwm1DutyForIdrv -> 8 `i `uc ]
-[; ;interrupt_manager.c: 114: PWM1DCL = (pwm1DutyForIdrv);
-"114
-[e = _PWM1DCL -> _pwm1DutyForIdrv `uc ]
-"115
 }
-[e :U 607 ]
-"116
-}
-[; ;interrupt_manager.c: 115: }
-[; ;interrupt_manager.c: 116: }
-[e $U 608  ]
-"117
 [e :U 606 ]
-[; ;interrupt_manager.c: 117: else
-[; ;interrupt_manager.c: 118: {
-"118
+"114
+}
+[e :U 605 ]
+[; ;interrupt_manager.c: 113: }
+[; ;interrupt_manager.c: 114: }
+[; ;interrupt_manager.c: 115: if(INTCONbits.PEIE == 1 && PIE3bits.PWM1IE == 1 && PIR3bits.PWM1IF == 1){
+"115
+[e $ ! && && == -> . . _INTCONbits 0 6 `i -> 1 `i == -> . . _PIE3bits 0 1 `i -> 1 `i == -> . . _PIR3bits 0 1 `i -> 1 `i 607  ]
 {
+[; ;interrupt_manager.c: 116: PIR3bits.PWM1IF = 0;
+"116
+[e = . . _PIR3bits 0 1 -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 117: if(PWM1INTFbits.PRIF){
+"117
+[e $ ! != -> . . _PWM1INTFbits 0 0 `i -> -> -> 0 `i `Vuc `i 608  ]
+{
+[; ;interrupt_manager.c: 118: PWM1INTFbits.PRIF=0;
+"118
+[e = . . _PWM1INTFbits 0 0 -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 119: PWM1DCH = (pwm1DutyForIdrv>>8);
+"119
+[e = _PWM1DCH -> >> _pwm1DutyForIdrv -> 8 `i `uc ]
+[; ;interrupt_manager.c: 120: PWM1DCL = (pwm1DutyForIdrv);
 "120
+[e = _PWM1DCL -> _pwm1DutyForIdrv `uc ]
+"121
 }
 [e :U 608 ]
-[; ;interrupt_manager.c: 120: }
+"122
+}
 [; ;interrupt_manager.c: 121: }
-"121
+[; ;interrupt_manager.c: 122: }
+[e $U 609  ]
+"126
+[e :U 607 ]
+[; ;interrupt_manager.c: 126: else
+[; ;interrupt_manager.c: 127: {
+"127
+{
+"129
+}
+[e :U 609 ]
+[; ;interrupt_manager.c: 129: }
+[; ;interrupt_manager.c: 130: }
+"130
 [e :UE 595 ]
 }

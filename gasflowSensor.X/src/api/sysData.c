@@ -3,7 +3,8 @@
 #include "../api/sysData.h"
 #include "../depend/crc16.h"
 
-sysData_t sysData;
+//const uint8_t defaultBuf[256] @ 0x1f00;
+volatile sysData_t sysData;
 
 void my_flash_read_system_erase(void)
 {
@@ -16,6 +17,7 @@ void my_flash_read_system_erase(void)
 	FLASH_EraseBlock(SYSDATA_START_ADDR+32); 
 	FLASH_EraseBlock(SYSDATA_START_ADDR+64); 
 	FLASH_EraseBlock(SYSDATA_START_ADDR+96); 
+    FLASH_EraseBlock(SYSDATA_START_ADDR+128); 
 }
 
 void my_flash_system_read(uint8_t* buf,uint16_t len)
@@ -90,7 +92,15 @@ uint16_t my_flash_system_write(uint8_t* buf,uint16_t len)
 
     return 0;	
 }
-
+void sys_data_save(void)
+{
+	crc_append((uint8_t*)&sysData,sizeof(sysData_t)-2);
+	my_flash_read_system_erase();
+	my_flash_system_write((uint8_t*)&sysData,sizeof(sysData_t));	
+    PidKp=sysData.pidKp;
+    PidTi=sysData.pidTi;
+    PidTd=sysData.pidTd;;        
+}
 uint16_t sys_data_init(void)
 {
 	uint16_t ret,i;
@@ -105,23 +115,20 @@ uint16_t sys_data_init(void)
 			sysData.calibRsAdc[i]=6400+i*720;
 			sysData.calibVoMV[i]=i*333;
 		}
-		crc_append((uint8_t*)&sysData,sizeof(sysData_t)-2);
+        sys_data_save();
+		//crc_append((uint8_t*)&sysData,sizeof(sysData_t)-2);
         
-		my_flash_read_system_erase();
-		my_flash_system_write((uint8_t*)&sysData,sizeof(sysData_t));
+		//my_flash_read_system_erase();
+		//my_flash_system_write((uint8_t*)&sysData,sizeof(sysData_t));
         
 		//my_flash_system_read((uint8_t*)&sysData,sizeof(sysData_t));
 		//ret=crc_verify((uint8_t*)&sysData,sizeof(sysData_t));
 	}
+
 	return ret;
 }
 
-void sys_data_save(void)
-{
-	crc_append((uint8_t*)&sysData,sizeof(sysData_t)-2);
-	my_flash_read_system_erase();
-	my_flash_system_write((uint8_t*)&sysData,sizeof(sysData_t));	
-}
+
 
 /**
  End of File

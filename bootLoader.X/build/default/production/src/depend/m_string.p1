@@ -1,0 +1,866 @@
+Version 3.2 HI-TECH Software Intermediate Code
+[; ;stdint.h: 13: typedef signed char int8_t;
+[; ;stdint.h: 20: typedef signed int int16_t;
+[; ;stdint.h: 38: typedef signed long int int32_t;
+[; ;stdint.h: 45: typedef unsigned char uint8_t;
+[; ;stdint.h: 51: typedef unsigned int uint16_t;
+[; ;stdint.h: 67: typedef unsigned long int uint32_t;
+[; ;stdint.h: 75: typedef signed char int_least8_t;
+[; ;stdint.h: 82: typedef signed int int_least16_t;
+[; ;stdint.h: 104: typedef signed long int int_least32_t;
+[; ;stdint.h: 111: typedef unsigned char uint_least8_t;
+[; ;stdint.h: 117: typedef unsigned int uint_least16_t;
+[; ;stdint.h: 136: typedef unsigned long int uint_least32_t;
+[; ;stdint.h: 145: typedef signed char int_fast8_t;
+[; ;stdint.h: 152: typedef signed int int_fast16_t;
+[; ;stdint.h: 174: typedef signed long int int_fast32_t;
+[; ;stdint.h: 181: typedef unsigned char uint_fast8_t;
+[; ;stdint.h: 187: typedef unsigned int uint_fast16_t;
+[; ;stdint.h: 206: typedef unsigned long int uint_fast32_t;
+[; ;stdint.h: 212: typedef int32_t intmax_t;
+[; ;stdint.h: 217: typedef uint32_t uintmax_t;
+[; ;stdint.h: 222: typedef int16_t intptr_t;
+[; ;stdint.h: 227: typedef uint16_t uintptr_t;
+[; ;m_string.h: 7: extern void m_mem_set(uint8_t* buf,uint8_t x,uint16_t len);
+[; ;m_string.h: 8: extern void m_mem_cpy(uint8_t* d,uint8_t* s);
+[; ;m_string.h: 9: extern void m_mem_cpy_len(uint8_t* d,uint8_t* s,uint16_t len);
+[; ;m_string.h: 10: extern uint16_t m_str_match(uint8_t* b,uint8_t* c);
+[; ;m_string.h: 11: extern int32_t m_math_pow(int32_t x,int32_t y);
+[; ;m_string.h: 12: extern uint8_t m_str_cmp(uint8_t* d,uint8_t* s);
+[; ;m_string.h: 13: extern uint8_t m_str_cmp_len(uint8_t* d,uint8_t* s,uint16_t len);
+[; ;m_string.h: 14: extern uint16_t HEX8(uint8_t* hex,uint8_t x);
+[; ;m_string.h: 15: extern uint16_t m_str_b2h(uint8_t* h,uint8_t* b,uint16_t len);
+[; ;m_string.h: 16: extern uint16_t m_str_h2b(uint8_t* b,uint8_t* h,uint16_t len);
+[; ;m_string.h: 19: extern void m_int_2_str(uint8_t* buf,int32_t x,uint16_t len);
+[; ;m_string.h: 20: extern uint16_t m_str_head_hide(uint8_t* str,uint16_t loc);
+[; ;m_string.h: 22: extern const uint8_t Bcd2HexTable[];
+[; ;m_string.h: 23: extern const uint8_t Hex2BcdTable[];
+[; ;m_string.h: 29: extern uint32_t swap_uint32(uint32_t x);
+[; ;m_string.h: 30: extern uint16_t swap_uint16(uint16_t x);
+[; ;m_string.h: 35: extern void int32_array_shift_right(int32_t *p32,uint16_t eoc);
+"3 src/depend/m_string.c
+[v _HexTable `Cuc ~T0 @X0 -> 0 `x e ]
+[i _HexTable
+:U ..
+-> 48 `c
+-> 49 `c
+-> 50 `c
+-> 51 `c
+-> 52 `c
+-> 53 `c
+-> 54 `c
+-> 55 `c
+-> 56 `c
+-> 57 `c
+-> 65 `c
+-> 66 `c
+-> 67 `c
+-> 68 `c
+-> 69 `c
+-> 70 `c
+-> 0 `c
+..
+]
+[; ;m_string.c: 3: const uint8_t HexTable[]="0123456789ABCDEF";
+"32
+[v _m_mem_set `(v ~T0 @X0 1 ef3`*uc`uc`ui ]
+"33
+{
+[; ;m_string.c: 32: void m_mem_set(uint8_t* buf,uint8_t x,uint16_t len)
+[; ;m_string.c: 33: {
+[e :U _m_mem_set ]
+"32
+[v _buf `*uc ~T0 @X0 1 r1 ]
+[v _x `uc ~T0 @X0 1 r2 ]
+[v _len `ui ~T0 @X0 1 r3 ]
+"33
+[f ]
+[; ;m_string.c: 34: while(len--)
+"34
+[e $U 2  ]
+[e :U 3 ]
+[; ;m_string.c: 35: {
+"35
+{
+[; ;m_string.c: 36: *buf++=x;
+"36
+[e = *U ++ _buf * -> -> 1 `i `x -> -> # *U _buf `i `x _x ]
+"37
+}
+[e :U 2 ]
+"34
+[e $ != -- _len -> -> 1 `i `ui -> -> 0 `i `ui 3  ]
+[e :U 4 ]
+[; ;m_string.c: 37: }
+[; ;m_string.c: 38: }
+"38
+[e :UE 1 ]
+}
+"39
+[v _m_mem_cpy `(v ~T0 @X0 1 ef2`*uc`*uc ]
+"40
+{
+[; ;m_string.c: 39: void m_mem_cpy(uint8_t* d,uint8_t* s)
+[; ;m_string.c: 40: {
+[e :U _m_mem_cpy ]
+"39
+[v _d `*uc ~T0 @X0 1 r1 ]
+[v _s `*uc ~T0 @X0 1 r2 ]
+"40
+[f ]
+[; ;m_string.c: 41: while(*s!='\0')
+"41
+[e $U 6  ]
+[e :U 7 ]
+[; ;m_string.c: 42: {
+"42
+{
+[; ;m_string.c: 43: *d++=*s++;
+"43
+[e = *U ++ _d * -> -> 1 `i `x -> -> # *U _d `i `x *U ++ _s * -> -> 1 `i `x -> -> # *U _s `i `x ]
+"44
+}
+[e :U 6 ]
+"41
+[e $ != -> *U _s `ui -> 0 `ui 7  ]
+[e :U 8 ]
+[; ;m_string.c: 44: }
+[; ;m_string.c: 45: *d='\0';
+"45
+[e = *U _d -> -> 0 `ui `uc ]
+[; ;m_string.c: 46: }
+"46
+[e :UE 5 ]
+}
+"47
+[v _m_mem_cpy_len `(v ~T0 @X0 1 ef3`*uc`*uc`ui ]
+"48
+{
+[; ;m_string.c: 47: void m_mem_cpy_len(uint8_t* d,uint8_t* s,uint16_t len)
+[; ;m_string.c: 48: {
+[e :U _m_mem_cpy_len ]
+"47
+[v _d `*uc ~T0 @X0 1 r1 ]
+[v _s `*uc ~T0 @X0 1 r2 ]
+[v _len `ui ~T0 @X0 1 r3 ]
+"48
+[f ]
+[; ;m_string.c: 50: while(len)
+"50
+[e $U 10  ]
+[e :U 11 ]
+[; ;m_string.c: 51: {
+"51
+{
+[; ;m_string.c: 52: *d++=*s++;
+"52
+[e = *U ++ _d * -> -> 1 `i `x -> -> # *U _d `i `x *U ++ _s * -> -> 1 `i `x -> -> # *U _s `i `x ]
+[; ;m_string.c: 53: len--;
+"53
+[e -- _len -> -> 1 `i `ui ]
+"54
+}
+[e :U 10 ]
+"50
+[e $ != _len -> -> 0 `i `ui 11  ]
+[e :U 12 ]
+[; ;m_string.c: 54: }
+[; ;m_string.c: 55: }
+"55
+[e :UE 9 ]
+}
+"56
+[v _m_str_cmp `(uc ~T0 @X0 1 ef2`*uc`*uc ]
+"57
+{
+[; ;m_string.c: 56: uint8_t m_str_cmp(uint8_t* d,uint8_t* s)
+[; ;m_string.c: 57: {
+[e :U _m_str_cmp ]
+"56
+[v _d `*uc ~T0 @X0 1 r1 ]
+[v _s `*uc ~T0 @X0 1 r2 ]
+"57
+[f ]
+"58
+[v _ret `ui ~T0 @X0 1 a ]
+[; ;m_string.c: 58: uint16_t ret=1;
+[e = _ret -> -> 1 `i `ui ]
+[; ;m_string.c: 59: while(*d!='\0' && *s!='\0')
+"59
+[e $U 14  ]
+[e :U 15 ]
+[; ;m_string.c: 60: {
+"60
+{
+[; ;m_string.c: 61: if(*d != *s)
+"61
+[e $ ! != -> *U _d `i -> *U _s `i 17  ]
+[; ;m_string.c: 62: {
+"62
+{
+[; ;m_string.c: 63: ret=0;
+"63
+[e = _ret -> -> 0 `i `ui ]
+[; ;m_string.c: 64: break;
+"64
+[e $U 16  ]
+"65
+}
+[e :U 17 ]
+[; ;m_string.c: 65: }
+[; ;m_string.c: 66: s++;d++;
+"66
+[e ++ _s * -> -> 1 `i `x -> -> # *U _s `i `x ]
+[e ++ _d * -> -> 1 `i `x -> -> # *U _d `i `x ]
+"67
+}
+[e :U 14 ]
+"59
+[e $ && != -> *U _d `ui -> 0 `ui != -> *U _s `ui -> 0 `ui 15  ]
+[e :U 16 ]
+[; ;m_string.c: 67: }
+[; ;m_string.c: 68: return ret;
+"68
+[e ) -> _ret `uc ]
+[e $UE 13  ]
+[; ;m_string.c: 69: }
+"69
+[e :UE 13 ]
+}
+"70
+[v _m_str_cmp_len `(uc ~T0 @X0 1 ef3`*uc`*uc`ui ]
+"71
+{
+[; ;m_string.c: 70: uint8_t m_str_cmp_len(uint8_t* d,uint8_t* s,uint16_t len)
+[; ;m_string.c: 71: {
+[e :U _m_str_cmp_len ]
+"70
+[v _d `*uc ~T0 @X0 1 r1 ]
+[v _s `*uc ~T0 @X0 1 r2 ]
+[v _len `ui ~T0 @X0 1 r3 ]
+"71
+[f ]
+"72
+[v _ret `ui ~T0 @X0 1 a ]
+[; ;m_string.c: 72: uint16_t ret=1;
+[e = _ret -> -> 1 `i `ui ]
+[; ;m_string.c: 73: while(len--){
+"73
+[e $U 19  ]
+[e :U 20 ]
+{
+[; ;m_string.c: 74: if(*d != *s){
+"74
+[e $ ! != -> *U _d `i -> *U _s `i 22  ]
+{
+[; ;m_string.c: 75: ret=0;
+"75
+[e = _ret -> -> 0 `i `ui ]
+[; ;m_string.c: 76: break;
+"76
+[e $U 21  ]
+"77
+}
+[e :U 22 ]
+[; ;m_string.c: 77: }
+[; ;m_string.c: 78: s++;d++;
+"78
+[e ++ _s * -> -> 1 `i `x -> -> # *U _s `i `x ]
+[e ++ _d * -> -> 1 `i `x -> -> # *U _d `i `x ]
+"79
+}
+[e :U 19 ]
+"73
+[e $ != -- _len -> -> 1 `i `ui -> -> 0 `i `ui 20  ]
+[e :U 21 ]
+[; ;m_string.c: 79: }
+[; ;m_string.c: 80: return ret;
+"80
+[e ) -> _ret `uc ]
+[e $UE 18  ]
+[; ;m_string.c: 81: }
+"81
+[e :UE 18 ]
+}
+"82
+[v _m_str_match `(ui ~T0 @X0 1 ef2`*uc`*uc ]
+"83
+{
+[; ;m_string.c: 82: uint16_t m_str_match(uint8_t* b,uint8_t* c)
+[; ;m_string.c: 83: {
+[e :U _m_str_match ]
+"82
+[v _b `*uc ~T0 @X0 1 r1 ]
+[v _c `*uc ~T0 @X0 1 r2 ]
+"83
+[f ]
+"84
+[v _bb `*uc ~T0 @X0 1 a ]
+[v _cc `*uc ~T0 @X0 1 a ]
+"85
+[v _ret `ui ~T0 @X0 1 a ]
+[; ;m_string.c: 84: uint8_t *bb,*cc;
+[; ;m_string.c: 85: uint16_t ret=0;
+[e = _ret -> -> 0 `i `ui ]
+[; ;m_string.c: 86: while(*b!='\0' )
+"86
+[e $U 24  ]
+[e :U 25 ]
+[; ;m_string.c: 87: {
+"87
+{
+[; ;m_string.c: 88: cc=c;
+"88
+[e = _cc _c ]
+[; ;m_string.c: 89: bb=b++;
+"89
+[e = _bb ++ _b * -> -> 1 `i `x -> -> # *U _b `i `x ]
+[; ;m_string.c: 90: ret=0;
+"90
+[e = _ret -> -> 0 `i `ui ]
+[; ;m_string.c: 91: while(*bb!='\0' && *cc!='\0')
+"91
+[e $U 27  ]
+[e :U 28 ]
+[; ;m_string.c: 92: {
+"92
+{
+[; ;m_string.c: 93: if(*bb!=*cc)
+"93
+[e $ ! != -> *U _bb `i -> *U _cc `i 30  ]
+[; ;m_string.c: 94: {
+"94
+{
+[; ;m_string.c: 95: ret=0;
+"95
+[e = _ret -> -> 0 `i `ui ]
+[; ;m_string.c: 96: break;
+"96
+[e $U 29  ]
+"97
+}
+[e :U 30 ]
+[; ;m_string.c: 97: }
+[; ;m_string.c: 98: bb++;
+"98
+[e ++ _bb * -> -> 1 `i `x -> -> # *U _bb `i `x ]
+[; ;m_string.c: 99: cc++;
+"99
+[e ++ _cc * -> -> 1 `i `x -> -> # *U _cc `i `x ]
+"100
+}
+[e :U 27 ]
+"91
+[e $ && != -> *U _bb `ui -> 0 `ui != -> *U _cc `ui -> 0 `ui 28  ]
+[e :U 29 ]
+[; ;m_string.c: 100: }
+[; ;m_string.c: 101: if(*cc=='\0')
+"101
+[e $ ! == -> *U _cc `ui -> 0 `ui 31  ]
+[; ;m_string.c: 102: {
+"102
+{
+[; ;m_string.c: 105: return 1;
+"105
+[e ) -> -> 1 `i `ui ]
+[e $UE 23  ]
+"106
+}
+[e :U 31 ]
+"107
+}
+[e :U 24 ]
+"86
+[e $ != -> *U _b `ui -> 0 `ui 25  ]
+[e :U 26 ]
+[; ;m_string.c: 106: }
+[; ;m_string.c: 107: }
+[; ;m_string.c: 108: return ret;
+"108
+[e ) _ret ]
+[e $UE 23  ]
+[; ;m_string.c: 109: }
+"109
+[e :UE 23 ]
+}
+"113
+[v _m_math_pow `(l ~T0 @X0 1 ef2`l`l ]
+"114
+{
+[; ;m_string.c: 113: int32_t m_math_pow(int32_t x,int32_t y)
+[; ;m_string.c: 114: {
+[e :U _m_math_pow ]
+"113
+[v _x `l ~T0 @X0 1 r1 ]
+[v _y `l ~T0 @X0 1 r2 ]
+"114
+[f ]
+"115
+[v _ret `l ~T0 @X0 1 a ]
+[; ;m_string.c: 115: int32_t ret=1;
+[e = _ret -> -> 1 `i `l ]
+[; ;m_string.c: 116: if(y==0)return 1;
+"116
+[e $ ! == _y -> -> 0 `i `l 33  ]
+[e ) -> -> 1 `i `l ]
+[e $UE 32  ]
+[e :U 33 ]
+[; ;m_string.c: 117: while(y--)
+"117
+[e $U 34  ]
+[e :U 35 ]
+[; ;m_string.c: 118: {
+"118
+{
+[; ;m_string.c: 119: ret*=x;
+"119
+[e =* _ret _x ]
+"120
+}
+[e :U 34 ]
+"117
+[e $ != -- _y -> -> 1 `i `l -> -> 0 `i `l 35  ]
+[e :U 36 ]
+[; ;m_string.c: 120: }
+[; ;m_string.c: 121: return ret;
+"121
+[e ) _ret ]
+[e $UE 32  ]
+[; ;m_string.c: 122: }
+"122
+[e :UE 32 ]
+}
+"126
+[v _m_int_2_str `(v ~T0 @X0 1 ef3`*uc`l`ui ]
+"127
+{
+[; ;m_string.c: 126: void m_int_2_str(uint8_t* buf,int32_t x,uint16_t len)
+[; ;m_string.c: 127: {
+[e :U _m_int_2_str ]
+"126
+[v _buf `*uc ~T0 @X0 1 r1 ]
+[v _x `l ~T0 @X0 1 r2 ]
+[v _len `ui ~T0 @X0 1 r3 ]
+"127
+[f ]
+"128
+[v _t `l ~T0 @X0 1 a ]
+[; ;m_string.c: 128: int32_t t;
+[; ;m_string.c: 129: if(!len)return;
+"129
+[e $ ! ! != _len -> -> 0 `i `ui 38  ]
+[e $UE 37  ]
+[e :U 38 ]
+[; ;m_string.c: 131: t=m_math_pow(10,len);
+"131
+[e = _t ( _m_math_pow (2 , -> -> 10 `i `l -> _len `l ]
+[; ;m_string.c: 132: if(x>=t-1)x=t-1;
+"132
+[e $ ! >= _x - _t -> -> 1 `i `l 39  ]
+[e = _x - _t -> -> 1 `i `l ]
+[e :U 39 ]
+[; ;m_string.c: 133: while(len--)
+"133
+[e $U 40  ]
+[e :U 41 ]
+[; ;m_string.c: 134: {
+"134
+{
+[; ;m_string.c: 135: t=x%10;
+"135
+[e = _t % _x -> -> 10 `i `l ]
+[; ;m_string.c: 137: *buf-- = ('0'+t);
+"137
+[e = *U -- _buf * -> -> 1 `i `x -> -> # *U _buf `i `x -> + -> -> 48 `ui `l _t `uc ]
+[; ;m_string.c: 138: x/=10;
+"138
+[e =/ _x -> -> 10 `uc `l ]
+"139
+}
+[e :U 40 ]
+"133
+[e $ != -- _len -> -> 1 `i `ui -> -> 0 `i `ui 41  ]
+[e :U 42 ]
+[; ;m_string.c: 139: }
+[; ;m_string.c: 140: }
+"140
+[e :UE 37 ]
+}
+"145
+[v _m_str_head_hide `(ui ~T0 @X0 1 ef2`*uc`ui ]
+"146
+{
+[; ;m_string.c: 145: uint16_t m_str_head_hide(uint8_t* str,uint16_t loc)
+[; ;m_string.c: 146: {
+[e :U _m_str_head_hide ]
+"145
+[v _str `*uc ~T0 @X0 1 r1 ]
+[v _loc `ui ~T0 @X0 1 r2 ]
+"146
+[f ]
+"147
+[v _ret `ui ~T0 @X0 1 a ]
+[; ;m_string.c: 147: uint16_t ret=0;
+[e = _ret -> -> 0 `i `ui ]
+[; ;m_string.c: 148: while(loc--)
+"148
+[e $U 44  ]
+[e :U 45 ]
+[; ;m_string.c: 149: {
+"149
+{
+[; ;m_string.c: 150: if(*str=='0')
+"150
+[e $ ! == -> *U _str `ui -> 48 `ui 47  ]
+[; ;m_string.c: 151: {
+"151
+{
+[; ;m_string.c: 152: *str++=' ';
+"152
+[e = *U ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x -> -> 32 `ui `uc ]
+[; ;m_string.c: 153: ret++;
+"153
+[e ++ _ret -> -> 1 `i `ui ]
+"154
+}
+[; ;m_string.c: 154: }
+[e $U 48  ]
+"155
+[e :U 47 ]
+[; ;m_string.c: 155: else
+[; ;m_string.c: 156: {
+"156
+{
+[; ;m_string.c: 157: break;
+"157
+[e $U 46  ]
+"158
+}
+[e :U 48 ]
+"159
+}
+[e :U 44 ]
+"148
+[e $ != -- _loc -> -> 1 `i `ui -> -> 0 `i `ui 45  ]
+[e :U 46 ]
+[; ;m_string.c: 158: }
+[; ;m_string.c: 159: }
+[; ;m_string.c: 160: return ret;
+"160
+[e ) _ret ]
+[e $UE 43  ]
+[; ;m_string.c: 161: }
+"161
+[e :UE 43 ]
+}
+"165
+[v _HEX8 `(ui ~T0 @X0 1 ef2`*uc`uc ]
+"166
+{
+[; ;m_string.c: 165: uint16_t HEX8(uint8_t* hex,uint8_t x)
+[; ;m_string.c: 166: {
+[e :U _HEX8 ]
+"165
+[v _hex `*uc ~T0 @X0 1 r1 ]
+[v _x `uc ~T0 @X0 1 r2 ]
+"166
+[f ]
+[; ;m_string.c: 167: *hex++=HexTable[(x&0xf0)>>4];
+"167
+[e = *U ++ _hex * -> -> 1 `i `x -> -> # *U _hex `i `x *U + &U _HexTable * -> -> >> & -> _x `i -> 240 `i -> 4 `i `ui `ux -> -> # *U &U _HexTable `ui `ux ]
+[; ;m_string.c: 168: *hex++=HexTable[(x&0x0f)];
+"168
+[e = *U ++ _hex * -> -> 1 `i `x -> -> # *U _hex `i `x *U + &U _HexTable * -> -> & -> _x `i -> 15 `i `ui `ux -> -> # *U &U _HexTable `ui `ux ]
+[; ;m_string.c: 169: hex='\0';
+"169
+[e = _hex -> -> 0 `ui `*uc ]
+[; ;m_string.c: 170: return 3;
+"170
+[e ) -> -> 3 `i `ui ]
+[e $UE 49  ]
+[; ;m_string.c: 171: }
+"171
+[e :UE 49 ]
+}
+"176
+[v _m_str_b2h `(ui ~T0 @X0 1 ef3`*uc`*uc`ui ]
+"177
+{
+[; ;m_string.c: 176: uint16_t m_str_b2h(uint8_t* h,uint8_t* b,uint16_t len)
+[; ;m_string.c: 177: {
+[e :U _m_str_b2h ]
+"176
+[v _h `*uc ~T0 @X0 1 r1 ]
+[v _b `*uc ~T0 @X0 1 r2 ]
+[v _len `ui ~T0 @X0 1 r3 ]
+"177
+[f ]
+"178
+[v _i `ui ~T0 @X0 1 a ]
+[; ;m_string.c: 178: uint16_t i=0;
+[e = _i -> -> 0 `i `ui ]
+"179
+[v _t8 `uc ~T0 @X0 1 a ]
+[; ;m_string.c: 179: uint8_t t8;
+[; ;m_string.c: 180: for(i=0;i<len;i++)
+"180
+{
+[e = _i -> -> 0 `i `ui ]
+[e $U 54  ]
+"181
+[e :U 51 ]
+[; ;m_string.c: 181: {
+{
+[; ;m_string.c: 182: t8=*b++;
+"182
+[e = _t8 *U ++ _b * -> -> 1 `i `x -> -> # *U _b `i `x ]
+[; ;m_string.c: 183: *h++=HexTable[(t8&0xf0)>>4];
+"183
+[e = *U ++ _h * -> -> 1 `i `x -> -> # *U _h `i `x *U + &U _HexTable * -> -> >> & -> _t8 `i -> 240 `i -> 4 `i `ui `ux -> -> # *U &U _HexTable `ui `ux ]
+[; ;m_string.c: 184: *h++=HexTable[(t8&0x0f)];
+"184
+[e = *U ++ _h * -> -> 1 `i `x -> -> # *U _h `i `x *U + &U _HexTable * -> -> & -> _t8 `i -> 15 `i `ui `ux -> -> # *U &U _HexTable `ui `ux ]
+"185
+}
+"180
+[e ++ _i -> -> 1 `i `ui ]
+[e :U 54 ]
+[e $ < _i _len 51  ]
+[e :U 52 ]
+"185
+}
+[; ;m_string.c: 185: }
+[; ;m_string.c: 186: return (len<<1);
+"186
+[e ) << _len -> 1 `i ]
+[e $UE 50  ]
+[; ;m_string.c: 187: }
+"187
+[e :UE 50 ]
+}
+"196
+[v __chr2hex `(uc ~T0 @X0 1 ef1`uc ]
+{
+[; ;m_string.c: 196: uint8_t _chr2hex(uint8_t c){
+[e :U __chr2hex ]
+[v _c `uc ~T0 @X0 1 r1 ]
+[f ]
+"197
+[v _h `uc ~T0 @X0 1 a ]
+[; ;m_string.c: 197: uint8_t h=0;
+[e = _h -> -> 0 `i `uc ]
+[; ;m_string.c: 198: if(c>='0' && c <='9')h|=(c-'0');
+"198
+[e $ ! && >= -> _c `ui -> 48 `ui <= -> _c `ui -> 57 `ui 56  ]
+[e =| _h -> - -> _c `ui -> 48 `ui `uc ]
+[e $U 57  ]
+"199
+[e :U 56 ]
+[; ;m_string.c: 199: else if(c>='A' && c<='F')h|=(c-'A'+0x0a);
+[e $ ! && >= -> _c `ui -> 65 `ui <= -> _c `ui -> 70 `ui 58  ]
+[e =| _h -> + - -> _c `ui -> 65 `ui -> -> 10 `i `ui `uc ]
+[e $U 59  ]
+"200
+[e :U 58 ]
+[; ;m_string.c: 200: else if(c>='a' && c<='f')h|=(c-'a'+0x0a);
+[e $ ! && >= -> _c `ui -> 97 `ui <= -> _c `ui -> 102 `ui 60  ]
+[e =| _h -> + - -> _c `ui -> 97 `ui -> -> 10 `i `ui `uc ]
+[e $U 61  ]
+"201
+[e :U 60 ]
+[; ;m_string.c: 201: else h|=0;
+[e =| _h -> -> 0 `i `uc ]
+[e :U 61 ]
+[e :U 59 ]
+[e :U 57 ]
+[; ;m_string.c: 202: return h;
+"202
+[e ) _h ]
+[e $UE 55  ]
+[; ;m_string.c: 203: }
+"203
+[e :UE 55 ]
+}
+"207
+[v _m_str_h2b `(ui ~T0 @X0 1 ef3`*uc`*uc`ui ]
+"208
+{
+[; ;m_string.c: 207: uint16_t m_str_h2b(uint8_t* b,uint8_t* h,uint16_t len)
+[; ;m_string.c: 208: {
+[e :U _m_str_h2b ]
+"207
+[v _b `*uc ~T0 @X0 1 r1 ]
+[v _h `*uc ~T0 @X0 1 r2 ]
+[v _len `ui ~T0 @X0 1 r3 ]
+"208
+[f ]
+"209
+[v _i `ui ~T0 @X0 1 a ]
+[; ;m_string.c: 209: uint16_t i=len;
+[e = _i _len ]
+"210
+[v _bb `uc ~T0 @X0 1 a ]
+[v _s `uc ~T0 @X0 1 a ]
+[; ;m_string.c: 210: uint8_t bb,s;
+[; ;m_string.c: 211: while(i>=2)
+"211
+[e $U 63  ]
+[e :U 64 ]
+[; ;m_string.c: 212: {
+"212
+{
+[; ;m_string.c: 213: bb=0;
+"213
+[e = _bb -> -> 0 `i `uc ]
+[; ;m_string.c: 214: s=*h++;
+"214
+[e = _s *U ++ _h * -> -> 1 `i `x -> -> # *U _h `i `x ]
+[; ;m_string.c: 216: bb=_chr2hex(s);
+"216
+[e = _bb ( __chr2hex (1 _s ]
+[; ;m_string.c: 217: bb<<=4;
+"217
+[e =<< _bb -> 4 `i ]
+[; ;m_string.c: 218: s=*h++;
+"218
+[e = _s *U ++ _h * -> -> 1 `i `x -> -> # *U _h `i `x ]
+[; ;m_string.c: 219: bb= bb+_chr2hex(s);
+"219
+[e = _bb -> + -> _bb `i -> ( __chr2hex (1 _s `i `uc ]
+[; ;m_string.c: 220: *b++=bb;
+"220
+[e = *U ++ _b * -> -> 1 `i `x -> -> # *U _b `i `x _bb ]
+[; ;m_string.c: 221: i-=2;
+"221
+[e =- _i -> -> 2 `i `ui ]
+"222
+}
+[e :U 63 ]
+"211
+[e $ >= _i -> -> 2 `i `ui 64  ]
+[e :U 65 ]
+[; ;m_string.c: 222: }
+[; ;m_string.c: 223: return (len>>1);
+"223
+[e ) >> _len -> 1 `i ]
+[e $UE 62  ]
+[; ;m_string.c: 224: }
+"224
+[e :UE 62 ]
+}
+"226
+[v _swap_uint32 `(ul ~T0 @X0 1 ef1`ul ]
+"227
+{
+[; ;m_string.c: 226: uint32_t swap_uint32(uint32_t x)
+[; ;m_string.c: 227: {
+[e :U _swap_uint32 ]
+"226
+[v _x `ul ~T0 @X0 1 r1 ]
+"227
+[f ]
+"228
+[v _ret `ul ~T0 @X0 1 a ]
+"229
+[v _d `*uc ~T0 @X0 1 a ]
+[v _s `*uc ~T0 @X0 1 a ]
+[; ;m_string.c: 228: uint32_t ret;
+[; ;m_string.c: 229: uint8_t *d,*s;
+[; ;m_string.c: 230: s=(uint8_t*)&x;
+"230
+[e = _s -> &U _x `*uc ]
+[; ;m_string.c: 231: d=(uint8_t*)&ret;
+"231
+[e = _d -> &U _ret `*uc ]
+[; ;m_string.c: 232: d[0]=s[3];
+"232
+[e = *U + _d * -> -> 0 `i `x -> -> # *U _d `i `x *U + _s * -> -> 3 `i `x -> -> # *U _s `i `x ]
+[; ;m_string.c: 233: d[1]=s[2];
+"233
+[e = *U + _d * -> -> 1 `i `x -> -> # *U _d `i `x *U + _s * -> -> 2 `i `x -> -> # *U _s `i `x ]
+[; ;m_string.c: 234: d[2]=s[1];
+"234
+[e = *U + _d * -> -> 2 `i `x -> -> # *U _d `i `x *U + _s * -> -> 1 `i `x -> -> # *U _s `i `x ]
+[; ;m_string.c: 235: d[3]=s[0];
+"235
+[e = *U + _d * -> -> 3 `i `x -> -> # *U _d `i `x *U + _s * -> -> 0 `i `x -> -> # *U _s `i `x ]
+[; ;m_string.c: 236: return ret;
+"236
+[e ) _ret ]
+[e $UE 66  ]
+[; ;m_string.c: 237: }
+"237
+[e :UE 66 ]
+}
+"238
+[v _swap_uint16 `(ui ~T0 @X0 1 ef1`ui ]
+"239
+{
+[; ;m_string.c: 238: uint16_t swap_uint16(uint16_t x)
+[; ;m_string.c: 239: {
+[e :U _swap_uint16 ]
+"238
+[v _x `ui ~T0 @X0 1 r1 ]
+"239
+[f ]
+"240
+[v _ret `ui ~T0 @X0 1 a ]
+"241
+[v _d `*uc ~T0 @X0 1 a ]
+[v _s `*uc ~T0 @X0 1 a ]
+[; ;m_string.c: 240: uint16_t ret;
+[; ;m_string.c: 241: uint8_t *d,*s;
+[; ;m_string.c: 242: s=(uint8_t*)&x;
+"242
+[e = _s -> &U _x `*uc ]
+[; ;m_string.c: 243: d=(uint8_t*)&ret;
+"243
+[e = _d -> &U _ret `*uc ]
+[; ;m_string.c: 244: d[0]=s[1];
+"244
+[e = *U + _d * -> -> 0 `i `x -> -> # *U _d `i `x *U + _s * -> -> 1 `i `x -> -> # *U _s `i `x ]
+[; ;m_string.c: 245: d[1]=s[0];
+"245
+[e = *U + _d * -> -> 1 `i `x -> -> # *U _d `i `x *U + _s * -> -> 0 `i `x -> -> # *U _s `i `x ]
+[; ;m_string.c: 246: return ret;
+"246
+[e ) _ret ]
+[e $UE 67  ]
+[; ;m_string.c: 247: }
+"247
+[e :UE 67 ]
+}
+"249
+[v _int32_array_shift_right `(v ~T0 @X0 1 ef2`*l`ui ]
+"250
+{
+[; ;m_string.c: 249: void int32_array_shift_right(int32_t *p32,uint16_t eoc)
+[; ;m_string.c: 250: {
+[e :U _int32_array_shift_right ]
+"249
+[v _p32 `*l ~T0 @X0 1 r1 ]
+[v _eoc `ui ~T0 @X0 1 r2 ]
+"250
+[f ]
+[; ;m_string.c: 251: while(eoc>=1){
+"251
+[e $U 69  ]
+[e :U 70 ]
+{
+[; ;m_string.c: 252: p32[eoc]=p32[eoc-1];
+"252
+[e = *U + _p32 * -> _eoc `ux -> -> # *U _p32 `ui `ux *U + _p32 * -> - _eoc -> -> 1 `i `ui `ux -> -> # *U _p32 `ui `ux ]
+[; ;m_string.c: 253: eoc--;
+"253
+[e -- _eoc -> -> 1 `i `ui ]
+"254
+}
+[e :U 69 ]
+"251
+[e $ >= _eoc -> -> 1 `i `ui 70  ]
+[e :U 71 ]
+[; ;m_string.c: 254: }
+[; ;m_string.c: 255: }
+"255
+[e :UE 68 ]
+}
