@@ -108,16 +108,16 @@ void interrupt INTERRUPT_InterruptManager (void)
         PIR3bits.PWM2IF = 0;
         if(PWM2INTFbits.PRIF){
             PWM2INTFbits.PRIF=0;
-            PWM2DCH = (pwm2DutyForVout>>8);	//writing 8 MSBs to PWMPRH register
-            PWM2DCL = (pwm2DutyForVout);	//writing 8 LSBs to PWMPRL register	            
+            PWM2DCH = (uint8_t)(pwm2DutyForVout>>8);	//writing 8 MSBs to PWMPRH register
+            PWM2DCL = (uint8_t)(pwm2DutyForVout & 0xff);	//writing 8 LSBs to PWMPRL register	            
         }        
     }
     if(INTCONbits.PEIE == 1 && PIE3bits.PWM1IE == 1 && PIR3bits.PWM1IF == 1){
         PIR3bits.PWM1IF = 0;
         if(PWM1INTFbits.PRIF){
             PWM1INTFbits.PRIF=0;
-            PWM1DCH = (pwm1DutyForIdrv>>8);	//writing 8 MSBs to PWMPRH register
-            PWM1DCL = (pwm1DutyForIdrv);	//writing 8 LSBs to PWMPRL register	             
+            PWM1DCH = (uint8_t)(pwm1DutyForIdrv>>8);	//writing 8 MSBs to PWMPRH register
+            PWM1DCL =  (uint8_t)(pwm1DutyForIdrv&0xff);	//writing 8 LSBs to PWMPRL register	             
         }
     }   
 

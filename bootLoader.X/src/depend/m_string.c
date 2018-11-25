@@ -123,6 +123,7 @@ int32_t m_math_pow(int32_t x,int32_t y)
 /*
 e.g.: 1234-->"1234"
 */
+
 void m_int_2_str(uint8_t* buf,int32_t x,uint16_t len)
 {
 	int32_t t;
@@ -134,7 +135,7 @@ void m_int_2_str(uint8_t* buf,int32_t x,uint16_t len)
 	{
 		t=x%10;
 		//*buf--=HexTable[t];
-        *buf-- = ('0'+t);
+        *buf-- = ('0'+(uint8_t)t);
 		x/=10;
 	}
 }

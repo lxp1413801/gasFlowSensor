@@ -18,6 +18,7 @@ void main(void)
 {
     __nop();
     isRunInBoot=0xaa;
+    isRunInBoot=isRunInBoot;
     SYSTEM_Initialize();
     irq_global_enable();
 	//set_idrv_pwm1_duty(10);

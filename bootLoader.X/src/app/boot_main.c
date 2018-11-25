@@ -53,6 +53,7 @@ void main(void)
 	uint8_t ret=0;
     uint16_t t16=0;
     isRunInBoot=0x55;
+    isRunInBoot=isRunInBoot;
     SYSTEM_Initialize();
     irq_global_enable();
     do{
@@ -83,7 +84,7 @@ void main(void)
     
     //uart_send_str((uint8_t*)"boot app...\r\n");
     __nop();
-    //irq_global_disable();
+    irq_global_disable();
     asm("pagesel 0x800");
     asm("goto 0x800");
 }

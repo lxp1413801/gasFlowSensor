@@ -12,10 +12,10 @@ uint16_t rtAdcValueRcHi=0;
 
 uint16_t rtAdcValueVoFb=0;
 
-uint32_t resRc=10000UL;
-uint32_t resRs=10000UL;
+uint16_t resRc=10000UL;
+uint16_t resRs=10000UL;
 
-#define opaGainRcLo 3140
+#define opaGainRcLo 3100
 
 //继电控制测试赋值
 //<<--
@@ -25,9 +25,9 @@ uint32_t resRs=10000UL;
 #define iDRV_PWM1_MAX	1200
 #define iDRV_PWM1_MIN	5
 #define __x_delta_res	2000
-int32_t		PidKp;
-int32_t		PidTi;
-int32_t		PidTd;
+uint16_t		PidKp;
+uint16_t		PidTi;
+uint16_t		PidTd;
 
 uint8_t pidBbSm=PID_BB_NONE;
 //-->>
@@ -40,9 +40,33 @@ uint8_t pidBbSm=PID_BB_NONE;
 #define VOUT_PWM2_MIN	5
 int16_t pwm2DutyForVout=VOUT_PWM2_MIN;
 int16_t pwm1DutyForIdrv=iDRV_PWM1_MIN;
+
+//uint16_t rsSimPower=0x00;
+uint16_t voExpectMv;
+uint16_t voExpectAdcValue=0x00;
+uint16_t rsLoAvg=0;
+uint16_t rsLoAvgBuf[6]={0};
+
+uint8_t pidTestNum=0;	
+int32_t bbmax=-200000L;
+int32_t bbmin=200000L;
+uint16_t bbt0=0,bbt1=0,bbtu;
+int32_t bbta,bbu,bbku;
+
+uint16_t pidpwm2_U=20;
+//int16_t errPwm2[3];
+int16_t pwm2Ei=0;
+
+uint16_t pidU=20;
+int32_t err[3];
+
 uint16_t get_idrv_pwm1_duty(void)
 {
-	return ((PWM1DCH<<8)|PWM1DCL);
+	//return ((PWM1DCH<<8)|PWM1DCL);
+    uint16_t t16=PWM1DCH;
+    t16<<=8;
+    t16|=PWM1DCL;
+    return t16;
 }
 
 void set_idrv_pwm1_duty(uint16_t duty)
@@ -67,7 +91,11 @@ void set_idrv_pwm1_duty(uint16_t duty)
 
 uint16_t get_vout_pwm2_duty(void)
 {
-	return ((PWM2DCH<<8)|PWM2DCL);
+	//return ((PWM2DCH<<8)|PWM2DCL);
+    uint16_t t16=PWM2DCH;
+    t16<<=8;
+    t16|=PWM2DCL;
+    return t16;    
 }
 
 void set_vout_pwm2_duty(uint16_t duty)
@@ -112,7 +140,7 @@ void adc_init(adc_channel_t ch)
     ADRESL = 0x00;
     ADRESH = 0x00;	
 }
-
+/*
 uint16_t get_adc_average_value(uint16_t*  buf, uint8_t len)
 {
     uint8_t maxIndex,minIndex;
@@ -145,16 +173,18 @@ uint16_t get_adc_average_value(uint16_t*  buf, uint8_t len)
     return (uint16_t)ret;
 }
 //uint16_t adcBuf[32];
-
+*/
 uint16_t adc_sample(uint8_t ch,uint8_t gfvr,uint8_t num)
 {
-	uint8_t i;
+	uint16_t i;
 	uint16_t ret=0;
 	uint16_t t16=0;
 	//start fvr
 	fvr_set_gain(gfvr);
 	adc_init((adc_channel_t)ch);
-    __delay_us(10);
+    __delay_us(50);
+	ADCON0bits.GO_nDONE = 1;
+	while (ADCON0bits.GO_nDONE);	
 	if(num>64)num=64;
 	for(i=0;i<num;i++){
 		ADCON0bits.GO_nDONE = 1;
@@ -162,7 +192,7 @@ uint16_t adc_sample(uint8_t ch,uint8_t gfvr,uint8_t num)
 		__nop();
 		t16=ADRESH;
 		t16<<=2;
-		t16|=(ADRESL>>6);
+		t16|=(uint16_t)(ADRESL>>6);
 		//adcBuf[i]=t16;
 		ret+=t16;
 	}
@@ -195,7 +225,7 @@ uint32_t calc_temp_rs(void)
 	if(y>25000)y=25000;	
 	y=y-1000;
 	
-	return y;
+	return (uint16_t)y;
 	
 }
 
@@ -217,7 +247,7 @@ uint32_t calc_temp_rc(void)
 	if(y<2000)y=2000;
 	if(y>25000)y=25000;	
 	//y=y-1000;	
-	return y;
+	return (uint16_t)y;
 }
 
 /*
@@ -231,11 +261,7 @@ uint32_t calc_temp_rc(void)
 */
 
 
-uint8_t pidTestNum=0;	
-int32_t bbmax=-200000L;
-int32_t bbmin=200000L;
-uint32_t bbt0=0,bbt1=0;
-int32_t bbtu,bbta,bbu,bbku;
+
 void pid_pwm1_idrv_b_b(void)
 {
 	int32_t t32;
@@ -278,7 +304,8 @@ void pid_pwm1_idrv_b_b(void)
 			bbku=(bbu*40000)/(bbta*314);
             bbku*=100;
 			//测试的响应速度1.2,2参数比较理想
-			PidKp=bbku*10/14;
+            t32=(bbku*10/14);
+			PidKp=(uint16_t)t32;
 			PidTi=bbtu*10/20;
 			PidTd=bbtu/8;			
 			pidBbSm=PID_BB_EXIT;
@@ -290,14 +317,13 @@ void pid_pwm1_idrv_b_b(void)
 	}
 	
 }
-int32_t pidU=20;
-int32_t err[3];
+
 void pid_pwm1_idrv_run(void)
 {
 	//int du;
 	int32_t ep,ei,ed;
 	int32_t t32;
-	t32=(resRs-resRc);
+	t32=((int32_t)resRs-(int32_t)resRc);
 	t32=__x_delta_res-t32;
 	
 	err[2]=err[1];
@@ -307,24 +333,21 @@ void pid_pwm1_idrv_run(void)
 
 	ep=(err[0]-err[1])*PidKp;
 	ei=PidKp*err[0]/PidTi;
-	//ed=(err[0]-2*err[1]+err[2])*PidKp*PidTd/160;;
-	ed=0;
-	t32=ep+ei+ed;
+	//ed=(err[0]-2*err[1]+err[2])*PidKp*PidTd/200;;
+	//ed=0;
+	t32=ep+ei;//+ed;
 	t32/=10000;
 	t32+=pidU;
 
     __nop();
 	if(t32>iDRV_PWM1_MAX)t32=iDRV_PWM1_MAX;
 	if(t32<iDRV_PWM1_MIN)t32=iDRV_PWM1_MIN;
-	pidU=t32;
-    uint16_t t16;
-    t16=(uint16_t)pidU;
-	set_idrv_pwm1_duty(t16);
+	pidU=(uint16_t)t32;
+
+	set_idrv_pwm1_duty(pidU);
 }
 
-int16_t pidpwm2_U=20;
-int16_t errPwm2[3];
-int16_t pwm2Ei=0;
+
 void pid_pwm2_vout_run(void)
 {
 	int16_t t16,ei;
@@ -344,7 +367,7 @@ void pid_pwm2_vout_run(void)
 	t16=t16+pwm2Ei;
 	if(t16>VOUT_PWM2_MAX)t16=VOUT_PWM2_MAX;
 	if(t16<VOUT_PWM2_MIN)t16=VOUT_PWM2_MIN;
-	set_vout_pwm2_duty(t16);
+	set_vout_pwm2_duty((uint16_t)t16);
 	
 }
 
@@ -396,31 +419,73 @@ rtAdcValueRsLoAvg：
 pwm2输出采样比列调节单位负反馈，1600->12000 7.5被
 
 */
-//uint16_t rsSimPower=0x00;
-uint16_t voExpectMv;
-uint16_t voExpectAdcValue=0x00;
-uint16_t rsLoAvg=0;
-uint16_t rsLoAvgBuf[6]={0};
+
 uint16_t calc_rs_lo_avg(uint16_t x)
 {
     uint8_t i;
     uint32_t t32=0;
     
-    for(i=0;i<sizeof(rsLoAvgBuf)/sizeof(rsLoAvgBuf[0])-1;i++){
+    for(i=0;i<6-1;i++){
         rsLoAvgBuf[i]=rsLoAvgBuf[i+1];
-        t32+=rsLoAvgBuf[i];
+        t32+=((uint32_t)rsLoAvgBuf[i]);
     }
     rsLoAvgBuf[i]=x;
     t32+=x;
-    t32/=(sizeof(rsLoAvgBuf)/sizeof(rsLoAvgBuf[0]));
+    t32/=6;
     return (uint16_t)t32;
 }
+
 uint16_t calc_expect_vout_adc_value(uint16_t x)
 {
-	uint8_t index=0;
-    int32_t y0,y1,x0,x1;
-    uint8_t i;
+	//uint8_t index=0;
+	uint16_t i;
+    int32_t y0;
+	int32_t y1;
+	int32_t x0;
+	int32_t x1;
 	int32_t t32;
+    
+	
+    for (i = 0; i < MAX_CALIB_NUM-1; i++) {
+		if(sysData.calibRsAdc[i]<sysData.calibRsAdc[i+1]){
+			if (x <= sysData.calibRsAdc[i+1])break;
+		}else{
+			//if (x >= sysData.calibRsAdc[i+1])break;
+			break;
+		}
+    }
+    //if(i)i--;
+    if (i > MAX_CALIB_NUM-2)i=MAX_CALIB_NUM-2;
+	y1=sysData.calibVoMV[i+1];
+	y0=sysData.calibVoMV[i];
+
+	
+	x1=sysData.calibRsAdc[i+1];
+	x0=sysData.calibRsAdc[i];
+	
+    if(x<=x0 && i==0)return (uint16_t)y0;
+	if(x1<=x0)return (uint16_t)y0;
+	
+	//t16=y0+(x-x0)*(y1-y0)/(x1-x0);
+	t32=(x-x0);
+	t32=t32*(y1-y0);
+	t32=t32/(x1-x0);
+	t32=t32+y0;
+	if(t32<0)t32=0;
+	return (uint16_t)t32;
+}
+/*
+uint16_t calc_expect_vout_adc_value(uint16_t x)
+{
+	//uint8_t index=0;
+	uint16_t i;
+    int32_t y0;
+	int32_t y1;
+	int32_t x0;
+	int32_t x1;
+	int32_t t32;
+    
+	
     for (i = 0; i < MAX_CALIB_NUM-1; i++) {
 		if(sysData.calibRsAdc[i]<sysData.calibRsAdc[i+1]){
 			if (x <= sysData.calibRsAdc[i+1])break;
@@ -437,8 +502,8 @@ uint16_t calc_expect_vout_adc_value(uint16_t x)
 	x1=sysData.calibRsAdc[i+1];
 	x0=sysData.calibRsAdc[i];
 	
-    if(x<=x0 && i==0)return y0;
-	if(x1==x0)return y0;
+    if(x<=x0 && i==0)return (uint16_t)y0;
+	if(x1==x0)return (uint16_t)y0;
 	
 	//t16=y0+(x-x0)*(y1-y0)/(x1-x0);
 	t32=(x-x0);
@@ -448,6 +513,7 @@ uint16_t calc_expect_vout_adc_value(uint16_t x)
 	if(t32<0)t32=0;
 	return (uint16_t)t32;
 }
+*/
 
 uint16_t cal_rs_simulate_power(void)
 {

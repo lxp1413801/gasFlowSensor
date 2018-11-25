@@ -13,8 +13,8 @@
 
 	extern uint16_t rtAdcValueVoFb;
 
-	extern uint32_t resRc;
-	extern uint32_t resRs;	
+	extern uint16_t resRc;
+	extern uint16_t resRs;	
 	
 	extern void set_vout_pwm2_duty(uint16_t duty);
 	
@@ -30,9 +30,9 @@
 	#define PID_BB_EXIT     5
 	extern uint8_t pidBbSm;
     
-    extern int32_t		PidKp;
-    extern int32_t		PidTi;
-    extern int32_t		PidTd;   
+    extern uint16_t		PidKp;
+    extern uint16_t		PidTi;
+    extern uint16_t		PidTd;   
 	extern void pid_pwm1_idrv_b_b(void);
 	extern void pid_pwm1_idrv_run(void);
 	extern void pid_pwm2_vout_run(void);
@@ -45,7 +45,7 @@
 	extern uint16_t cal_voout_pwm_duty(void);
 	extern uint16_t calc_expect_vout_adc_value(uint16_t x);
     
-	extern int32_t pidU;;
+	extern uint16_t pidU;;
 	extern int32_t outResDiff;
 	
 	//extern uint16_t rsSimPower;

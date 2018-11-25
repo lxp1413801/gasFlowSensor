@@ -1,7 +1,7 @@
 #include "../../mcc_generated_files/mcc.h"
 #include "globle.h"
 volatile unsigned char	isRunInBoot	@ 0xfff;
-volatile uint32_t globalTicker=0x00ul;
+volatile uint16_t globalTicker=0x00ul;
 volatile uint8_t Event=0;  
 /*
 void delay(uint16_t dly)

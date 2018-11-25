@@ -6,7 +6,7 @@ extern "C"{
 #endif
 
 #define EUSART_TX_BUFFER_SIZE 32
-#define EUSART_RX_BUFFER_SIZE 64
+#define EUSART_RX_BUFFER_SIZE 60
 #define MIN_RX_IDLE_TIME	200
 
 #define RX_USED_MODEBUS 1

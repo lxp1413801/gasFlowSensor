@@ -3,9 +3,9 @@
   <executable name="dist/default/production\bootLoader.X.production.hex">
     <memory name="program">
       <units>words</units>
-      <length>2048</length>
-      <used>1502</used>
-      <free>546</free>
+      <length>1792</length>
+      <used>1510</used>
+      <free>282</free>
     </memory>
     <memory name="data">
       <units>bytes</units>

@@ -177,7 +177,7 @@ void modbus_response_write_mult_register(uint8_t* rbuf)
 }
 
 void modbus_response_command(uint8_t* rbuf){
-    uint8_t i;
+    uint16_t i;
 	uint16_t startAddr=0;
     uint16_t tempData,tmpAddr;
 	uint8_t len=0;

@@ -21,7 +21,7 @@ extern "C" {
 		INTERRUPT_GlobalInterruptDisable(); \
 		INTERRUPT_PeripheralInterruptDisable();\
 	}while(0);
-    extern volatile uint32_t globalTicker;
+    extern volatile uint16_t globalTicker;
     
 	#define __20ms	5020
 	//extern void delay(uint16_t dly);
