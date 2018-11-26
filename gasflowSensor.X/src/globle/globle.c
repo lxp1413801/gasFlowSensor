@@ -3,6 +3,7 @@
 volatile unsigned char	isRunInBoot	@ 0xfff;
 volatile uint16_t globalTicker=0x00ul;
 volatile uint8_t Event=0;  
+//volatile uint8_t rxLen=0;
 /*
 void delay(uint16_t dly)
 {

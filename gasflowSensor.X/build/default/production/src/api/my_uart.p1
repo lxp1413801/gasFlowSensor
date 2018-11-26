@@ -4843,13 +4843,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e $ != -> *U _str `ui -> 0 `ui 601  ]
 [e :U 602 ]
 [; ;my_uart.c: 32: }
-[; ;my_uart.c: 33: while(0 == PIR1bits.TXIF);
-"33
-[e $U 612  ]
-[e :U 613 ]
-[e :U 612 ]
-[e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 613  ]
-[e :U 614 ]
 [; ;my_uart.c: 34: }
 "34
 [e :UE 598 ]
@@ -4868,28 +4861,45 @@ Version 3.2 HI-TECH Software Intermediate Code
 [f ]
 "38
 [v _i `uc ~T0 @X0 1 a ]
-[; ;my_uart.c: 38: uint8_t i;
-[; ;my_uart.c: 39: if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
 "39
-[e $ ! ! != -> . . _TXSTAbits 0 5 `i -> -> -> 0 `i `Vuc `i 616  ]
+[v _xlen `uc ~T0 @X0 1 a ]
+[; ;my_uart.c: 38: uint8_t i;
+[; ;my_uart.c: 39: uint8_t xlen=len;
+[e = _xlen _len ]
+[; ;my_uart.c: 40: if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
+"40
+[e $ ! ! != -> . . _TXSTAbits 0 5 `i -> -> -> 0 `i `Vuc `i 613  ]
 [e = . . _TXSTAbits 0 5 -> -> 1 `i `uc ]
-[e :U 616 ]
-[; ;my_uart.c: 41: for(i=0;i<len;i++){
-"41
+[e :U 613 ]
+[; ;my_uart.c: 42: for(i=0;i<xlen;i++){
+"42
 {
 [e = _i -> -> 0 `i `uc ]
-[e $U 620  ]
-[e :U 617 ]
+[e $U 617  ]
+[e :U 614 ]
 {
-[; ;my_uart.c: 42: while(0 == PIR1bits.TXIF);
-"42
-[e $U 621  ]
-[e :U 622 ]
-[e :U 621 ]
-[e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 622  ]
-[e :U 623 ]
-[; ;my_uart.c: 43: do{__nop();__nop();__nop();__nop();}while(0);;
+[; ;my_uart.c: 43: while(0 == PIR1bits.TXIF);
 "43
+[e $U 618  ]
+[e :U 619 ]
+[e :U 618 ]
+[e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 619  ]
+[e :U 620 ]
+[; ;my_uart.c: 44: do{__nop();__nop();__nop();__nop();}while(0);;
+"44
+[e :U 623 ]
+{
+[e ( ___nop ..  ]
+[e ( ___nop ..  ]
+[e ( ___nop ..  ]
+[e ( ___nop ..  ]
+}
+[e :U 622 ]
+[; ;my_uart.c: 45: TXREG = buf[i];
+"45
+[e = _TXREG *U + _buf * -> _i `ux -> -> # *U _buf `ui `ux ]
+[; ;my_uart.c: 46: do{__nop();__nop();__nop();__nop();}while(0);;
+"46
 [e :U 626 ]
 {
 [e ( ___nop ..  ]
@@ -4898,71 +4908,51 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e ( ___nop ..  ]
 }
 [e :U 625 ]
-[; ;my_uart.c: 44: TXREG = buf[i];
-"44
-[e = _TXREG *U + _buf * -> _i `ux -> -> # *U _buf `ui `ux ]
-[; ;my_uart.c: 45: do{__nop();__nop();__nop();__nop();}while(0);;
-"45
-[e :U 629 ]
-{
-[e ( ___nop ..  ]
-[e ( ___nop ..  ]
-[e ( ___nop ..  ]
-[e ( ___nop ..  ]
-}
-[e :U 628 ]
-"46
-}
-"41
-[e ++ _i -> -> 1 `i `uc ]
-[e :U 620 ]
-[e $ < -> _i `i -> _len `i 617  ]
-[e :U 618 ]
-"46
-}
-[; ;my_uart.c: 46: }
-[; ;my_uart.c: 47: while(0 == PIR1bits.TXIF);
 "47
-[e $U 630  ]
-[e :U 631 ]
-[e :U 630 ]
-[e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 631  ]
-[e :U 632 ]
-[; ;my_uart.c: 48: }
-"48
-[e :UE 615 ]
 }
-"50
-[v _uart_received_start `(v ~T0 @X0 1 ef ]
+"42
+[e ++ _i -> -> 1 `i `uc ]
+[e :U 617 ]
+[e $ < -> _i `i -> _xlen `i 614  ]
+[e :U 615 ]
+"47
+}
+[; ;my_uart.c: 47: }
+[; ;my_uart.c: 49: }
+"49
+[e :UE 612 ]
+}
 "51
+[v _uart_received_start `(v ~T0 @X0 1 ef ]
+"52
 {
-[; ;my_uart.c: 50: void uart_received_start(void)
-[; ;my_uart.c: 51: {
+[; ;my_uart.c: 51: void uart_received_start(void)
+[; ;my_uart.c: 52: {
 [e :U _uart_received_start ]
 [f ]
-[; ;my_uart.c: 52: eusartRxCount=0;
-"52
-[e = _eusartRxCount -> -> 0 `i `uc ]
-[; ;my_uart.c: 53: RCSTAbits.CREN=0;
+[; ;my_uart.c: 53: eusartRxCount=0;
 "53
-[e = . . _RCSTAbits 0 4 -> -> 0 `i `uc ]
-[; ;my_uart.c: 54: PIE1bits.RCIE = 0;
+[e = _eusartRxCount -> -> 0 `i `uc ]
+[; ;my_uart.c: 54: RCSTAbits.CREN=0;
 "54
-[e = . . _PIE1bits 0 4 -> -> 0 `i `uc ]
-[; ;my_uart.c: 55: PIR1bits.RCIF=0;
+[e = . . _RCSTAbits 0 4 -> -> 0 `i `uc ]
+[; ;my_uart.c: 55: PIE1bits.RCIE = 0;
 "55
+[e = . . _PIE1bits 0 4 -> -> 0 `i `uc ]
+[; ;my_uart.c: 56: PIR1bits.RCIF=0;
+"56
 [e = . . _PIR1bits 0 4 -> -> 0 `i `uc ]
-[; ;my_uart.c: 57: RCSTAbits.CREN=1;
-"57
-[e = . . _RCSTAbits 0 4 -> -> 1 `i `uc ]
-[; ;my_uart.c: 58: PIE1bits.RCIE = 1;
+[; ;my_uart.c: 58: RCSTAbits.CREN=1;
 "58
+[e = . . _RCSTAbits 0 4 -> -> 1 `i `uc ]
+[; ;my_uart.c: 59: PIE1bits.RCIE = 1;
+"59
 [e = . . _PIE1bits 0 4 -> -> 1 `i `uc ]
-[; ;my_uart.c: 60: eusartRxIdleTime_ms=0;
-"60
-[e = _eusartRxIdleTime_ms -> -> 0 `i `uc ]
-[; ;my_uart.c: 61: }
+[; ;my_uart.c: 61: eusartRxIdleTime_ms=0;
 "61
-[e :UE 633 ]
+[e = _eusartRxIdleTime_ms -> -> 0 `i `uc ]
+[; ;my_uart.c: 62: }
+"62
+[e :UE 627 ]
 }
-[; ;my_uart.c: 63: void uart_received_process(uint8_t* buf,uint8_t len);
+[; ;my_uart.c: 64: void uart_received_process(uint8_t* buf,uint8_t len);

@@ -177,10 +177,11 @@ void modbus_response_write_mult_register(uint8_t* rbuf)
 }
 
 void modbus_response_command(uint8_t* rbuf){
-    uint16_t i;
+    uint8_t i;
+    uint8_t len=0;
 	uint16_t startAddr=0;
     uint16_t tempData,tmpAddr;
-	uint8_t len=0;
+	
 	st_modbusComReqStructDef* pmdbs=(st_modbusComReqStructDef*)rbuf;
     if(pmdbs->addr!=sysData.id ||  pmdbs->addr==0)return;
 	startAddr=pmdbs->addr_hi;
@@ -202,8 +203,8 @@ void modbus_response_command(uint8_t* rbuf){
 	len += 3;
     crc_append(rbuf,len);
     len += 2;
+    //rxLen=len;
     uart_send_len(rbuf,len);       
-    
 }
 void modbus_response_process(uint8_t* rbuf,uint16_t rlen){
 	uint8_t resp=0;
