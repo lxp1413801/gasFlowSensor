@@ -12,7 +12,7 @@
 #include "../api/sysData.h"
 #include "../api/modbus.h"
 
-uint8_t str[16];
+//uint8_t str[16];
 
 void main(void)
 {
@@ -25,8 +25,8 @@ void main(void)
 	//set_vout_pwm2_duty(10);
     TXSTAbits.TXEN=0;
     sys_data_init();
-    m_mem_cpy(str,(uint8_t*)"VER1.00\r\n");
-    uart_send_str(str);
+    //m_mem_cpy(str,(uint8_t*)"VER1.00\r\n");
+    //uart_send_str(str);
    
     if(sysData.pidSetFlg0 != 0x55 || sysData.pidSetFlg1 != 0xaa){
         pidBbSm=PID_BB_NONE;
@@ -78,7 +78,7 @@ void main(void)
                     sys_data_save();
                     modbusBuf[0]=0x55;
                     modbusBuf[1]=0xaa;
-                     uart_send_len(modbusBuf,2);   
+                    uart_send_len(modbusBuf,2);   
                 }
             }
 			#endif

@@ -6503,34 +6503,19 @@ while(0 == PIR1bits.TXIF);
 TXREG = x;
 }
 
-
-
-void uart_send_str(uint8_t* str)
-{
-
-if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
-
-while(*str!='\0'){
-while(0 == PIR1bits.TXIF);
-do{__nop();__nop();__nop();__nop();}while(0);;
-TXREG = *str;
-str++;
-do{__nop();__nop();__nop();__nop();}while(0);;
-}
-
-}
-
+# 36
+uint8_t xlen;
 void uart_send_len(uint8_t* buf,uint8_t len)
 {
 uint8_t i;
-uint8_t xlen=len;
+xlen=len;
 if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
 
 for(i=0;i<xlen;i++){
 while(0 == PIR1bits.TXIF);
-do{__nop();__nop();__nop();__nop();}while(0);;
+
 TXREG = buf[i];
-do{__nop();__nop();__nop();__nop();}while(0);;
+do{__nop();__nop();}while(0);;
 }
 
 }

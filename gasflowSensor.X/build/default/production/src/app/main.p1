@@ -28,11 +28,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _TXSTAbits `VS155 ~T0 @X0 0 e@414 ]
 "39 src/app/../api/sysData.h
 [v _sys_data_init `(ui ~T0 @X0 0 ef ]
-"8 src/app/../includes/../depend/m_string.h
-[v _m_mem_cpy `(v ~T0 @X0 0 ef2`*uc`*uc ]
-"22 src/app/../includes/../api/my_uart.h
-[v _uart_send_str `(v ~T0 @X0 0 ef1`*uc ]
-"24 src/app/../api/sysData.h
+"24
 [s S594 `uc 1 `uc 1 `uc 1 `uc 1 `ui 1 `ui 1 `ui 1 `ui -> 30 `i `ui -> 30 `i `ui 1 ]
 [n S594 . pidSetFlg0 pidSetFlg1 id reverse pidKp pidTi pidTd calibRsAdc calibVoMV crc16 ]
 "37
@@ -4917,11 +4913,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;modbus.h: 79: }st_modbusWriteSingleClib;
 [; ;modbus.h: 85: extern uint8_t modbusBuf[];
 [; ;modbus.h: 86: extern void modbus_response_process(uint8_t* rbuf,uint16_t rlen);
-"15 src/app/main.c
-[v _str `uc ~T0 @X0 -> 16 `i e ]
-[; ;main.c: 15: uint8_t str[16];
 [v $root$_main `(v ~T0 @X0 0 e ]
-"17
+"17 src/app/main.c
 [v _main `(v ~T0 @X0 1 ef ]
 "18
 {
@@ -4955,12 +4948,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 27: sys_data_init();
 "27
 [e ( _sys_data_init ..  ]
-[; ;main.c: 28: m_mem_cpy(str,(uint8_t*)"VER1.00\r\n");
-"28
-[e ( _m_mem_cpy (2 , &U _str -> :s 1C `*uc ]
-[; ;main.c: 29: uart_send_str(str);
-"29
-[e ( _uart_send_str (1 &U _str ]
 [; ;main.c: 31: if(sysData.pidSetFlg0 != 0x55 || sysData.pidSetFlg1 != 0xaa){
 "31
 [e $ ! || != -> . _sysData 0 `i -> 85 `i != -> . _sysData 1 `i -> 170 `i 604  ]
@@ -5158,5 +5145,3 @@ Version 3.2 HI-TECH Software Intermediate Code
 "148
 [e :UE 600 ]
 }
-[a 1C 86 69 82 49 46 48 48 13 10 0 ]
-

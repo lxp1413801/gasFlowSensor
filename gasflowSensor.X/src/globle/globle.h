@@ -32,7 +32,7 @@ extern "C" {
 	#define flg_EVEN_TICKER_100MS		(1<<2)
 	#define flg_EVEN_TICKER_1000MS		(1<<3)
     extern volatile uint8_t Event;    
-	//extern volatile uint8_t rxLen;
+	
     
     asm("isRunInBoot equ 0xfff");
     extern volatile unsigned char	isRunInBoot	@ 0xfff;

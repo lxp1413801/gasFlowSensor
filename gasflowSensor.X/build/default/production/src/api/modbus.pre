@@ -6492,8 +6492,8 @@ return t16;
 void modbus_response_write_single_register(uint8_t* rbuf)
 {
 uint16_t startAddr=0;
-uint16_t t16,i;
-uint8_t fiSave=0;
+uint16_t t16;
+uint8_t fiSave=0,i;
 st_modbusComReqStructDef* pmdbs=(st_modbusComReqStructDef*)rbuf;
 if(pmdbs->addr!=sysData.id && pmdbs->addr!=0)return;
 if(sysData.id==253 && pmdbs->addr==0)return;
@@ -6555,10 +6555,9 @@ uart_send_len(rbuf,sizeof(st_modbusWriteMultReg_t));
 
 void modbus_response_command(uint8_t* rbuf){
 uint8_t i;
-uint8_t len=0;
 uint16_t startAddr=0;
 uint16_t tempData,tmpAddr;
-
+uint8_t len=0;
 st_modbusComReqStructDef* pmdbs=(st_modbusComReqStructDef*)rbuf;
 if(pmdbs->addr!=sysData.id || pmdbs->addr==0)return;
 startAddr=pmdbs->addr_hi;
@@ -6580,8 +6579,8 @@ rbuf[2] = len;
 len += 3;
 crc_append(rbuf,len);
 len += 2;
-
 uart_send_len(rbuf,len);
+
 }
 void modbus_response_process(uint8_t* rbuf,uint16_t rlen){
 uint8_t resp=0;
@@ -6603,7 +6602,7 @@ case 0x10:
 modbus_response_write_mult_register(rbuf);
 break;
 
-# 250
+# 249
 default:
 modbus_response_illgeal_function(rbuf,0x01);break;
 }
