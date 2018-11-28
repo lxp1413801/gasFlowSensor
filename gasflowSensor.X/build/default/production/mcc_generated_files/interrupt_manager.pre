@@ -6480,7 +6480,7 @@ extern volatile unsigned char isRunInBoot @ 0xfff;
 # 16 "mcc_generated_files/../src/api/my_uart.h"
 extern volatile uint8_t eusartRxIdleTime_ms;
 
-extern volatile uint8_t eusartRxBuffer[60];
+extern volatile uint8_t eusartRxBuffer[32];
 extern volatile uint8_t eusartRxCount;
 
 extern void uart_send_byte(uint8_t x);
@@ -6541,10 +6541,11 @@ extern uint16_t calc_rs_lo_avg(uint16_t x);
 # 53 "mcc_generated_files/interrupt_manager.c"
 uint8_t subTickerX=0x00;
 uint8_t subTickerX_1s=0x00;
+uint8_t rxtemp;
 void interrupt INTERRUPT_InterruptManager (void)
 {
 
-uint8_t t8;
+
 if(INTCONbits.PEIE == 1 && PIE1bits.TMR2IE == 1 && PIR1bits.TMR2IF == 1)
 {
 
@@ -6578,9 +6579,9 @@ if(1 == RCSTAbits.OERR){
 RCSTAbits.CREN = 0;
 RCSTAbits.CREN = 1;
 }
-t8=RCREG;
-if(eusartRxCount<60){
-eusartRxBuffer[eusartRxCount]=t8;
+rxtemp=RCREG;
+if(eusartRxCount<32){
+eusartRxBuffer[eusartRxCount]=rxtemp;
 eusartRxCount++;
 
 }
@@ -6592,29 +6593,14 @@ if( PIR1bits.TXIF == 1)
 PIR1bits.TXIF=0;
 }
 
-if(INTCONbits.PEIE == 1 && PIE3bits.PWM2IE == 1 && PIR3bits.PWM2IF == 1){
-
+if(PIR3bits.PWM2IF){
 PIR3bits.PWM2IF = 0;
-if(PWM2INTFbits.PRIF){
-PWM2INTFbits.PRIF=0;
-PWM2DCH = (uint8_t)(pwm2DutyForVout>>8);
-PWM2DCL = (uint8_t)(pwm2DutyForVout & 0xff);
-}
-}
-if(INTCONbits.PEIE == 1 && PIE3bits.PWM1IE == 1 && PIR3bits.PWM1IF == 1){
-PIR3bits.PWM1IF = 0;
-if(PWM1INTFbits.PRIF){
-PWM1INTFbits.PRIF=0;
-PWM1DCH = (uint8_t)(pwm1DutyForIdrv>>8);
-PWM1DCL = (uint8_t)(pwm1DutyForIdrv&0xff);
-}
 }
 
-
-
-else
-{
-
+if(PIR3bits.PWM1IF){
+PIR3bits.PWM1IF=0;
 }
+
+# 134
 }
 

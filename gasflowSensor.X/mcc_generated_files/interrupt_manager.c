@@ -52,12 +52,13 @@
 #include "../src/api/sample.h"
 uint8_t subTickerX=0x00;
 uint8_t subTickerX_1s=0x00;
+uint8_t rxtemp;
 void interrupt INTERRUPT_InterruptManager (void)
 {
     // interrupt handler
-	uint8_t t8;
+	//uint8_t t8;
     if(INTCONbits.PEIE == 1 && PIE1bits.TMR2IE == 1 && PIR1bits.TMR2IF == 1)
-    {
+	{
         //TMR2_ISR();
         PIR1bits.TMR2IF = 0;
         Event |= flg_EVEN_TICKER_20MS;
@@ -89,9 +90,9 @@ void interrupt INTERRUPT_InterruptManager (void)
 			RCSTAbits.CREN = 0;
 			RCSTAbits.CREN = 1;
 		}		
-		t8=RCREG;
+		rxtemp=RCREG;
 		if(eusartRxCount<EUSART_RX_BUFFER_SIZE){
-			eusartRxBuffer[eusartRxCount]=t8;
+			eusartRxBuffer[eusartRxCount]=rxtemp;
 			eusartRxCount++;
             //eusartRxIdleTime_ms=1;	
 		}		
@@ -102,7 +103,15 @@ void interrupt INTERRUPT_InterruptManager (void)
     {
         PIR1bits.TXIF=0;
     }    
-    
+	
+	if(PIR3bits.PWM2IF){
+		PIR3bits.PWM2IF = 0;
+	}
+	
+	if(PIR3bits.PWM1IF){
+		PIR3bits.PWM1IF=0;
+	}
+    /*
     if(INTCONbits.PEIE == 1 && PIE3bits.PWM2IE == 1 && PIR3bits.PWM2IF == 1){
         //PWM2_ISR();
         PIR3bits.PWM2IF = 0;
@@ -120,13 +129,8 @@ void interrupt INTERRUPT_InterruptManager (void)
             PWM1DCL =  (uint8_t)(pwm1DutyForIdrv&0xff);	//writing 8 LSBs to PWMPRL register	             
         }
     }   
+*/
 
-    
-    
-    else
-    {
-        //Unhandled Interrupt
-    }
 }
 /**
  End of File

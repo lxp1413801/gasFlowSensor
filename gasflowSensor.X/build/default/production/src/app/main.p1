@@ -28,26 +28,17 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _TXSTAbits `VS155 ~T0 @X0 0 e@414 ]
 "39 src/app/../api/sysData.h
 [v _sys_data_init `(ui ~T0 @X0 0 ef ]
-"24
-[s S594 `uc 1 `uc 1 `uc 1 `uc 1 `ui 1 `ui 1 `ui 1 `ui -> 30 `i `ui -> 30 `i `ui 1 ]
-[n S594 . pidSetFlg0 pidSetFlg1 id reverse pidKp pidTi pidTd calibRsAdc calibVoMV crc16 ]
-"37
-[v _sysData `VS594 ~T0 @X0 0 e ]
-"31 src/app/../includes/../api/sample.h
-[v _pidBbSm `uc ~T0 @X0 0 e ]
-"33
-[v _PidKp `ui ~T0 @X0 0 e ]
-"35
-[v _PidTd `ui ~T0 @X0 0 e ]
-"34
-[v _PidTi `ui ~T0 @X0 0 e ]
+"85 src/app/../api/modbus.h
+[v _modbusBuf `uc ~T0 @X0 -> 0 `x e ]
+"23 src/app/../includes/../api/my_uart.h
+[v _uart_send_len `(v ~T0 @X0 0 ef2`*uc`uc ]
 "34 src/app/../includes/../globle/globle.h
 [v _Event `Vuc ~T0 @X0 0 e ]
 "8 src/app/../includes/../api/sample.h
 [v _rtAdcValueRsLo `ui ~T0 @X0 0 e ]
 "21
 [v _adc_sample `(ui ~T0 @X0 0 ef3`uc`uc`uc ]
-"44 src/app/main.c
+"37 src/app/main.c
 [c E4879 2 4 5 6 7 29 30 31 .. ]
 [n E4879 . channel_AN2 channel_AN4 channel_AN5 channel_AN6 channel_AN7 channel_Temp channel_DAC channel_FVR  ]
 "9 src/app/../includes/../api/sample.h
@@ -80,15 +71,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _voExpectAdcValue `ui ~T0 @X0 0 e ]
 "38
 [v _pid_pwm2_vout_run `(v ~T0 @X0 0 ef ]
-"36
-[v _pid_pwm1_idrv_b_b `(v ~T0 @X0 0 ef ]
-"40 src/app/../api/sysData.h
-[v _sys_data_save `(v ~T0 @X0 0 ef ]
-"85 src/app/../api/modbus.h
-[v _modbusBuf `uc ~T0 @X0 -> 0 `x e ]
-"23 src/app/../includes/../api/my_uart.h
-[v _uart_send_len `(v ~T0 @X0 0 ef2`*uc`uc ]
-"19
+"19 src/app/../includes/../api/my_uart.h
 [v _eusartRxCount `Vuc ~T0 @X0 0 e ]
 "9 src/app/../includes/../depend/m_string.h
 [v _m_mem_cpy_len `(v ~T0 @X0 0 ef3`*uc`*uc`ui ]
@@ -4846,7 +4829,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;sample.h: 57: extern uint16_t rsLoAvg;
 [; ;sample.h: 58: extern uint16_t calc_rs_lo_avg(uint16_t x);
 [; ;my_uart.h: 16: extern volatile uint8_t eusartRxIdleTime_ms;
-[; ;my_uart.h: 18: extern volatile uint8_t eusartRxBuffer[60];
+[; ;my_uart.h: 18: extern volatile uint8_t eusartRxBuffer[32];
 [; ;my_uart.h: 19: extern volatile uint8_t eusartRxCount;
 [; ;my_uart.h: 21: extern void uart_send_byte(uint8_t x);
 [; ;my_uart.h: 22: extern void uart_send_str(uint8_t* str);
@@ -4948,200 +4931,125 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;main.c: 27: sys_data_init();
 "27
 [e ( _sys_data_init ..  ]
-[; ;main.c: 31: if(sysData.pidSetFlg0 != 0x55 || sysData.pidSetFlg1 != 0xaa){
-"31
-[e $ ! || != -> . _sysData 0 `i -> 85 `i != -> . _sysData 1 `i -> 170 `i 604  ]
-{
-[; ;main.c: 32: pidBbSm=0;
-"32
-[e = _pidBbSm -> -> 0 `i `uc ]
-"33
-}
-[; ;main.c: 33: }else{
-[e $U 605  ]
-[e :U 604 ]
-{
-[; ;main.c: 34: pidBbSm=5;
-"34
-[e = _pidBbSm -> -> 5 `i `uc ]
-[; ;main.c: 35: PidKp=sysData.pidKp;
-"35
-[e = _PidKp . _sysData 4 ]
-[; ;main.c: 36: PidTd=sysData.pidTd;
-"36
-[e = _PidTd . _sysData 6 ]
-[; ;main.c: 37: PidTi=sysData.pidTi;
-"37
-[e = _PidTi . _sysData 5 ]
-"38
-}
-[e :U 605 ]
-[; ;main.c: 38: }
-[; ;main.c: 40: while (1){
-"40
-[e :U 607 ]
-{
-[; ;main.c: 41: if(Event & (1<<2)){
-"41
-[e $ ! != & -> _Event `i << -> 1 `i -> 2 `i -> 0 `i 609  ]
-{
-[; ;main.c: 42: Event &= ~(1<<2);
-"42
-[e =& _Event -> ~ << -> 1 `i -> 2 `i `uc ]
-[; ;main.c: 44: rtAdcValueRsLo=adc_sample(channel_AN6,1,32);
-"44
-[e = _rtAdcValueRsLo ( _adc_sample (3 , , -> . `E4879 3 `uc -> -> 1 `i `uc -> -> 32 `i `uc ]
-[; ;main.c: 46: rtAdcValueRsHi=adc_sample(channel_AN5,3,32);
-"46
-[e = _rtAdcValueRsHi ( _adc_sample (3 , , -> . `E4879 2 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
-[; ;main.c: 49: rtAdcValueRcLo=adc_sample(channel_AN4,3,32);
-"49
-[e = _rtAdcValueRcLo ( _adc_sample (3 , , -> . `E4879 1 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
-[; ;main.c: 50: rtAdcValueRcLo>>=1;
-"50
-[e =>> _rtAdcValueRcLo -> 1 `i ]
-[; ;main.c: 51: rtAdcValueRcHi=adc_sample(channel_AN2,3,32);
-"51
-[e = _rtAdcValueRcHi ( _adc_sample (3 , , -> . `E4879 0 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
-[; ;main.c: 52: rtAdcValueRcHi>>=1;
-"52
-[e =>> _rtAdcValueRcHi -> 1 `i ]
-[; ;main.c: 54: rtAdcValueVoFb=adc_sample(channel_AN7,3,32);
-"54
-[e = _rtAdcValueVoFb ( _adc_sample (3 , , -> . `E4879 4 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
-[; ;main.c: 55: rtAdcValueVoFb>>=1;
-"55
-[e =>> _rtAdcValueVoFb -> 1 `i ]
-[; ;main.c: 57: resRc=calc_temp_rc();
-"57
-[e = _resRc -> ( _calc_temp_rc ..  `ui ]
-[; ;main.c: 58: resRs=calc_temp_rs();
-"58
-[e = _resRs -> ( _calc_temp_rs ..  `ui ]
-[; ;main.c: 60: __nop();
-"60
-[e ( ___nop ..  ]
-[; ;main.c: 61: if(pidBbSm>=5){
-"61
-[e $ ! >= -> _pidBbSm `i -> 5 `i 610  ]
-{
-[; ;main.c: 62: pid_pwm1_idrv_run();
-"62
-[e ( _pid_pwm1_idrv_run ..  ]
-[; ;main.c: 65: rsLoAvg=calc_rs_lo_avg(rtAdcValueRsLo);
-"65
-[e = _rsLoAvg ( _calc_rs_lo_avg (1 _rtAdcValueRsLo ]
-[; ;main.c: 66: voExpectMv=calc_expect_vout_adc_value(rsLoAvg);
-"66
-[e = _voExpectMv ( _calc_expect_vout_adc_value (1 _rsLoAvg ]
-[; ;main.c: 67: voExpectAdcValue=(voExpectMv<<1);
-"67
-[e = _voExpectAdcValue << _voExpectMv -> 1 `i ]
-[; ;main.c: 68: pid_pwm2_vout_run();
-"68
-[e ( _pid_pwm2_vout_run ..  ]
-"69
-}
-[; ;main.c: 69: }else{
-[e $U 611  ]
-[e :U 610 ]
-{
-[; ;main.c: 70: pid_pwm1_idrv_b_b();
-"70
-[e ( _pid_pwm1_idrv_b_b ..  ]
-[; ;main.c: 72: if(pidBbSm>=5){
-"72
-[e $ ! >= -> _pidBbSm `i -> 5 `i 612  ]
-{
-[; ;main.c: 73: sysData.pidSetFlg0 = 0x55;
-"73
-[e = . _sysData 0 -> -> 85 `i `uc ]
-[; ;main.c: 74: sysData.pidSetFlg1 = 0xaa;
-"74
-[e = . _sysData 1 -> -> 170 `i `uc ]
-[; ;main.c: 75: sysData.pidKp=(uint16_t)PidKp;
-"75
-[e = . _sysData 4 _PidKp ]
-[; ;main.c: 76: sysData.pidTd=(uint16_t)PidTd;
-"76
-[e = . _sysData 6 _PidTd ]
-[; ;main.c: 77: sysData.pidTi=(uint16_t)PidTi;
-"77
-[e = . _sysData 5 _PidTi ]
-[; ;main.c: 78: sys_data_save();
-"78
-[e ( _sys_data_save ..  ]
-[; ;main.c: 79: modbusBuf[0]=0x55;
-"79
+[; ;main.c: 30: modbusBuf[0]=0x55;
+"30
 [e = *U + &U _modbusBuf * -> -> -> 0 `i `ui `ux -> -> # *U &U _modbusBuf `ui `ux -> -> 85 `i `uc ]
-[; ;main.c: 80: modbusBuf[1]=0xaa;
-"80
+[; ;main.c: 31: modbusBuf[1]=0xaa;
+"31
 [e = *U + &U _modbusBuf * -> -> -> 1 `i `ui `ux -> -> # *U &U _modbusBuf `ui `ux -> -> 170 `i `uc ]
-[; ;main.c: 81: uart_send_len(modbusBuf,2);
-"81
+[; ;main.c: 32: uart_send_len(modbusBuf,2);
+"32
 [e ( _uart_send_len (2 , &U _modbusBuf -> -> 2 `i `uc ]
-"82
+[; ;main.c: 33: while (1){
+"33
+[e :U 605 ]
+{
+[; ;main.c: 34: if(Event & (1<<2)){
+"34
+[e $ ! != & -> _Event `i << -> 1 `i -> 2 `i -> 0 `i 607  ]
+{
+[; ;main.c: 35: Event &= ~(1<<2);
+"35
+[e =& _Event -> ~ << -> 1 `i -> 2 `i `uc ]
+[; ;main.c: 37: rtAdcValueRsLo=adc_sample(channel_AN6,1,32);
+"37
+[e = _rtAdcValueRsLo ( _adc_sample (3 , , -> . `E4879 3 `uc -> -> 1 `i `uc -> -> 32 `i `uc ]
+[; ;main.c: 39: rtAdcValueRsHi=adc_sample(channel_AN5,3,32);
+"39
+[e = _rtAdcValueRsHi ( _adc_sample (3 , , -> . `E4879 2 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
+[; ;main.c: 42: rtAdcValueRcLo=adc_sample(channel_AN4,3,32);
+"42
+[e = _rtAdcValueRcLo ( _adc_sample (3 , , -> . `E4879 1 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
+[; ;main.c: 43: rtAdcValueRcLo>>=1;
+"43
+[e =>> _rtAdcValueRcLo -> 1 `i ]
+[; ;main.c: 44: rtAdcValueRcHi=adc_sample(channel_AN2,3,32);
+"44
+[e = _rtAdcValueRcHi ( _adc_sample (3 , , -> . `E4879 0 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
+[; ;main.c: 45: rtAdcValueRcHi>>=1;
+"45
+[e =>> _rtAdcValueRcHi -> 1 `i ]
+[; ;main.c: 47: rtAdcValueVoFb=adc_sample(channel_AN7,3,32);
+"47
+[e = _rtAdcValueVoFb ( _adc_sample (3 , , -> . `E4879 4 `uc -> -> 3 `i `uc -> -> 32 `i `uc ]
+[; ;main.c: 48: rtAdcValueVoFb>>=1;
+"48
+[e =>> _rtAdcValueVoFb -> 1 `i ]
+[; ;main.c: 50: resRc=calc_temp_rc();
+"50
+[e = _resRc -> ( _calc_temp_rc ..  `ui ]
+[; ;main.c: 51: resRs=calc_temp_rs();
+"51
+[e = _resRs -> ( _calc_temp_rs ..  `ui ]
+[; ;main.c: 53: pid_pwm1_idrv_run();
+"53
+[e ( _pid_pwm1_idrv_run ..  ]
+[; ;main.c: 54: rsLoAvg=calc_rs_lo_avg(rtAdcValueRsLo);
+"54
+[e = _rsLoAvg ( _calc_rs_lo_avg (1 _rtAdcValueRsLo ]
+[; ;main.c: 55: voExpectMv=calc_expect_vout_adc_value(rsLoAvg);
+"55
+[e = _voExpectMv ( _calc_expect_vout_adc_value (1 _rsLoAvg ]
+[; ;main.c: 56: voExpectAdcValue=(voExpectMv<<1);
+"56
+[e = _voExpectAdcValue << _voExpectMv -> 1 `i ]
+[; ;main.c: 57: pid_pwm2_vout_run();
+"57
+[e ( _pid_pwm2_vout_run ..  ]
+"59
 }
-[e :U 612 ]
-"83
+[e :U 607 ]
+[; ;main.c: 59: }
+[; ;main.c: 61: if(Event & (1<<3)){
+"61
+[e $ ! != & -> _Event `i << -> 1 `i -> 3 `i -> 0 `i 608  ]
+{
+[; ;main.c: 62: Event &= ~(1<<3);
+"62
+[e =& _Event -> ~ << -> 1 `i -> 3 `i `uc ]
+"104
 }
-[e :U 611 ]
-"85
+[e :U 608 ]
+[; ;main.c: 104: }
+[; ;main.c: 106: if(Event & (1<<0)){
+"106
+[e $ ! != & -> _Event `i << -> 1 `i -> 0 `i -> 0 `i 609  ]
+{
+[; ;main.c: 107: Event &= ~ (1<<0);
+"107
+[e =& _Event -> ~ << -> 1 `i -> 0 `i `uc ]
+[; ;main.c: 108: if(eusartRxCount>0){
+"108
+[e $ ! > -> _eusartRxCount `i -> 0 `i 610  ]
+{
+[; ;main.c: 109: m_mem_cpy_len(modbusBuf,eusartRxBuffer,eusartRxCount);
+"109
+[e ( _m_mem_cpy_len (3 , , &U _modbusBuf -> &U _eusartRxBuffer `*uc -> _eusartRxCount `ui ]
+[; ;main.c: 110: modbus_response_process(modbusBuf,eusartRxCount);
+"110
+[e ( _modbus_response_process (2 , &U _modbusBuf -> _eusartRxCount `ui ]
+"112
+}
+[e :U 610 ]
+[; ;main.c: 112: }
+[; ;main.c: 114: uart_received_start();
+"114
+[e ( _uart_received_start ..  ]
+"115
 }
 [e :U 609 ]
-[; ;main.c: 82: }
-[; ;main.c: 83: }
-[; ;main.c: 85: }
-[; ;main.c: 87: if(Event & (1<<3)){
-"87
-[e $ ! != & -> _Event `i << -> 1 `i -> 3 `i -> 0 `i 613  ]
-{
-[; ;main.c: 88: Event &= ~(1<<3);
-"88
-[e =& _Event -> ~ << -> 1 `i -> 3 `i `uc ]
-"130
-}
-[e :U 613 ]
-[; ;main.c: 130: }
-[; ;main.c: 132: if(Event & (1<<0)){
-"132
-[e $ ! != & -> _Event `i << -> 1 `i -> 0 `i -> 0 `i 614  ]
-{
-[; ;main.c: 133: Event &= ~ (1<<0);
-"133
-[e =& _Event -> ~ << -> 1 `i -> 0 `i `uc ]
-[; ;main.c: 134: if(eusartRxCount>0){
-"134
-[e $ ! > -> _eusartRxCount `i -> 0 `i 615  ]
-{
-[; ;main.c: 135: m_mem_cpy_len(modbusBuf,eusartRxBuffer,eusartRxCount);
-"135
-[e ( _m_mem_cpy_len (3 , , &U _modbusBuf -> &U _eusartRxBuffer `*uc -> _eusartRxCount `ui ]
-[; ;main.c: 136: modbus_response_process(modbusBuf,eusartRxCount);
-"136
-[e ( _modbus_response_process (2 , &U _modbusBuf -> _eusartRxCount `ui ]
-"138
-}
-[e :U 615 ]
-[; ;main.c: 138: }
-[; ;main.c: 140: uart_received_start();
-"140
-[e ( _uart_received_start ..  ]
-"141
-}
-[e :U 614 ]
-[; ;main.c: 141: }
-[; ;main.c: 143: __nop();
-"143
+[; ;main.c: 115: }
+[; ;main.c: 117: __nop();
+"117
 [e ( ___nop ..  ]
-"144
+"118
 }
+[e :U 604 ]
+"33
+[e $U 605  ]
 [e :U 606 ]
-"40
-[e $U 607  ]
-[e :U 608 ]
-[; ;main.c: 144: }
-[; ;main.c: 148: }
-"148
+[; ;main.c: 118: }
+[; ;main.c: 122: }
+"122
 [e :UE 600 ]
 }

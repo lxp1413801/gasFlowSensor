@@ -6480,7 +6480,7 @@ extern volatile unsigned char isRunInBoot @ 0xfff;
 # 16 "src/api/my_uart.h"
 extern volatile uint8_t eusartRxIdleTime_ms;
 
-extern volatile uint8_t eusartRxBuffer[60];
+extern volatile uint8_t eusartRxBuffer[32];
 extern volatile uint8_t eusartRxCount;
 
 extern void uart_send_byte(uint8_t x);
@@ -6493,7 +6493,7 @@ extern void uart_received_process(uint8_t* buf,uint8_t len);
 # 7 "src/api/my_uart.c"
 volatile uint8_t eusartRxIdleTime_ms=0;
 
-volatile uint8_t eusartRxBuffer[60];
+volatile uint8_t eusartRxBuffer[32];
 volatile uint8_t eusartRxCount=0;
 
 void uart_send_byte(uint8_t x)
@@ -6503,7 +6503,23 @@ while(0 == PIR1bits.TXIF);
 TXREG = x;
 }
 
-# 36
+
+
+void uart_send_str(uint8_t* str)
+{
+
+if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
+
+while(*str!='\0'){
+while(0 == PIR1bits.TXIF);
+do{__nop();__nop();}while(0);;
+TXREG = *str;
+str++;
+
+}
+
+}
+
 uint8_t xlen;
 void uart_send_len(uint8_t* buf,uint8_t len)
 {
@@ -6523,13 +6539,8 @@ do{__nop();__nop();}while(0);;
 void uart_received_start(void)
 {
 eusartRxCount=0;
-RCSTAbits.CREN=0;
-PIE1bits.RCIE = 0;
-PIR1bits.RCIF=0;
 
-RCSTAbits.CREN=1;
-PIE1bits.RCIE = 1;
-
+# 63
 eusartRxIdleTime_ms=0;
 }
 

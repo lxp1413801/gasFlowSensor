@@ -4716,7 +4716,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;sample.h: 57: extern uint16_t rsLoAvg;
 [; ;sample.h: 58: extern uint16_t calc_rs_lo_avg(uint16_t x);
 [; ;my_uart.h: 16: extern volatile uint8_t eusartRxIdleTime_ms;
-[; ;my_uart.h: 18: extern volatile uint8_t eusartRxBuffer[60];
+[; ;my_uart.h: 18: extern volatile uint8_t eusartRxBuffer[32];
 [; ;my_uart.h: 19: extern volatile uint8_t eusartRxCount;
 [; ;my_uart.h: 21: extern void uart_send_byte(uint8_t x);
 [; ;my_uart.h: 22: extern void uart_send_str(uint8_t* str);
@@ -4871,17 +4871,19 @@ Version 3.2 HI-TECH Software Intermediate Code
 "50
 [v _loc `ui ~T0 @X0 1 a ]
 [v _j `ui ~T0 @X0 1 a ]
-[v _i `ui ~T0 @X0 1 a ]
-[; ;sysData.c: 50: uint16_t loc,j,i=0;
-[e = _i -> -> 0 `i `ui ]
 "51
 [v _flashAddr `ui ~T0 @X0 1 a ]
+[; ;sysData.c: 50: uint16_t loc,j;
 [; ;sysData.c: 51: uint16_t flashAddr=0x1f00;
 [e = _flashAddr -> -> 7936 `i `ui ]
 "52
 [v _GIEBitValue `uc ~T0 @X0 1 a ]
 [; ;sysData.c: 52: uint8_t GIEBitValue=INTCONbits.GIE;
 [e = _GIEBitValue . . _INTCONbits 0 7 ]
+"53
+[v _i `uc ~T0 @X0 1 a ]
+[; ;sysData.c: 53: uint8_t i=0;
+[e = _i -> -> 0 `i `uc ]
 [; ;sysData.c: 54: blocNum=len/32;
 "54
 [e = _blocNum / _len -> -> 32 `i `ui ]
@@ -4915,8 +4917,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;sysData.c: 64: for(i=0;i<32;i++){
 "64
 {
-[e = _i -> -> 0 `i `ui ]
-[e $ < _i -> -> 32 `i `ui 606  ]
+[e = _i -> -> 0 `i `uc ]
+[e $ < -> _i `i -> 32 `i 606  ]
 [e $U 607  ]
 [e :U 606 ]
 {
@@ -4954,7 +4956,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _PMDATH -> -> 0 `i `uc ]
 [; ;sysData.c: 78: if((i%32) == 32 -1 ){
 "78
-[e $ ! == % _i -> -> 32 `i `ui -> - -> 32 `i -> 1 `i `ui 611  ]
+[e $ ! == % -> _i `i -> 32 `i - -> 32 `i -> 1 `i 611  ]
 {
 [; ;sysData.c: 79: PMCON1bits.LWLO = 0;
 "79
@@ -4984,8 +4986,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 "88
 }
 "64
-[e ++ _i -> -> 1 `i `ui ]
-[e $ < _i -> -> 32 `i `ui 606  ]
+[e ++ _i -> -> 1 `i `uc ]
+[e $ < -> _i `i -> 32 `i 606  ]
 [e :U 607 ]
 "88
 }
@@ -5066,15 +5068,15 @@ Version 3.2 HI-TECH Software Intermediate Code
 "109
 [e $ ! ! != _ret -> -> 0 `i `ui 614  ]
 {
-[; ;sysData.c: 110: sysData.pidSetFlg0=0xff;
+[; ;sysData.c: 110: sysData.pidSetFlg0=0x55;
 "110
-[e = . _sysData 0 -> -> 255 `i `uc ]
-[; ;sysData.c: 111: sysData.pidSetFlg1=0xff;
+[e = . _sysData 0 -> -> 85 `i `uc ]
+[; ;sysData.c: 111: sysData.pidSetFlg1=0xaa;
 "111
-[e = . _sysData 1 -> -> 255 `i `uc ]
-[; ;sysData.c: 112: sysData.id=0xff;
+[e = . _sysData 1 -> -> 170 `i `uc ]
+[; ;sysData.c: 112: sysData.id=0x01;
 "112
-[e = . _sysData 2 -> -> 255 `i `uc ]
+[e = . _sysData 2 -> -> 1 `i `uc ]
 [; ;sysData.c: 113: for(i=0;i<30;i++){
 "113
 {
@@ -5098,18 +5100,27 @@ Version 3.2 HI-TECH Software Intermediate Code
 "117
 }
 [; ;sysData.c: 117: }
-[; ;sysData.c: 118: sys_data_save();
-"118
+[; ;sysData.c: 119: sysData.pidKp=3200;
+"119
+[e = . _sysData 4 -> -> 3200 `i `ui ]
+[; ;sysData.c: 120: sysData.pidTi=20;
+"120
+[e = . _sysData 5 -> -> 20 `i `ui ]
+[; ;sysData.c: 121: sysData.pidTd=5;
+"121
+[e = . _sysData 6 -> -> 5 `i `ui ]
+[; ;sysData.c: 123: sys_data_save();
+"123
 [e ( _sys_data_save ..  ]
-"126
+"125
 }
 [e :U 614 ]
-[; ;sysData.c: 126: }
-[; ;sysData.c: 128: return ret;
-"128
+[; ;sysData.c: 125: }
+[; ;sysData.c: 126: return ret;
+"126
 [e ) _ret ]
 [e $UE 613  ]
-[; ;sysData.c: 129: }
-"129
+[; ;sysData.c: 127: }
+"127
 [e :UE 613 ]
 }

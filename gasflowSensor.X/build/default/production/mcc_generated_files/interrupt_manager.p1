@@ -46,15 +46,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _eusartRxCount `Vuc ~T0 @X0 0 e ]
 "18
 [v _eusartRxBuffer `Vuc ~T0 @X0 -> 0 `x e ]
-"1155 C:\Program Files (x86)\Microchip\xc8\v1.42\include\pic16f1575.h
-[s S66 :4 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S66 . . PWM1IE PWM2IE PWM3IE PWM4IE ]
-"1154
-[u S65 `S66 1 ]
-[n S65 . . ]
-"1163
-[v _PIE3bits `VS65 ~T0 @X0 0 e@147 ]
-"611
+"611 C:\Program Files (x86)\Microchip\xc8\v1.42\include\pic16f1575.h
 [s S37 :4 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S37 . . PWM1IF PWM2IF PWM3IF PWM4IF ]
 "610
@@ -62,40 +54,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S36 . . ]
 "619
 [v _PIR3bits `VS36 ~T0 @X0 0 e@19 ]
-"6772
-[s S348 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S348 . PRIF DCIF PHIF OFIF ]
-"6778
-[s S349 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S349 . PWM2PRIF PWM2DCIF PWM2PHIF PWM2OFIF ]
-"6771
-[u S347 `S348 1 `S349 1 ]
-[n S347 . . . ]
-"6785
-[v _PWM2INTFbits `VS347 ~T0 @X0 0 e@3501 ]
-"5960
-[v _PWM2DCH `Vuc ~T0 @X0 0 e@3492 ]
-"43 mcc_generated_files/../src/api/sample.h
-[v _pwm2DutyForVout `i ~T0 @X0 0 e ]
-"5882 C:\Program Files (x86)\Microchip\xc8\v1.42\include\pic16f1575.h
-[v _PWM2DCL `Vuc ~T0 @X0 0 e@3491 ]
-"5299
-[s S276 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S276 . PRIF DCIF PHIF OFIF ]
-"5305
-[s S277 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S277 . PWM1PRIF PWM1DCIF PWM1PHIF PWM1OFIF ]
-"5298
-[u S275 `S276 1 `S277 1 ]
-[n S275 . . . ]
-"5312
-[v _PWM1INTFbits `VS275 ~T0 @X0 0 e@3485 ]
-"4487
-[v _PWM1DCH `Vuc ~T0 @X0 0 e@3476 ]
-"44 mcc_generated_files/../src/api/sample.h
-[v _pwm1DutyForIdrv `i ~T0 @X0 0 e ]
-"4409 C:\Program Files (x86)\Microchip\xc8\v1.42\include\pic16f1575.h
-[v _PWM1DCL `Vuc ~T0 @X0 0 e@3475 ]
 [; ;interrupt_manager.h: 110: void interrupt INTERRUPT_InterruptManager(void);
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
@@ -4795,7 +4753,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; <" isRunInBoot equ 0xfff ;# ">
 [; ;globle.h: 38: extern volatile unsigned char isRunInBoot @ 0xfff;
 [; ;my_uart.h: 16: extern volatile uint8_t eusartRxIdleTime_ms;
-[; ;my_uart.h: 18: extern volatile uint8_t eusartRxBuffer[60];
+[; ;my_uart.h: 18: extern volatile uint8_t eusartRxBuffer[32];
 [; ;my_uart.h: 19: extern volatile uint8_t eusartRxCount;
 [; ;my_uart.h: 21: extern void uart_send_byte(uint8_t x);
 [; ;my_uart.h: 22: extern void uart_send_str(uint8_t* str);
@@ -4845,224 +4803,180 @@ Version 3.2 HI-TECH Software Intermediate Code
 -> -> 0 `i `uc
 ]
 [; ;interrupt_manager.c: 54: uint8_t subTickerX_1s=0x00;
+"55
+[v _rxtemp `uc ~T0 @X0 1 e ]
+[; ;interrupt_manager.c: 55: uint8_t rxtemp;
 [v $root$_INTERRUPT_InterruptManager `(v ~T0 @X0 0 e ]
 [v F3 `(v ~T0 @X0 1 tf ]
-"55
-[v _INTERRUPT_InterruptManager `IF3 ~T0 @X0 1 e ]
 "56
+[v _INTERRUPT_InterruptManager `IF3 ~T0 @X0 1 e ]
+"57
 {
-[; ;interrupt_manager.c: 55: void interrupt INTERRUPT_InterruptManager (void)
-[; ;interrupt_manager.c: 56: {
+[; ;interrupt_manager.c: 56: void interrupt INTERRUPT_InterruptManager (void)
+[; ;interrupt_manager.c: 57: {
 [e :U _INTERRUPT_InterruptManager ]
 [f ]
-"58
-[v _t8 `uc ~T0 @X0 1 a ]
-[; ;interrupt_manager.c: 58: uint8_t t8;
-[; ;interrupt_manager.c: 59: if(INTCONbits.PEIE == 1 && PIE1bits.TMR2IE == 1 && PIR1bits.TMR2IF == 1)
-"59
-[e $ ! && && == -> . . _INTCONbits 0 6 `i -> 1 `i == -> . . _PIE1bits 0 1 `i -> 1 `i == -> . . _PIR1bits 0 1 `i -> 1 `i 595  ]
-[; ;interrupt_manager.c: 60: {
+[; ;interrupt_manager.c: 60: if(INTCONbits.PEIE == 1 && PIE1bits.TMR2IE == 1 && PIR1bits.TMR2IF == 1)
 "60
+[e $ ! && && == -> . . _INTCONbits 0 6 `i -> 1 `i == -> . . _PIE1bits 0 1 `i -> 1 `i == -> . . _PIR1bits 0 1 `i -> 1 `i 595  ]
+[; ;interrupt_manager.c: 61: {
+"61
 {
-[; ;interrupt_manager.c: 62: PIR1bits.TMR2IF = 0;
-"62
-[e = . . _PIR1bits 0 1 -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 63: Event |= (1<<1);
+[; ;interrupt_manager.c: 63: PIR1bits.TMR2IF = 0;
 "63
-[e =| _Event -> << -> 1 `i -> 1 `i `uc ]
-[; ;interrupt_manager.c: 64: subTickerX++;
+[e = . . _PIR1bits 0 1 -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 64: Event |= (1<<1);
 "64
-[e ++ _subTickerX -> -> 1 `i `uc ]
-[; ;interrupt_manager.c: 65: subTickerX_1s++;
+[e =| _Event -> << -> 1 `i -> 1 `i `uc ]
+[; ;interrupt_manager.c: 65: subTickerX++;
 "65
-[e ++ _subTickerX_1s -> -> 1 `i `uc ]
-[; ;interrupt_manager.c: 66: if(subTickerX>=5){
+[e ++ _subTickerX -> -> 1 `i `uc ]
+[; ;interrupt_manager.c: 66: subTickerX_1s++;
 "66
+[e ++ _subTickerX_1s -> -> 1 `i `uc ]
+[; ;interrupt_manager.c: 67: if(subTickerX>=5){
+"67
 [e $ ! >= -> _subTickerX `i -> 5 `i 596  ]
 {
-[; ;interrupt_manager.c: 67: subTickerX=0;
-"67
-[e = _subTickerX -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 68: Event |= (1<<2);
+[; ;interrupt_manager.c: 68: subTickerX=0;
 "68
-[e =| _Event -> << -> 1 `i -> 2 `i `uc ]
+[e = _subTickerX -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 69: Event |= (1<<2);
 "69
+[e =| _Event -> << -> 1 `i -> 2 `i `uc ]
+"70
 }
 [e :U 596 ]
-[; ;interrupt_manager.c: 69: }
-[; ;interrupt_manager.c: 70: if(subTickerX_1s>=50){
-"70
+[; ;interrupt_manager.c: 70: }
+[; ;interrupt_manager.c: 71: if(subTickerX_1s>=50){
+"71
 [e $ ! >= -> _subTickerX_1s `i -> 50 `i 597  ]
 {
-[; ;interrupt_manager.c: 71: subTickerX_1s=0;
-"71
-[e = _subTickerX_1s -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 72: Event |= (1<<3);
+[; ;interrupt_manager.c: 72: subTickerX_1s=0;
 "72
-[e =| _Event -> << -> 1 `i -> 3 `i `uc ]
+[e = _subTickerX_1s -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 73: Event |= (1<<3);
 "73
+[e =| _Event -> << -> 1 `i -> 3 `i `uc ]
+"74
 }
 [e :U 597 ]
-[; ;interrupt_manager.c: 73: }
-[; ;interrupt_manager.c: 75: if(eusartRxIdleTime_ms){
-"75
+[; ;interrupt_manager.c: 74: }
+[; ;interrupt_manager.c: 76: if(eusartRxIdleTime_ms){
+"76
 [e $ ! != -> _eusartRxIdleTime_ms `i -> -> -> 0 `i `Vuc `i 598  ]
 {
-[; ;interrupt_manager.c: 76: eusartRxIdleTime_ms++;
-"76
-[e ++ _eusartRxIdleTime_ms -> -> 1 `i `uc ]
-[; ;interrupt_manager.c: 77: if(eusartRxIdleTime_ms>5){
+[; ;interrupt_manager.c: 77: eusartRxIdleTime_ms++;
 "77
+[e ++ _eusartRxIdleTime_ms -> -> 1 `i `uc ]
+[; ;interrupt_manager.c: 78: if(eusartRxIdleTime_ms>5){
+"78
 [e $ ! > -> _eusartRxIdleTime_ms `i -> 5 `i 599  ]
 {
-[; ;interrupt_manager.c: 78: Event|=(1<<0);
-"78
-[e =| _Event -> << -> 1 `i -> 0 `i `uc ]
-[; ;interrupt_manager.c: 79: eusartRxIdleTime_ms=0;
+[; ;interrupt_manager.c: 79: Event|=(1<<0);
 "79
-[e = _eusartRxIdleTime_ms -> -> 0 `i `uc ]
+[e =| _Event -> << -> 1 `i -> 0 `i `uc ]
+[; ;interrupt_manager.c: 80: eusartRxIdleTime_ms=0;
 "80
-}
-[e :U 599 ]
+[e = _eusartRxIdleTime_ms -> -> 0 `i `uc ]
 "81
 }
-[e :U 598 ]
-[; ;interrupt_manager.c: 80: }
-[; ;interrupt_manager.c: 81: }
-[; ;interrupt_manager.c: 82: globalTicker++;
+[e :U 599 ]
 "82
-[e ++ _globalTicker -> -> 1 `i `ui ]
+}
+[e :U 598 ]
+[; ;interrupt_manager.c: 81: }
+[; ;interrupt_manager.c: 82: }
+[; ;interrupt_manager.c: 83: globalTicker++;
 "83
+[e ++ _globalTicker -> -> 1 `i `ui ]
+"84
 }
 [e :U 595 ]
-[; ;interrupt_manager.c: 83: }
-[; ;interrupt_manager.c: 84: if(INTCONbits.PEIE == 1 && PIE1bits.RCIE == 1 && PIR1bits.RCIF == 1)
-"84
-[e $ ! && && == -> . . _INTCONbits 0 6 `i -> 1 `i == -> . . _PIE1bits 0 4 `i -> 1 `i == -> . . _PIR1bits 0 4 `i -> 1 `i 600  ]
-[; ;interrupt_manager.c: 85: {
+[; ;interrupt_manager.c: 84: }
+[; ;interrupt_manager.c: 85: if(INTCONbits.PEIE == 1 && PIE1bits.RCIE == 1 && PIR1bits.RCIF == 1)
 "85
+[e $ ! && && == -> . . _INTCONbits 0 6 `i -> 1 `i == -> . . _PIE1bits 0 4 `i -> 1 `i == -> . . _PIR1bits 0 4 `i -> 1 `i 600  ]
+[; ;interrupt_manager.c: 86: {
+"86
 {
-[; ;interrupt_manager.c: 87: PIR1bits.RCIF=0;
-"87
-[e = . . _PIR1bits 0 4 -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 88: if(1 == RCSTAbits.OERR){
+[; ;interrupt_manager.c: 88: PIR1bits.RCIF=0;
 "88
+[e = . . _PIR1bits 0 4 -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 89: if(1 == RCSTAbits.OERR){
+"89
 [e $ ! == -> 1 `i -> . . _RCSTAbits 0 1 `i 601  ]
 {
-[; ;interrupt_manager.c: 89: RCSTAbits.CREN = 0;
-"89
-[e = . . _RCSTAbits 0 4 -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 90: RCSTAbits.CREN = 1;
+[; ;interrupt_manager.c: 90: RCSTAbits.CREN = 0;
 "90
-[e = . . _RCSTAbits 0 4 -> -> 1 `i `uc ]
+[e = . . _RCSTAbits 0 4 -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 91: RCSTAbits.CREN = 1;
 "91
+[e = . . _RCSTAbits 0 4 -> -> 1 `i `uc ]
+"92
 }
 [e :U 601 ]
-[; ;interrupt_manager.c: 91: }
-[; ;interrupt_manager.c: 92: t8=RCREG;
-"92
-[e = _t8 _RCREG ]
-[; ;interrupt_manager.c: 93: if(eusartRxCount<60){
+[; ;interrupt_manager.c: 92: }
+[; ;interrupt_manager.c: 93: rxtemp=RCREG;
 "93
-[e $ ! < -> _eusartRxCount `i -> 60 `i 602  ]
-{
-[; ;interrupt_manager.c: 94: eusartRxBuffer[eusartRxCount]=t8;
+[e = _rxtemp _RCREG ]
+[; ;interrupt_manager.c: 94: if(eusartRxCount<32){
 "94
-[e = *U + &U _eusartRxBuffer * -> _eusartRxCount `ux -> -> # *U &U _eusartRxBuffer `ui `ux _t8 ]
-[; ;interrupt_manager.c: 95: eusartRxCount++;
+[e $ ! < -> _eusartRxCount `i -> 32 `i 602  ]
+{
+[; ;interrupt_manager.c: 95: eusartRxBuffer[eusartRxCount]=rxtemp;
 "95
+[e = *U + &U _eusartRxBuffer * -> _eusartRxCount `ux -> -> # *U &U _eusartRxBuffer `ui `ux _rxtemp ]
+[; ;interrupt_manager.c: 96: eusartRxCount++;
+"96
 [e ++ _eusartRxCount -> -> 1 `i `uc ]
-"97
+"98
 }
 [e :U 602 ]
-[; ;interrupt_manager.c: 97: }
-[; ;interrupt_manager.c: 98: eusartRxIdleTime_ms=1;
-"98
-[e = _eusartRxIdleTime_ms -> -> 1 `i `uc ]
+[; ;interrupt_manager.c: 98: }
+[; ;interrupt_manager.c: 99: eusartRxIdleTime_ms=1;
 "99
+[e = _eusartRxIdleTime_ms -> -> 1 `i `uc ]
+"100
 }
 [e :U 600 ]
-[; ;interrupt_manager.c: 99: }
-[; ;interrupt_manager.c: 101: if( PIR1bits.TXIF == 1)
-"101
-[e $ ! == -> . . _PIR1bits 0 3 `i -> 1 `i 603  ]
-[; ;interrupt_manager.c: 102: {
+[; ;interrupt_manager.c: 100: }
+[; ;interrupt_manager.c: 102: if( PIR1bits.TXIF == 1)
 "102
-{
-[; ;interrupt_manager.c: 103: PIR1bits.TXIF=0;
+[e $ ! == -> . . _PIR1bits 0 3 `i -> 1 `i 603  ]
+[; ;interrupt_manager.c: 103: {
 "103
-[e = . . _PIR1bits 0 3 -> -> 0 `i `uc ]
+{
+[; ;interrupt_manager.c: 104: PIR1bits.TXIF=0;
 "104
+[e = . . _PIR1bits 0 3 -> -> 0 `i `uc ]
+"105
 }
 [e :U 603 ]
-[; ;interrupt_manager.c: 104: }
-[; ;interrupt_manager.c: 106: if(INTCONbits.PEIE == 1 && PIE3bits.PWM2IE == 1 && PIR3bits.PWM2IF == 1){
-"106
-[e $ ! && && == -> . . _INTCONbits 0 6 `i -> 1 `i == -> . . _PIE3bits 0 2 `i -> 1 `i == -> . . _PIR3bits 0 2 `i -> 1 `i 604  ]
+[; ;interrupt_manager.c: 105: }
+[; ;interrupt_manager.c: 107: if(PIR3bits.PWM2IF){
+"107
+[e $ ! != -> . . _PIR3bits 0 2 `i -> -> -> 0 `i `Vuc `i 604  ]
 {
 [; ;interrupt_manager.c: 108: PIR3bits.PWM2IF = 0;
 "108
 [e = . . _PIR3bits 0 2 -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 109: if(PWM2INTFbits.PRIF){
 "109
-[e $ ! != -> . . _PWM2INTFbits 0 0 `i -> -> -> 0 `i `Vuc `i 605  ]
-{
-[; ;interrupt_manager.c: 110: PWM2INTFbits.PRIF=0;
-"110
-[e = . . _PWM2INTFbits 0 0 -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 111: PWM2DCH = (uint8_t)(pwm2DutyForVout>>8);
+}
+[e :U 604 ]
+[; ;interrupt_manager.c: 109: }
+[; ;interrupt_manager.c: 111: if(PIR3bits.PWM1IF){
 "111
-[e = _PWM2DCH -> >> _pwm2DutyForVout -> 8 `i `uc ]
-[; ;interrupt_manager.c: 112: PWM2DCL = (uint8_t)(pwm2DutyForVout & 0xff);
+[e $ ! != -> . . _PIR3bits 0 1 `i -> -> -> 0 `i `Vuc `i 605  ]
+{
+[; ;interrupt_manager.c: 112: PIR3bits.PWM1IF=0;
 "112
-[e = _PWM2DCL -> & _pwm2DutyForVout -> 255 `i `uc ]
+[e = . . _PIR3bits 0 1 -> -> 0 `i `uc ]
 "113
 }
 [e :U 605 ]
-"114
-}
-[e :U 604 ]
 [; ;interrupt_manager.c: 113: }
-[; ;interrupt_manager.c: 114: }
-[; ;interrupt_manager.c: 115: if(INTCONbits.PEIE == 1 && PIE3bits.PWM1IE == 1 && PIR3bits.PWM1IF == 1){
-"115
-[e $ ! && && == -> . . _INTCONbits 0 6 `i -> 1 `i == -> . . _PIE3bits 0 1 `i -> 1 `i == -> . . _PIR3bits 0 1 `i -> 1 `i 606  ]
-{
-[; ;interrupt_manager.c: 116: PIR3bits.PWM1IF = 0;
-"116
-[e = . . _PIR3bits 0 1 -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 117: if(PWM1INTFbits.PRIF){
-"117
-[e $ ! != -> . . _PWM1INTFbits 0 0 `i -> -> -> 0 `i `Vuc `i 607  ]
-{
-[; ;interrupt_manager.c: 118: PWM1INTFbits.PRIF=0;
-"118
-[e = . . _PWM1INTFbits 0 0 -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 119: PWM1DCH = (uint8_t)(pwm1DutyForIdrv>>8);
-"119
-[e = _PWM1DCH -> >> _pwm1DutyForIdrv -> 8 `i `uc ]
-[; ;interrupt_manager.c: 120: PWM1DCL = (uint8_t)(pwm1DutyForIdrv&0xff);
-"120
-[e = _PWM1DCL -> & _pwm1DutyForIdrv -> 255 `i `uc ]
-"121
-}
-[e :U 607 ]
-"122
-}
-[; ;interrupt_manager.c: 121: }
-[; ;interrupt_manager.c: 122: }
-[e $U 608  ]
-"126
-[e :U 606 ]
-[; ;interrupt_manager.c: 126: else
-[; ;interrupt_manager.c: 127: {
-"127
-{
-"129
-}
-[e :U 608 ]
-[; ;interrupt_manager.c: 129: }
-[; ;interrupt_manager.c: 130: }
-"130
+[; ;interrupt_manager.c: 134: }
+"134
 [e :UE 594 ]
 }

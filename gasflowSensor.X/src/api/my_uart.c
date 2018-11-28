@@ -17,7 +17,7 @@ void uart_send_byte(uint8_t x)
 }
 #define some_nop()  do{__nop();__nop();}while(0); 
 
-/*
+
 void uart_send_str(uint8_t* str)
 {
     //TXSTAbits.TXEN=0;
@@ -32,8 +32,8 @@ void uart_send_str(uint8_t* str)
 	}
     //while(0 == PIR1bits.TXIF);
 }
-*/
- uint8_t xlen;
+
+uint8_t xlen;
 void uart_send_len(uint8_t* buf,uint8_t len)
 {
 	uint8_t i;
@@ -52,13 +52,14 @@ void uart_send_len(uint8_t* buf,uint8_t len)
 void uart_received_start(void)
 {
 	eusartRxCount=0;
+	/*
     RCSTAbits.CREN=0;
     PIE1bits.RCIE = 0;
     PIR1bits.RCIF=0;
     
     RCSTAbits.CREN=1;
 	PIE1bits.RCIE = 1;
-    
+    */
 	eusartRxIdleTime_ms=0;
 }
 

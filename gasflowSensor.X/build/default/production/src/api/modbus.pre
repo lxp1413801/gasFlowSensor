@@ -6400,7 +6400,7 @@ extern uint16_t calc_rs_lo_avg(uint16_t x);
 # 16 "src/api/../includes/../api/my_uart.h"
 extern volatile uint8_t eusartRxIdleTime_ms;
 
-extern volatile uint8_t eusartRxBuffer[60];
+extern volatile uint8_t eusartRxBuffer[32];
 extern volatile uint8_t eusartRxCount;
 
 extern void uart_send_byte(uint8_t x);
@@ -6439,7 +6439,7 @@ extern uint8_t crc_verify(uint8_t* message, uint16_t n);
 extern void crc_append( uint8_t* message, uint16_t n);
 
 # 7 "src/api/modbus.c"
-uint8_t modbusBuf[60];
+uint8_t modbusBuf[32];
 void modbus_response_illgeal_function(uint8_t* buf,uint8_t errcode)
 {
 st_modbusErrRespStructDef* pmdbs=(st_modbusErrRespStructDef*)buf;
@@ -6539,15 +6539,17 @@ uart_send_len(rbuf,8);
 void modbus_response_write_mult_register(uint8_t* rbuf)
 {
 uint8_t startAddr,len;
+
 st_modbusWriteMultReg_t* stb=(st_modbusWriteMultReg_t*)rbuf;
 if(stb->addr!=sysData.id || stb->addr==0)return;
 startAddr=stb->addr_lo;
 len=stb->len_lo;
 if(len!=3)return ;
 if(startAddr!=4)return;
+
 sysData.pidKp=(stb->data[0]<<8)|(stb->data[1]);
 sysData.pidTi=(stb->data[2]<<8)|(stb->data[3]);
-sysData.pidTd=(stb->data[4]<<8)|(stb->data[5]);
+
 sys_data_save();
 crc_append(rbuf,sizeof(st_modbusWriteMultReg_t)-2);
 uart_send_len(rbuf,sizeof(st_modbusWriteMultReg_t));
@@ -6569,8 +6571,8 @@ len<<=1;
 if(len>32)len=32;
 for(i=0;i<len;i=i+2,tmpAddr++){
 getRegisterVal(tmpAddr,&tempData);
-rbuf[i+3] = tempData >> 8;
-rbuf[i+4] = tempData & 0xff;
+rbuf[i+3] = (uint8_t)(tempData >> 8);
+rbuf[i+4] = (uint8_t)(tempData & 0xff);
 
 }
 rbuf[0] = sysData.id;
@@ -6602,7 +6604,7 @@ case 0x10:
 modbus_response_write_mult_register(rbuf);
 break;
 
-# 249
+# 251
 default:
 modbus_response_illgeal_function(rbuf,0x01);break;
 }

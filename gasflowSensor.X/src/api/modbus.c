@@ -162,15 +162,17 @@ void modbus_response_write_single_register(uint8_t* rbuf)
 void modbus_response_write_mult_register(uint8_t* rbuf)
 {
     uint8_t startAddr,len;
+
     st_modbusWriteMultReg_t* stb=(st_modbusWriteMultReg_t*)rbuf;
     if(stb->addr!=sysData.id ||  stb->addr==0)return;
     startAddr=stb->addr_lo;
     len=stb->len_lo;
     if(len!=3)return ;
     if(startAddr!=4)return;
+
     sysData.pidKp=(stb->data[0]<<8)|(stb->data[1]);
     sysData.pidTi=(stb->data[2]<<8)|(stb->data[3]);
-    sysData.pidTd=(stb->data[4]<<8)|(stb->data[5]);
+    //sysData.pidTd=(stb->data[4]<<8)|(stb->data[5]);
     sys_data_save();
     crc_append(rbuf,sizeof(st_modbusWriteMultReg_t)-2);
     uart_send_len(rbuf,sizeof(st_modbusWriteMultReg_t));     
@@ -192,8 +194,8 @@ void modbus_response_command(uint8_t* rbuf){
     if(len>32)len=32;
     for(i=0;i<len;i=i+2,tmpAddr++){
 		getRegisterVal(tmpAddr,&tempData);				
-		rbuf[i+3] = tempData >> 8;				   		
-		rbuf[i+4] = tempData & 0xff;			
+		rbuf[i+3] = (uint8_t)(tempData >> 8);				   		
+		rbuf[i+4] = (uint8_t)(tempData & 0xff);			
         
     }
 	rbuf[0] = sysData.id;

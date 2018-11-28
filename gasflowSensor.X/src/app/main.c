@@ -13,7 +13,7 @@
 #include "../api/modbus.h"
 
 //uint8_t str[16];
-
+#define str modbusBuf
 void main(void)
 {
     __nop();
@@ -27,16 +27,9 @@ void main(void)
     sys_data_init();
     //m_mem_cpy(str,(uint8_t*)"VER1.00\r\n");
     //uart_send_str(str);
-   
-    if(sysData.pidSetFlg0 != 0x55 || sysData.pidSetFlg1 != 0xaa){
-        pidBbSm=PID_BB_NONE;
-    }else{
-        pidBbSm=PID_BB_EXIT;
-		PidKp=sysData.pidKp;
-		PidTd=sysData.pidTd;
-		PidTi=sysData.pidTi;       
-    }
-	//uart_send_str((uint8_t*)"UUUUU");	
+	modbusBuf[0]=0x55;
+	modbusBuf[1]=0xaa;
+	uart_send_len(modbusBuf,2);   
     while (1){
         if(Event & flg_EVEN_TICKER_100MS){
             Event &= ~flg_EVEN_TICKER_100MS;
@@ -56,31 +49,12 @@ void main(void)
 			//此处的16次采样不能改，后面计算有依耐性
             resRc=calc_temp_rc();
 			resRs=calc_temp_rs();
-            
-            __nop();
-            if(pidBbSm>=PID_BB_EXIT){
-				pid_pwm1_idrv_run();
-				//rsSimPower=cal_rs_simulate_power();
-                //extern uint16_t rsLoAvg;
-                rsLoAvg=calc_rs_lo_avg(rtAdcValueRsLo);
-                voExpectMv=calc_expect_vout_adc_value(rsLoAvg);
-				voExpectAdcValue=(voExpectMv<<1);
-				pid_pwm2_vout_run();
-			}else{
-                pid_pwm1_idrv_b_b();
-				
-                if(pidBbSm>=PID_BB_EXIT){
-                    sysData.pidSetFlg0 = 0x55;
-                    sysData.pidSetFlg1 = 0xaa;   
-                    sysData.pidKp=(uint16_t)PidKp;
-                    sysData.pidTd=(uint16_t)PidTd;
-                    sysData.pidTi=(uint16_t)PidTi;
-                    sys_data_save();
-                    modbusBuf[0]=0x55;
-                    modbusBuf[1]=0xaa;
-                    uart_send_len(modbusBuf,2);   
-                }
-            }
+			
+			pid_pwm1_idrv_run();
+			rsLoAvg=calc_rs_lo_avg(rtAdcValueRsLo);
+			voExpectMv=calc_expect_vout_adc_value(rsLoAvg);
+			voExpectAdcValue=(voExpectMv<<1);
+			pid_pwm2_vout_run();			
 			#endif
         }
 		

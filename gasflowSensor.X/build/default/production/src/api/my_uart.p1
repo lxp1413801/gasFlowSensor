@@ -20,22 +20,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 "28 C:\Program Files (x86)\Microchip\xc8\v1.42\include\pic.h
 [v ___nop `(v ~T0 @X0 0 ef ]
 [p i ___nop ]
-"2795 C:\Program Files (x86)\Microchip\xc8\v1.42\include\pic16f1575.h
-[s S154 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S154 . RX9D OERR FERR ADDEN CREN SREN RX9 SPEN ]
-"2794
-[u S153 `S154 1 ]
-[n S153 . . ]
-"2806
-[v _RCSTAbits `VS153 ~T0 @X0 0 e@413 ]
-"1077
-[s S62 :1 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S62 . TMR1IE TMR2IE . TXIE RCIE ADIE TMR1GIE ]
-"1076
-[u S61 `S62 1 ]
-[n S61 . . ]
-"1087
-[v _PIE1bits `VS61 ~T0 @X0 0 e@145 ]
 [; ;htc.h: 26: extern const char __xc8_OPTIM_SPEED;
 [; ;htc.h: 28: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -4735,7 +4719,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; <" isRunInBoot equ 0xfff ;# ">
 [; ;globle.h: 38: extern volatile unsigned char isRunInBoot @ 0xfff;
 [; ;my_uart.h: 16: extern volatile uint8_t eusartRxIdleTime_ms;
-[; ;my_uart.h: 18: extern volatile uint8_t eusartRxBuffer[60];
+[; ;my_uart.h: 18: extern volatile uint8_t eusartRxBuffer[32];
 [; ;my_uart.h: 19: extern volatile uint8_t eusartRxCount;
 [; ;my_uart.h: 21: extern void uart_send_byte(uint8_t x);
 [; ;my_uart.h: 22: extern void uart_send_str(uint8_t* str);
@@ -4749,8 +4733,8 @@ Version 3.2 HI-TECH Software Intermediate Code
 ]
 [; ;my_uart.c: 7: volatile uint8_t eusartRxIdleTime_ms=0;
 "9
-[v _eusartRxBuffer `Vuc ~T0 @X0 -> 60 `i e ]
-[; ;my_uart.c: 9: volatile uint8_t eusartRxBuffer[60];
+[v _eusartRxBuffer `Vuc ~T0 @X0 -> 32 `i e ]
+[; ;my_uart.c: 9: volatile uint8_t eusartRxBuffer[32];
 "10
 [v _eusartRxCount `Vuc ~T0 @X0 1 e ]
 [i _eusartRxCount
@@ -4782,6 +4766,59 @@ Version 3.2 HI-TECH Software Intermediate Code
 "17
 [e :UE 594 ]
 }
+"21
+[v _uart_send_str `(v ~T0 @X0 1 ef1`*uc ]
+"22
+{
+[; ;my_uart.c: 21: void uart_send_str(uint8_t* str)
+[; ;my_uart.c: 22: {
+[e :U _uart_send_str ]
+"21
+[v _str `*uc ~T0 @X0 1 r1 ]
+"22
+[f ]
+[; ;my_uart.c: 24: if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
+"24
+[e $ ! ! != -> . . _TXSTAbits 0 5 `i -> -> -> 0 `i `Vuc `i 599  ]
+[e = . . _TXSTAbits 0 5 -> -> 1 `i `uc ]
+[e :U 599 ]
+[; ;my_uart.c: 26: while(*str!='\0'){
+"26
+[e $U 600  ]
+[e :U 601 ]
+{
+[; ;my_uart.c: 27: while(0 == PIR1bits.TXIF);
+"27
+[e $U 603  ]
+[e :U 604 ]
+[e :U 603 ]
+[e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 604  ]
+[e :U 605 ]
+[; ;my_uart.c: 28: do{__nop();__nop();}while(0);;
+"28
+[e :U 608 ]
+{
+[e ( ___nop ..  ]
+[e ( ___nop ..  ]
+}
+[e :U 607 ]
+[; ;my_uart.c: 29: TXREG = *str;
+"29
+[e = _TXREG *U _str ]
+[; ;my_uart.c: 30: str++;
+"30
+[e ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x ]
+"32
+}
+[e :U 600 ]
+"26
+[e $ != -> *U _str `ui -> 0 `ui 601  ]
+[e :U 602 ]
+[; ;my_uart.c: 32: }
+[; ;my_uart.c: 34: }
+"34
+[e :UE 598 ]
+}
 "36
 [v _xlen `uc ~T0 @X0 1 e ]
 [; ;my_uart.c: 36: uint8_t xlen;
@@ -4805,47 +4842,47 @@ Version 3.2 HI-TECH Software Intermediate Code
 [e = _xlen _len ]
 [; ;my_uart.c: 41: if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
 "41
-[e $ ! ! != -> . . _TXSTAbits 0 5 `i -> -> -> 0 `i `Vuc `i 599  ]
+[e $ ! ! != -> . . _TXSTAbits 0 5 `i -> -> -> 0 `i `Vuc `i 610  ]
 [e = . . _TXSTAbits 0 5 -> -> 1 `i `uc ]
-[e :U 599 ]
+[e :U 610 ]
 [; ;my_uart.c: 43: for(i=0;i<xlen;i++){
 "43
 {
 [e = _i -> -> 0 `i `uc ]
-[e $U 603  ]
-[e :U 600 ]
+[e $U 614  ]
+[e :U 611 ]
 {
 [; ;my_uart.c: 44: while(0 == PIR1bits.TXIF);
 "44
-[e $U 604  ]
-[e :U 605 ]
-[e :U 604 ]
-[e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 605  ]
-[e :U 606 ]
+[e $U 615  ]
+[e :U 616 ]
+[e :U 615 ]
+[e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 616  ]
+[e :U 617 ]
 [; ;my_uart.c: 46: TXREG = buf[i];
 "46
 [e = _TXREG *U + _buf * -> _i `ux -> -> # *U _buf `ui `ux ]
 [; ;my_uart.c: 47: do{__nop();__nop();}while(0);;
 "47
-[e :U 609 ]
+[e :U 620 ]
 {
 [e ( ___nop ..  ]
 [e ( ___nop ..  ]
 }
-[e :U 608 ]
+[e :U 619 ]
 "48
 }
 "43
 [e ++ _i -> -> 1 `i `uc ]
-[e :U 603 ]
-[e $ < -> _i `i -> _xlen `i 600  ]
-[e :U 601 ]
+[e :U 614 ]
+[e $ < -> _i `i -> _xlen `i 611  ]
+[e :U 612 ]
 "48
 }
 [; ;my_uart.c: 48: }
 [; ;my_uart.c: 50: }
 "50
-[e :UE 598 ]
+[e :UE 609 ]
 }
 "52
 [v _uart_received_start `(v ~T0 @X0 1 ef ]
@@ -4858,26 +4895,11 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;my_uart.c: 54: eusartRxCount=0;
 "54
 [e = _eusartRxCount -> -> 0 `i `uc ]
-[; ;my_uart.c: 55: RCSTAbits.CREN=0;
-"55
-[e = . . _RCSTAbits 0 4 -> -> 0 `i `uc ]
-[; ;my_uart.c: 56: PIE1bits.RCIE = 0;
-"56
-[e = . . _PIE1bits 0 4 -> -> 0 `i `uc ]
-[; ;my_uart.c: 57: PIR1bits.RCIF=0;
-"57
-[e = . . _PIR1bits 0 4 -> -> 0 `i `uc ]
-[; ;my_uart.c: 59: RCSTAbits.CREN=1;
-"59
-[e = . . _RCSTAbits 0 4 -> -> 1 `i `uc ]
-[; ;my_uart.c: 60: PIE1bits.RCIE = 1;
-"60
-[e = . . _PIE1bits 0 4 -> -> 1 `i `uc ]
-[; ;my_uart.c: 62: eusartRxIdleTime_ms=0;
-"62
-[e = _eusartRxIdleTime_ms -> -> 0 `i `uc ]
-[; ;my_uart.c: 63: }
+[; ;my_uart.c: 63: eusartRxIdleTime_ms=0;
 "63
-[e :UE 610 ]
+[e = _eusartRxIdleTime_ms -> -> 0 `i `uc ]
+[; ;my_uart.c: 64: }
+"64
+[e :UE 621 ]
 }
-[; ;my_uart.c: 65: void uart_received_process(uint8_t* buf,uint8_t len);
+[; ;my_uart.c: 66: void uart_received_process(uint8_t* buf,uint8_t len);

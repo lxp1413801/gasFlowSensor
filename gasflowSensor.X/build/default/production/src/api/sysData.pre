@@ -6351,7 +6351,7 @@ extern uint16_t calc_rs_lo_avg(uint16_t x);
 # 16 "src/api/../includes/../api/my_uart.h"
 extern volatile uint8_t eusartRxIdleTime_ms;
 
-extern volatile uint8_t eusartRxBuffer[60];
+extern volatile uint8_t eusartRxBuffer[32];
 extern volatile uint8_t eusartRxCount;
 
 extern void uart_send_byte(uint8_t x);
@@ -6445,10 +6445,10 @@ INTCONbits.GIE = GIEBitValue;
 uint16_t my_flash_system_write(uint8_t* buf,uint16_t len)
 {
 uint16_t blocNum=0;
-uint16_t loc,j,i=0;
+uint16_t loc,j;
 uint16_t flashAddr=0x1f00;
 uint8_t GIEBitValue=INTCONbits.GIE;
-
+uint8_t i=0;
 blocNum=len/32;
 if(len%32)blocNum++;
 
@@ -6505,19 +6505,22 @@ uint16_t ret,i;
 my_flash_system_read((uint8_t*)&sysData,sizeof(sysData_t));
 ret=crc_verify((uint8_t*)&sysData,sizeof(sysData_t));
 if(!ret){
-sysData.pidSetFlg0=0xff;
-sysData.pidSetFlg1=0xff;
-sysData.id=0xff;
+sysData.pidSetFlg0=0x55;
+sysData.pidSetFlg1=0xaa;
+sysData.id=0x01;
 for(i=0;i<30;i++){
 
 sysData.calibRsAdc[i]=6400+i*720;
 sysData.calibVoMV[i]=i*333;
 }
+
+sysData.pidKp=3200;
+sysData.pidTi=20;
+sysData.pidTd=5;
+
 sys_data_save();
 
-# 126
 }
-
 return ret;
 }
 

@@ -4698,7 +4698,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; <" isRunInBoot equ 0xfff ;# ">
 [; ;globle.h: 38: extern volatile unsigned char isRunInBoot @ 0xfff;
 [; ;my_uart.h: 16: extern volatile uint8_t eusartRxIdleTime_ms;
-[; ;my_uart.h: 18: extern volatile uint8_t eusartRxBuffer[60];
+[; ;my_uart.h: 18: extern volatile uint8_t eusartRxBuffer[32];
 [; ;my_uart.h: 19: extern volatile uint8_t eusartRxCount;
 [; ;my_uart.h: 21: extern void uart_send_byte(uint8_t x);
 [; ;my_uart.h: 22: extern void uart_send_str(uint8_t* str);

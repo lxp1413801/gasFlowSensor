@@ -47,10 +47,10 @@ void my_flash_system_read(uint8_t* buf,uint16_t len)
 uint16_t my_flash_system_write(uint8_t* buf,uint16_t len)
 {
     uint16_t blocNum=0;
-	uint16_t loc,j,i=0;
+	uint16_t loc,j;
 	uint16_t flashAddr=SYSDATA_START_ADDR;
 	uint8_t GIEBitValue=INTCONbits.GIE; 
-    
+    uint8_t i=0;
     blocNum=len/ERASE_FLASH_BLOCKSIZE;
     if(len%ERASE_FLASH_BLOCKSIZE)blocNum++;
     
@@ -107,24 +107,22 @@ uint16_t sys_data_init(void)
 	my_flash_system_read((uint8_t*)&sysData,sizeof(sysData_t));
 	ret=crc_verify((uint8_t*)&sysData,sizeof(sysData_t));
 	if(!ret){
-		sysData.pidSetFlg0=0xff;
-		sysData.pidSetFlg1=0xff;
-		sysData.id=0xff;
+		sysData.pidSetFlg0=0x55;
+		sysData.pidSetFlg1=0xaa;
+		sysData.id=0x01;
 		for(i=0;i<MAX_CALIB_NUM;i++){
 			//24000
 			sysData.calibRsAdc[i]=6400+i*720;
 			sysData.calibVoMV[i]=i*333;
 		}
+		
+		sysData.pidKp=3200;
+		sysData.pidTi=20;
+		sysData.pidTd=5;
+		
         sys_data_save();
-		//crc_append((uint8_t*)&sysData,sizeof(sysData_t)-2);
-        
-		//my_flash_read_system_erase();
-		//my_flash_system_write((uint8_t*)&sysData,sizeof(sysData_t));
-        
-		//my_flash_system_read((uint8_t*)&sysData,sizeof(sysData_t));
-		//ret=crc_verify((uint8_t*)&sysData,sizeof(sysData_t));
-	}
 
+	}
 	return ret;
 }
 
