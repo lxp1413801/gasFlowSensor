@@ -7726,10 +7726,16 @@ if(y32>25000)y32=25000;
 return (uint16_t)y32;
 }
 
-# 333
+# 334
+int16_t ik=20;
+int16_t iexcept=0;
+int16_t idelta=0;
 void pid_pwm1_idrv_run(void)
 {
-
+iexcept=pwm1DutyForIdrv*ik;
+idelta=iexcept-rtAdcValueRsLo;
+idelta/=ik;
+ik=rtAdcValueRsLo/pwm1DutyForIdrv;
 
 int32_t t32;
 t32=((int32_t)resRs-(int32_t)resRc);
@@ -7753,7 +7759,11 @@ if(t32>1200)t32=1200;
 if(t32<5)t32=5;
 pidU=(uint16_t)t32;
 
-set_idrv_pwm1_duty(pidU);
+t32+=idelta;
+if(t32>1200)t32=1200;
+if(t32<5)t32=5;
+
+set_idrv_pwm1_duty((uint16_t)t32);
 }
 
 
@@ -7780,7 +7790,7 @@ set_vout_pwm2_duty((uint16_t)t16);
 
 }
 
-# 435
+# 446
 uint16_t calc_rs_lo_avg(uint16_t x)
 {
 uint8_t i;
@@ -7834,7 +7844,7 @@ if(t32<0)t32=0;
 return (uint16_t)t32;
 }
 
-# 528
+# 539
 uint16_t cal_rs_simulate_power(void)
 {
 uint32_t t32;

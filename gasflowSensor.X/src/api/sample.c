@@ -330,10 +330,17 @@ void pid_pwm1_idrv_b_b(void)
 #define ep x0
 #define pidEI x1
 #define ed y0
+
+int16_t ik=20;
+int16_t iexcept=0;
+int16_t idelta=0;
 void pid_pwm1_idrv_run(void)
 {
-	//int du;
-	//int32_t ep,ei,ed;
+    iexcept=pwm1DutyForIdrv*ik;
+    idelta=iexcept-rtAdcValueRsLo;
+    idelta/=ik;
+    ik=rtAdcValueRsLo/pwm1DutyForIdrv;
+    
 	int32_t t32;
 	t32=((int32_t)resRs-(int32_t)resRc);
 	t32=__x_delta_res-t32;
@@ -356,7 +363,11 @@ void pid_pwm1_idrv_run(void)
 	if(t32<iDRV_PWM1_MIN)t32=iDRV_PWM1_MIN;
 	pidU=(uint16_t)t32;
 
-	set_idrv_pwm1_duty(pidU);
+    t32+=idelta;
+ 	if(t32>iDRV_PWM1_MAX)t32=iDRV_PWM1_MAX;
+	if(t32<iDRV_PWM1_MIN)t32=iDRV_PWM1_MIN;   
+	//set_idrv_pwm1_duty(pidU);
+    set_idrv_pwm1_duty((uint16_t)t32);
 }
 
 
