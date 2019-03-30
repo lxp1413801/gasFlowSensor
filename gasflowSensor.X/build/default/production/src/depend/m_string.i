@@ -89,7 +89,7 @@ typedef uint16_t uintptr_t;
 
 # 7 "src/depend/m_string.h"
 extern void m_mem_set(uint8_t* buf,uint8_t x,uint16_t len);
-extern void m_mem_cpy(uint8_t* d,uint8_t* s);
+extern uint16_t m_mem_cpy(uint8_t* d,uint8_t* s);
 extern void m_mem_cpy_len(uint8_t* d,uint8_t* s,uint16_t len);
 extern uint16_t m_str_match(uint8_t* b,uint8_t* c);
 extern int32_t m_math_pow(int32_t x,int32_t y);
@@ -127,13 +127,16 @@ while(len--)
 *buf++=x;
 }
 }
-void m_mem_cpy(uint8_t* d,uint8_t* s)
+uint16_t m_mem_cpy(uint8_t* d,uint8_t* s)
 {
+uint16_t len=0;
 while(*s!='\0')
 {
 *d++=*s++;
+len++;
 }
 *d='\0';
+return len;
 }
 void m_mem_cpy_len(uint8_t* d,uint8_t* s,uint16_t len)
 {
@@ -199,7 +202,7 @@ return 1;
 return ret;
 }
 
-# 113
+# 116
 int32_t m_math_pow(int32_t x,int32_t y)
 {
 int32_t ret=1;
@@ -211,7 +214,7 @@ ret*=x;
 return ret;
 }
 
-# 126
+# 129
 void m_int_2_str(uint8_t* buf,int32_t x,uint16_t len)
 {
 int32_t t;
@@ -249,7 +252,7 @@ i--;
 m_mem_cpy(buf,buf+i);
 }
 
-# 165
+# 168
 uint16_t m_str_head_hide(uint8_t* str,uint16_t loc)
 {
 uint16_t ret=0;
@@ -268,7 +271,7 @@ break;
 return ret;
 }
 
-# 185
+# 188
 uint16_t HEX8(uint8_t* hex,uint8_t x)
 {
 *hex++=HexTable[(x&0xf0)>>4];
@@ -277,7 +280,7 @@ hex='\0';
 return 3;
 }
 
-# 196
+# 199
 uint16_t m_str_b2h(uint8_t* h,uint8_t* b,uint16_t len)
 {
 uint16_t i=0;
@@ -291,7 +294,7 @@ t8=*b++;
 return (len<<1);
 }
 
-# 219
+# 222
 uint16_t m_str_h2b(uint8_t* b,uint8_t* h,uint16_t len)
 {
 uint16_t i=len;

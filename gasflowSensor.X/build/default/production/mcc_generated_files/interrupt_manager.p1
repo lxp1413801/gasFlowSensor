@@ -46,7 +46,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _eusartRxCount `Vuc ~T0 @X0 0 e ]
 "18
 [v _eusartRxBuffer `Vuc ~T0 @X0 -> 0 `x e ]
-"613 C:\Program Files (x86)\Microchip\xc8\v2.00\pic\include\pic16f1575.h
+"2724 C:\Program Files (x86)\Microchip\xc8\v2.00\pic\include\pic16f1575.h
+[v _TXREG `Vuc ~T0 @X0 0 e@410 ]
+"613
 [s S37 :4 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
 [n S37 . . PWM1IF PWM2IF PWM3IF PWM4IF ]
 "612
@@ -55,6 +57,37 @@ Version 3.2 HI-TECH Software Intermediate Code
 "621
 [v _PIR3bits `VS36 ~T0 @X0 0 e@19 ]
 [; ;interrupt_manager.h: 110: void interrupt INTERRUPT_InterruptManager(void);
+[; ;stdint.h: 13: typedef signed char int8_t;
+[; ;stdint.h: 20: typedef signed int int16_t;
+[; ;stdint.h: 28: typedef __int24 int24_t;
+[; ;stdint.h: 36: typedef signed long int int32_t;
+[; ;stdint.h: 52: typedef unsigned char uint8_t;
+[; ;stdint.h: 58: typedef unsigned int uint16_t;
+[; ;stdint.h: 65: typedef __uint24 uint24_t;
+[; ;stdint.h: 72: typedef unsigned long int uint32_t;
+[; ;stdint.h: 88: typedef signed char int_least8_t;
+[; ;stdint.h: 96: typedef signed int int_least16_t;
+[; ;stdint.h: 109: typedef __int24 int_least24_t;
+[; ;stdint.h: 118: typedef signed long int int_least32_t;
+[; ;stdint.h: 136: typedef unsigned char uint_least8_t;
+[; ;stdint.h: 143: typedef unsigned int uint_least16_t;
+[; ;stdint.h: 154: typedef __uint24 uint_least24_t;
+[; ;stdint.h: 162: typedef unsigned long int uint_least32_t;
+[; ;stdint.h: 181: typedef signed char int_fast8_t;
+[; ;stdint.h: 188: typedef signed int int_fast16_t;
+[; ;stdint.h: 200: typedef __int24 int_fast24_t;
+[; ;stdint.h: 208: typedef signed long int int_fast32_t;
+[; ;stdint.h: 224: typedef unsigned char uint_fast8_t;
+[; ;stdint.h: 230: typedef unsigned int uint_fast16_t;
+[; ;stdint.h: 240: typedef __uint24 uint_fast24_t;
+[; ;stdint.h: 247: typedef unsigned long int uint_fast32_t;
+[; ;stdint.h: 268: typedef int32_t intmax_t;
+[; ;stdint.h: 282: typedef uint32_t uintmax_t;
+[; ;stdint.h: 289: typedef int16_t intptr_t;
+[; ;stdint.h: 294: typedef uint16_t uintptr_t;
+[; ;interrupt_manager.h: 113: extern uint8_t txBuf[64];
+[; ;interrupt_manager.h: 114: extern uint8_t txBufLen;
+[; ;interrupt_manager.h: 115: extern uint8_t txCount;
 [; ;xc.h: 18: extern const char __xc8_OPTIM_SPEED;
 [; ;xc.h: 20: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -4651,34 +4684,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pic.h: 139: extern __bank0 __bit __timeout;
 [; ;pin_manager.h: 214: void PIN_MANAGER_Initialize (void);
 [; ;pin_manager.h: 226: void PIN_MANAGER_IOC(void);
-[; ;stdint.h: 13: typedef signed char int8_t;
-[; ;stdint.h: 20: typedef signed int int16_t;
-[; ;stdint.h: 28: typedef __int24 int24_t;
-[; ;stdint.h: 36: typedef signed long int int32_t;
-[; ;stdint.h: 52: typedef unsigned char uint8_t;
-[; ;stdint.h: 58: typedef unsigned int uint16_t;
-[; ;stdint.h: 65: typedef __uint24 uint24_t;
-[; ;stdint.h: 72: typedef unsigned long int uint32_t;
-[; ;stdint.h: 88: typedef signed char int_least8_t;
-[; ;stdint.h: 96: typedef signed int int_least16_t;
-[; ;stdint.h: 109: typedef __int24 int_least24_t;
-[; ;stdint.h: 118: typedef signed long int int_least32_t;
-[; ;stdint.h: 136: typedef unsigned char uint_least8_t;
-[; ;stdint.h: 143: typedef unsigned int uint_least16_t;
-[; ;stdint.h: 154: typedef __uint24 uint_least24_t;
-[; ;stdint.h: 162: typedef unsigned long int uint_least32_t;
-[; ;stdint.h: 181: typedef signed char int_fast8_t;
-[; ;stdint.h: 188: typedef signed int int_fast16_t;
-[; ;stdint.h: 200: typedef __int24 int_fast24_t;
-[; ;stdint.h: 208: typedef signed long int int_fast32_t;
-[; ;stdint.h: 224: typedef unsigned char uint_fast8_t;
-[; ;stdint.h: 230: typedef unsigned int uint_fast16_t;
-[; ;stdint.h: 240: typedef __uint24 uint_fast24_t;
-[; ;stdint.h: 247: typedef unsigned long int uint_fast32_t;
-[; ;stdint.h: 268: typedef int32_t intmax_t;
-[; ;stdint.h: 282: typedef uint32_t uintmax_t;
-[; ;stdint.h: 289: typedef int16_t intptr_t;
-[; ;stdint.h: 294: typedef uint16_t uintptr_t;
 [; ;stdbool.h: 13: typedef unsigned char bool;
 [; ;stdbool.h: 13: typedef unsigned char bool;
 [; ;adc1.h: 71: typedef uint16_t adc_result_t;
@@ -4821,177 +4826,241 @@ Version 3.2 HI-TECH Software Intermediate Code
 "55
 [v _rxtemp `uc ~T0 @X0 1 e ]
 [; ;interrupt_manager.c: 55: uint8_t rxtemp;
+"56
+[v _txBuf `uc ~T0 @X0 -> 64 `i e ]
+[; ;interrupt_manager.c: 56: uint8_t txBuf[64];
+"57
+[v _txBufLen `uc ~T0 @X0 1 e ]
+[i _txBufLen
+-> -> 0 `i `uc
+]
+[; ;interrupt_manager.c: 57: uint8_t txBufLen=0;
+"58
+[v _txCount `uc ~T0 @X0 1 e ]
+[i _txCount
+-> -> 0 `i `uc
+]
+[; ;interrupt_manager.c: 58: uint8_t txCount=0;
 [v $root$_INTERRUPT_InterruptManager `(v ~T0 @X0 0 e ]
 [v F3 `(v ~T0 @X0 1 tf ]
-"56
+"59
 [v _INTERRUPT_InterruptManager `IF3 ~T0 @X0 1 e ]
-"57
+"60
 {
-[; ;interrupt_manager.c: 56: void interrupt INTERRUPT_InterruptManager (void)
-[; ;interrupt_manager.c: 57: {
+[; ;interrupt_manager.c: 59: void interrupt INTERRUPT_InterruptManager (void)
+[; ;interrupt_manager.c: 60: {
 [e :U _INTERRUPT_InterruptManager ]
 [f ]
-[; ;interrupt_manager.c: 60: if(INTCONbits.PEIE == 1 && PIE1bits.TMR2IE == 1 && PIR1bits.TMR2IF == 1)
-"60
-[e $ ! && && == -> . . _INTCONbits 0 6 `i -> 1 `i == -> . . _PIE1bits 0 1 `i -> 1 `i == -> . . _PIR1bits 0 1 `i -> 1 `i 595  ]
-[; ;interrupt_manager.c: 61: {
-"61
-{
-[; ;interrupt_manager.c: 63: PIR1bits.TMR2IF = 0;
+[; ;interrupt_manager.c: 63: if(INTCONbits.PEIE == 1 && PIE1bits.TMR2IE == 1 && PIR1bits.TMR2IF == 1)
 "63
-[e = . . _PIR1bits 0 1 -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 64: Event |= (1<<1);
+[e $ ! && && == -> . . _INTCONbits 0 6 `i -> 1 `i == -> . . _PIE1bits 0 1 `i -> 1 `i == -> . . _PIR1bits 0 1 `i -> 1 `i 595  ]
+[; ;interrupt_manager.c: 64: {
 "64
-[e =| _Event -> << -> 1 `i -> 1 `i `uc ]
-[; ;interrupt_manager.c: 65: subTickerX++;
-"65
-[e ++ _subTickerX -> -> 1 `i `uc ]
-[; ;interrupt_manager.c: 66: subTickerX_1s++;
+{
+[; ;interrupt_manager.c: 66: PIR1bits.TMR2IF = 0;
 "66
-[e ++ _subTickerX_1s -> -> 1 `i `uc ]
-[; ;interrupt_manager.c: 67: if(subTickerX>=5){
+[e = . . _PIR1bits 0 1 -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 67: Event |= (1<<1);
 "67
+[e =| _Event -> << -> 1 `i -> 1 `i `uc ]
+[; ;interrupt_manager.c: 68: subTickerX++;
+"68
+[e ++ _subTickerX -> -> 1 `i `uc ]
+[; ;interrupt_manager.c: 69: subTickerX_1s++;
+"69
+[e ++ _subTickerX_1s -> -> 1 `i `uc ]
+[; ;interrupt_manager.c: 70: if(subTickerX>=5){
+"70
 [e $ ! >= -> _subTickerX `i -> 5 `i 596  ]
 {
-[; ;interrupt_manager.c: 68: subTickerX=0;
-"68
+[; ;interrupt_manager.c: 71: subTickerX=0;
+"71
 [e = _subTickerX -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 69: Event |= (1<<2);
-"69
+[; ;interrupt_manager.c: 72: Event |= (1<<2);
+"72
 [e =| _Event -> << -> 1 `i -> 2 `i `uc ]
-"70
+"73
 }
 [e :U 596 ]
-[; ;interrupt_manager.c: 70: }
-[; ;interrupt_manager.c: 71: if(subTickerX_1s>=50){
-"71
+[; ;interrupt_manager.c: 73: }
+[; ;interrupt_manager.c: 74: if(subTickerX_1s>=50){
+"74
 [e $ ! >= -> _subTickerX_1s `i -> 50 `i 597  ]
 {
-[; ;interrupt_manager.c: 72: subTickerX_1s=0;
-"72
+[; ;interrupt_manager.c: 75: subTickerX_1s=0;
+"75
 [e = _subTickerX_1s -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 73: Event |= (1<<3);
-"73
+[; ;interrupt_manager.c: 76: Event |= (1<<3);
+"76
 [e =| _Event -> << -> 1 `i -> 3 `i `uc ]
-"74
+"77
 }
 [e :U 597 ]
-[; ;interrupt_manager.c: 74: }
-[; ;interrupt_manager.c: 76: if(eusartRxIdleTime_ms){
-"76
+[; ;interrupt_manager.c: 77: }
+[; ;interrupt_manager.c: 79: if(eusartRxIdleTime_ms){
+"79
 [e $ ! != -> _eusartRxIdleTime_ms `i -> -> -> 0 `i `Vuc `i 598  ]
 {
-[; ;interrupt_manager.c: 77: eusartRxIdleTime_ms++;
-"77
+[; ;interrupt_manager.c: 80: eusartRxIdleTime_ms++;
+"80
 [e ++ _eusartRxIdleTime_ms -> -> 1 `i `uc ]
-[; ;interrupt_manager.c: 78: if(eusartRxIdleTime_ms>5){
-"78
+[; ;interrupt_manager.c: 81: if(eusartRxIdleTime_ms>5){
+"81
 [e $ ! > -> _eusartRxIdleTime_ms `i -> 5 `i 599  ]
 {
-[; ;interrupt_manager.c: 79: Event|=(1<<0);
-"79
-[e =| _Event -> << -> 1 `i -> 0 `i `uc ]
-[; ;interrupt_manager.c: 80: eusartRxIdleTime_ms=0;
-"80
-[e = _eusartRxIdleTime_ms -> -> 0 `i `uc ]
-"81
-}
-[e :U 599 ]
+[; ;interrupt_manager.c: 82: Event|=(1<<0);
 "82
-}
-[e :U 598 ]
-[; ;interrupt_manager.c: 81: }
-[; ;interrupt_manager.c: 82: }
-[; ;interrupt_manager.c: 83: globalTicker++;
+[e =| _Event -> << -> 1 `i -> 0 `i `uc ]
+[; ;interrupt_manager.c: 83: eusartRxIdleTime_ms=0;
 "83
-[e ++ _globalTicker -> -> 1 `i `ui ]
+[e = _eusartRxIdleTime_ms -> -> 0 `i `uc ]
 "84
 }
-[e :U 595 ]
-[; ;interrupt_manager.c: 84: }
-[; ;interrupt_manager.c: 85: if(INTCONbits.PEIE == 1 && PIE1bits.RCIE == 1 && PIR1bits.RCIF == 1)
+[e :U 599 ]
 "85
-[e $ ! && && == -> . . _INTCONbits 0 6 `i -> 1 `i == -> . . _PIE1bits 0 4 `i -> 1 `i == -> . . _PIR1bits 0 4 `i -> 1 `i 600  ]
-[; ;interrupt_manager.c: 86: {
+}
+[e :U 598 ]
+[; ;interrupt_manager.c: 84: }
+[; ;interrupt_manager.c: 85: }
+[; ;interrupt_manager.c: 86: globalTicker++;
 "86
-{
-[; ;interrupt_manager.c: 88: PIR1bits.RCIF=0;
+[e ++ _globalTicker -> -> 1 `i `ui ]
+"87
+}
+[e :U 595 ]
+[; ;interrupt_manager.c: 87: }
+[; ;interrupt_manager.c: 88: if(INTCONbits.PEIE == 1 && PIE1bits.RCIE == 1 && PIR1bits.RCIF == 1)
 "88
-[e = . . _PIR1bits 0 4 -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 89: if(1 == RCSTAbits.OERR){
+[e $ ! && && == -> . . _INTCONbits 0 6 `i -> 1 `i == -> . . _PIE1bits 0 4 `i -> 1 `i == -> . . _PIR1bits 0 4 `i -> 1 `i 600  ]
+[; ;interrupt_manager.c: 89: {
 "89
+{
+[; ;interrupt_manager.c: 91: PIR1bits.RCIF=0;
+"91
+[e = . . _PIR1bits 0 4 -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 92: if(1 == RCSTAbits.OERR){
+"92
 [e $ ! == -> 1 `i -> . . _RCSTAbits 0 1 `i 601  ]
 {
-[; ;interrupt_manager.c: 90: RCSTAbits.CREN = 0;
-"90
+[; ;interrupt_manager.c: 93: RCSTAbits.CREN = 0;
+"93
 [e = . . _RCSTAbits 0 4 -> -> 0 `i `uc ]
-[; ;interrupt_manager.c: 91: RCSTAbits.CREN = 1;
-"91
+[; ;interrupt_manager.c: 94: RCSTAbits.CREN = 1;
+"94
 [e = . . _RCSTAbits 0 4 -> -> 1 `i `uc ]
-"92
+"95
 }
 [e :U 601 ]
-[; ;interrupt_manager.c: 92: }
-[; ;interrupt_manager.c: 93: rxtemp=RCREG;
-"93
+[; ;interrupt_manager.c: 95: }
+[; ;interrupt_manager.c: 96: rxtemp=RCREG;
+"96
 [e = _rxtemp _RCREG ]
-[; ;interrupt_manager.c: 94: if(eusartRxCount<32){
-"94
+[; ;interrupt_manager.c: 97: if(eusartRxCount<32){
+"97
 [e $ ! < -> _eusartRxCount `i -> 32 `i 602  ]
 {
-[; ;interrupt_manager.c: 95: eusartRxBuffer[eusartRxCount]=rxtemp;
-"95
-[e = *U + &U _eusartRxBuffer * -> _eusartRxCount `ux -> -> # *U &U _eusartRxBuffer `ui `ux _rxtemp ]
-[; ;interrupt_manager.c: 96: eusartRxCount++;
-"96
-[e ++ _eusartRxCount -> -> 1 `i `uc ]
+[; ;interrupt_manager.c: 98: eusartRxBuffer[eusartRxCount]=rxtemp;
 "98
+[e = *U + &U _eusartRxBuffer * -> _eusartRxCount `ux -> -> # *U &U _eusartRxBuffer `ui `ux _rxtemp ]
+[; ;interrupt_manager.c: 99: eusartRxCount++;
+"99
+[e ++ _eusartRxCount -> -> 1 `i `uc ]
+"101
 }
 [e :U 602 ]
-[; ;interrupt_manager.c: 98: }
-[; ;interrupt_manager.c: 99: eusartRxIdleTime_ms=1;
-"99
+[; ;interrupt_manager.c: 101: }
+[; ;interrupt_manager.c: 102: eusartRxIdleTime_ms=1;
+"102
 [e = _eusartRxIdleTime_ms -> -> 1 `i `uc ]
-"100
+"103
 }
 [e :U 600 ]
-[; ;interrupt_manager.c: 100: }
-[; ;interrupt_manager.c: 102: if( PIR1bits.TXIF == 1)
-"102
-[e $ ! == -> . . _PIR1bits 0 3 `i -> 1 `i 603  ]
-[; ;interrupt_manager.c: 103: {
-"103
-{
-[; ;interrupt_manager.c: 104: PIR1bits.TXIF=0;
-"104
-[e = . . _PIR1bits 0 3 -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 103: }
+[; ;interrupt_manager.c: 105: if( PIR1bits.TXIF == 1 && INTCONbits.PEIE && PIE1bits.TXIE)
 "105
-}
-[e :U 603 ]
-[; ;interrupt_manager.c: 105: }
-[; ;interrupt_manager.c: 107: if(PIR3bits.PWM2IF){
-"107
-[e $ ! != -> . . _PIR3bits 0 2 `i -> -> -> 0 `i `Vuc `i 604  ]
+[e $ ! && && == -> . . _PIR1bits 0 3 `i -> 1 `i != -> . . _INTCONbits 0 6 `i -> -> -> 0 `i `Vuc `i != -> . . _PIE1bits 0 3 `i -> -> -> 0 `i `Vuc `i 603  ]
+[; ;interrupt_manager.c: 106: {
+"106
 {
-[; ;interrupt_manager.c: 108: PIR3bits.PWM2IF = 0;
-"108
-[e = . . _PIR3bits 0 2 -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 109: if(1 == RCSTAbits.OERR){
 "109
+[e $ ! == -> 1 `i -> . . _RCSTAbits 0 1 `i 604  ]
+{
+[; ;interrupt_manager.c: 110: RCSTAbits.CREN = 0;
+"110
+[e = . . _RCSTAbits 0 4 -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 111: RCSTAbits.CREN = 1;
+"111
+[e = . . _RCSTAbits 0 4 -> -> 1 `i `uc ]
+[; ;interrupt_manager.c: 112: RCSTAbits.SREN=0;
+"112
+[e = . . _RCSTAbits 0 5 -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 113: RCSTAbits.SREN=1;
+"113
+[e = . . _RCSTAbits 0 5 -> -> 1 `i `uc ]
+"114
 }
 [e :U 604 ]
-[; ;interrupt_manager.c: 109: }
-[; ;interrupt_manager.c: 111: if(PIR3bits.PWM1IF){
-"111
-[e $ ! != -> . . _PIR3bits 0 1 `i -> -> -> 0 `i `Vuc `i 605  ]
+[; ;interrupt_manager.c: 114: }
+[; ;interrupt_manager.c: 115: if(txBufLen>0){
+"115
+[e $ ! > -> _txBufLen `i -> 0 `i 605  ]
 {
-[; ;interrupt_manager.c: 112: PIR3bits.PWM1IF=0;
-"112
-[e = . . _PIR3bits 0 1 -> -> 0 `i `uc ]
-"113
+[; ;interrupt_manager.c: 116: TXREG=txBuf[txCount];
+"116
+[e = _TXREG *U + &U _txBuf * -> _txCount `ux -> -> # *U &U _txBuf `ui `ux ]
+[; ;interrupt_manager.c: 117: txBufLen--;
+"117
+[e -- _txBufLen -> -> 1 `i `uc ]
+[; ;interrupt_manager.c: 118: txCount++;
+"118
+[e ++ _txCount -> -> 1 `i `uc ]
+"119
 }
+[; ;interrupt_manager.c: 119: }else{
+[e $U 606  ]
 [e :U 605 ]
-[; ;interrupt_manager.c: 113: }
-[; ;interrupt_manager.c: 134: }
-"134
+{
+[; ;interrupt_manager.c: 120: txBufLen=0;
+"120
+[e = _txBufLen -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 121: txCount=0;
+"121
+[e = _txCount -> -> 0 `i `uc ]
+[; ;interrupt_manager.c: 122: PIE1bits.TXIE=0;
+"122
+[e = . . _PIE1bits 0 3 -> -> 0 `i `uc ]
+"123
+}
+[e :U 606 ]
+"125
+}
+[e :U 603 ]
+[; ;interrupt_manager.c: 123: }
+[; ;interrupt_manager.c: 125: }
+[; ;interrupt_manager.c: 127: if(PIR3bits.PWM2IF){
+"127
+[e $ ! != -> . . _PIR3bits 0 2 `i -> -> -> 0 `i `Vuc `i 607  ]
+{
+[; ;interrupt_manager.c: 128: PIR3bits.PWM2IF = 0;
+"128
+[e = . . _PIR3bits 0 2 -> -> 0 `i `uc ]
+"129
+}
+[e :U 607 ]
+[; ;interrupt_manager.c: 129: }
+[; ;interrupt_manager.c: 131: if(PIR3bits.PWM1IF){
+"131
+[e $ ! != -> . . _PIR3bits 0 1 `i -> -> -> 0 `i `Vuc `i 608  ]
+{
+[; ;interrupt_manager.c: 132: PIR3bits.PWM1IF=0;
+"132
+[e = . . _PIR3bits 0 1 -> -> 0 `i `uc ]
+"133
+}
+[e :U 608 ]
+[; ;interrupt_manager.c: 133: }
+[; ;interrupt_manager.c: 154: }
+"154
 [e :UE 594 ]
 }

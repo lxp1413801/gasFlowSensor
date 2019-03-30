@@ -36,13 +36,16 @@ void m_mem_set(uint8_t* buf,uint8_t x,uint16_t len)
 		*buf++=x;
 	}
 }
-void m_mem_cpy(uint8_t* d,uint8_t* s)
+uint16_t m_mem_cpy(uint8_t* d,uint8_t* s)
 {
+    uint16_t len=0;
 	while(*s!='\0')
 	{
 		*d++=*s++;
+        len++;
 	}
 	*d='\0';
+    return len;
 }
 void m_mem_cpy_len(uint8_t* d,uint8_t* s,uint16_t len)
 {

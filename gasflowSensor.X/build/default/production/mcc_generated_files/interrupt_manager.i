@@ -4,6 +4,97 @@
 # 110 "mcc_generated_files/interrupt_manager.h"
 void interrupt INTERRUPT_InterruptManager(void);
 
+# 13 "C:\Program Files (x86)\Microchip\xc8\v2.00\pic\include\c90\stdint.h"
+typedef signed char int8_t;
+
+# 20
+typedef signed int int16_t;
+
+# 28
+typedef __int24 int24_t;
+
+# 36
+typedef signed long int int32_t;
+
+# 52
+typedef unsigned char uint8_t;
+
+# 58
+typedef unsigned int uint16_t;
+
+# 65
+typedef __uint24 uint24_t;
+
+# 72
+typedef unsigned long int uint32_t;
+
+# 88
+typedef signed char int_least8_t;
+
+# 96
+typedef signed int int_least16_t;
+
+# 109
+typedef __int24 int_least24_t;
+
+# 118
+typedef signed long int int_least32_t;
+
+# 136
+typedef unsigned char uint_least8_t;
+
+# 143
+typedef unsigned int uint_least16_t;
+
+# 154
+typedef __uint24 uint_least24_t;
+
+# 162
+typedef unsigned long int uint_least32_t;
+
+# 181
+typedef signed char int_fast8_t;
+
+# 188
+typedef signed int int_fast16_t;
+
+# 200
+typedef __int24 int_fast24_t;
+
+# 208
+typedef signed long int int_fast32_t;
+
+# 224
+typedef unsigned char uint_fast8_t;
+
+# 230
+typedef unsigned int uint_fast16_t;
+
+# 240
+typedef __uint24 uint_fast24_t;
+
+# 247
+typedef unsigned long int uint_fast32_t;
+
+# 268
+typedef int32_t intmax_t;
+
+# 282
+typedef uint32_t uintmax_t;
+
+# 289
+typedef int16_t intptr_t;
+
+
+
+
+typedef uint16_t uintptr_t;
+
+# 113 "mcc_generated_files/interrupt_manager.h"
+extern uint8_t txBuf[64];
+extern uint8_t txBufLen;
+extern uint8_t txCount;
+
 # 18 "C:\Program Files (x86)\Microchip\xc8\v2.00\pic\include\xc.h"
 extern const char __xc8_OPTIM_SPEED;
 
@@ -7105,92 +7196,6 @@ void PIN_MANAGER_Initialize (void);
 # 226
 void PIN_MANAGER_IOC(void);
 
-# 13 "C:\Program Files (x86)\Microchip\xc8\v2.00\pic\include\c90\stdint.h"
-typedef signed char int8_t;
-
-# 20
-typedef signed int int16_t;
-
-# 28
-typedef __int24 int24_t;
-
-# 36
-typedef signed long int int32_t;
-
-# 52
-typedef unsigned char uint8_t;
-
-# 58
-typedef unsigned int uint16_t;
-
-# 65
-typedef __uint24 uint24_t;
-
-# 72
-typedef unsigned long int uint32_t;
-
-# 88
-typedef signed char int_least8_t;
-
-# 96
-typedef signed int int_least16_t;
-
-# 109
-typedef __int24 int_least24_t;
-
-# 118
-typedef signed long int int_least32_t;
-
-# 136
-typedef unsigned char uint_least8_t;
-
-# 143
-typedef unsigned int uint_least16_t;
-
-# 154
-typedef __uint24 uint_least24_t;
-
-# 162
-typedef unsigned long int uint_least32_t;
-
-# 181
-typedef signed char int_fast8_t;
-
-# 188
-typedef signed int int_fast16_t;
-
-# 200
-typedef __int24 int_fast24_t;
-
-# 208
-typedef signed long int int_fast32_t;
-
-# 224
-typedef unsigned char uint_fast8_t;
-
-# 230
-typedef unsigned int uint_fast16_t;
-
-# 240
-typedef __uint24 uint_fast24_t;
-
-# 247
-typedef unsigned long int uint_fast32_t;
-
-# 268
-typedef int32_t intmax_t;
-
-# 282
-typedef uint32_t uintmax_t;
-
-# 289
-typedef int16_t intptr_t;
-
-
-
-
-typedef uint16_t uintptr_t;
-
 # 13 "C:\Program Files (x86)\Microchip\xc8\v2.00\pic\include\c90\stdbool.h"
 typedef unsigned char bool;
 
@@ -7484,6 +7489,9 @@ extern uint16_t calc_rs_lo_avg(uint16_t x);
 uint8_t subTickerX=0x00;
 uint8_t subTickerX_1s=0x00;
 uint8_t rxtemp;
+uint8_t txBuf[64];
+uint8_t txBufLen=0;
+uint8_t txCount=0;
 void interrupt INTERRUPT_InterruptManager (void)
 {
 
@@ -7530,9 +7538,26 @@ eusartRxCount++;
 eusartRxIdleTime_ms=1;
 }
 
-if( PIR1bits.TXIF == 1)
+if( PIR1bits.TXIF == 1 && INTCONbits.PEIE && PIE1bits.TXIE)
 {
-PIR1bits.TXIF=0;
+
+
+if(1 == RCSTAbits.OERR){
+RCSTAbits.CREN = 0;
+RCSTAbits.CREN = 1;
+RCSTAbits.SREN=0;
+RCSTAbits.SREN=1;
+}
+if(txBufLen>0){
+TXREG=txBuf[txCount];
+txBufLen--;
+txCount++;
+}else{
+txBufLen=0;
+txCount=0;
+PIE1bits.TXIE=0;
+}
+
 }
 
 if(PIR3bits.PWM2IF){
@@ -7543,6 +7568,6 @@ if(PIR3bits.PWM1IF){
 PIR3bits.PWM1IF=0;
 }
 
-# 134
+# 154
 }
 

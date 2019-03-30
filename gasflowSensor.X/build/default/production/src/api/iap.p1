@@ -4625,6 +4625,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;stdint.h: 294: typedef uint16_t uintptr_t;
 [; ;stdbool.h: 13: typedef unsigned char bool;
 [; ;interrupt_manager.h: 110: void interrupt INTERRUPT_InterruptManager(void);
+[; ;interrupt_manager.h: 113: extern uint8_t txBuf[64];
+[; ;interrupt_manager.h: 114: extern uint8_t txBufLen;
+[; ;interrupt_manager.h: 115: extern uint8_t txCount;
 [; ;stdbool.h: 13: typedef unsigned char bool;
 [; ;adc1.h: 71: typedef uint16_t adc_result_t;
 [; ;adc1.h: 76: typedef struct
@@ -4721,7 +4724,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;my_uart.h: 25: extern void uart_received_start(void);
 [; ;my_uart.h: 26: extern void uart_received_process(uint8_t* buf,uint8_t len);
 [; ;m_string.h: 7: extern void m_mem_set(uint8_t* buf,uint8_t x,uint16_t len);
-[; ;m_string.h: 8: extern void m_mem_cpy(uint8_t* d,uint8_t* s);
+[; ;m_string.h: 8: extern uint16_t m_mem_cpy(uint8_t* d,uint8_t* s);
 [; ;m_string.h: 9: extern void m_mem_cpy_len(uint8_t* d,uint8_t* s,uint16_t len);
 [; ;m_string.h: 10: extern uint16_t m_str_match(uint8_t* b,uint8_t* c);
 [; ;m_string.h: 11: extern int32_t m_math_pow(int32_t x,int32_t y);

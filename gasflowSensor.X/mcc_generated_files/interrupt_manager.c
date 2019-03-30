@@ -53,6 +53,9 @@
 uint8_t subTickerX=0x00;
 uint8_t subTickerX_1s=0x00;
 uint8_t rxtemp;
+uint8_t txBuf[64];
+uint8_t txBufLen=0;
+uint8_t txCount=0;
 void interrupt INTERRUPT_InterruptManager (void)
 {
     // interrupt handler
@@ -99,9 +102,26 @@ void interrupt INTERRUPT_InterruptManager (void)
 		eusartRxIdleTime_ms=1;		
     }
     
-    if( PIR1bits.TXIF == 1)
+    if( PIR1bits.TXIF == 1 && INTCONbits.PEIE && PIE1bits.TXIE)
     {
-        PIR1bits.TXIF=0;
+        //PIR1bits.TXIF=0;
+        
+		if(1 == RCSTAbits.OERR){
+			RCSTAbits.CREN = 0;
+			RCSTAbits.CREN = 1;
+            RCSTAbits.SREN=0;
+            RCSTAbits.SREN=1;
+		}        
+        if(txBufLen>0){
+            TXREG=txBuf[txCount];
+            txBufLen--;
+            txCount++;
+        }else{
+            txBufLen=0;
+            txCount=0;
+            PIE1bits.TXIE=0;
+        }
+        
     }    
 	
 	if(PIR3bits.PWM2IF){

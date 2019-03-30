@@ -4645,6 +4645,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;stdint.h: 294: typedef uint16_t uintptr_t;
 [; ;stdbool.h: 13: typedef unsigned char bool;
 [; ;interrupt_manager.h: 110: void interrupt INTERRUPT_InterruptManager(void);
+[; ;interrupt_manager.h: 113: extern uint8_t txBuf[64];
+[; ;interrupt_manager.h: 114: extern uint8_t txBufLen;
+[; ;interrupt_manager.h: 115: extern uint8_t txCount;
 [; ;stdbool.h: 13: typedef unsigned char bool;
 [; ;adc1.h: 71: typedef uint16_t adc_result_t;
 [; ;adc1.h: 76: typedef struct

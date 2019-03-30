@@ -108,7 +108,12 @@
     INTERRUPT_InterruptManager();
  */
 void interrupt INTERRUPT_InterruptManager(void);
-
+#include <stdint.h>
+//<<--add for tx 
+extern uint8_t txBuf[64];
+extern uint8_t txBufLen;
+extern uint8_t txCount;
+//-->>
 
 #endif  // INTERRUPT_MANAGER_H
 /**

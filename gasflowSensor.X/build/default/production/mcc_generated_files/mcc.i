@@ -7194,6 +7194,11 @@ typedef unsigned char bool;
 # 110 "mcc_generated_files/interrupt_manager.h"
 void interrupt INTERRUPT_InterruptManager(void);
 
+# 113
+extern uint8_t txBuf[64];
+extern uint8_t txBufLen;
+extern uint8_t txCount;
+
 # 13 "C:\Program Files (x86)\Microchip\xc8\v2.00\pic\include\c90\stdbool.h"
 typedef unsigned char bool;
 

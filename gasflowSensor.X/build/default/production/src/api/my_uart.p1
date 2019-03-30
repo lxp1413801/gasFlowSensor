@@ -17,9 +17,24 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S155 . . ]
 "2870
 [v _TXSTAbits `VS155 ~T0 @X0 0 e@414 ]
-"31 C:\Program Files (x86)\Microchip\xc8\v2.00\pic\include\pic.h
-[v ___nop `(v ~T0 @X0 0 ef ]
-[p i ___nop ]
+"114 src/api/../../mcc_generated_files/interrupt_manager.h
+[v _txBufLen `uc ~T0 @X0 0 e ]
+"8 src/api/../depend/m_string.h
+[v _m_mem_cpy `(ui ~T0 @X0 0 ef2`*uc`*uc ]
+"113 src/api/../../mcc_generated_files/interrupt_manager.h
+[v _txBuf `uc ~T0 @X0 -> 0 `x e ]
+"115
+[v _txCount `uc ~T0 @X0 0 e ]
+"1079 C:\Program Files (x86)\Microchip\xc8\v2.00\pic\include\pic16f1575.h
+[s S62 :1 `uc 1 :1 `uc 1 :2 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
+[n S62 . TMR1IE TMR2IE . TXIE RCIE ADIE TMR1GIE ]
+"1078
+[u S61 `S62 1 ]
+[n S61 . . ]
+"1089
+[v _PIE1bits `VS61 ~T0 @X0 0 e@145 ]
+"9 src/api/../depend/m_string.h
+[v _m_mem_cpy_len `(v ~T0 @X0 0 ef3`*uc`*uc`ui ]
 [; ;xc.h: 18: extern const char __xc8_OPTIM_SPEED;
 [; ;xc.h: 20: extern double __fpnormalize(double);
 [; ;xc8debug.h: 14: extern void __builtin_software_breakpoint(void);
@@ -4646,6 +4661,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;stdint.h: 294: typedef uint16_t uintptr_t;
 [; ;stdbool.h: 13: typedef unsigned char bool;
 [; ;interrupt_manager.h: 110: void interrupt INTERRUPT_InterruptManager(void);
+[; ;interrupt_manager.h: 113: extern uint8_t txBuf[64];
+[; ;interrupt_manager.h: 114: extern uint8_t txBufLen;
+[; ;interrupt_manager.h: 115: extern uint8_t txCount;
 [; ;stdbool.h: 13: typedef unsigned char bool;
 [; ;adc1.h: 71: typedef uint16_t adc_result_t;
 [; ;adc1.h: 76: typedef struct
@@ -4741,180 +4759,206 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;my_uart.h: 23: extern void uart_send_len(uint8_t* buf,uint8_t len);
 [; ;my_uart.h: 25: extern void uart_received_start(void);
 [; ;my_uart.h: 26: extern void uart_received_process(uint8_t* buf,uint8_t len);
-"7 src/api/my_uart.c
+[; ;m_string.h: 7: extern void m_mem_set(uint8_t* buf,uint8_t x,uint16_t len);
+[; ;m_string.h: 8: extern uint16_t m_mem_cpy(uint8_t* d,uint8_t* s);
+[; ;m_string.h: 9: extern void m_mem_cpy_len(uint8_t* d,uint8_t* s,uint16_t len);
+[; ;m_string.h: 10: extern uint16_t m_str_match(uint8_t* b,uint8_t* c);
+[; ;m_string.h: 11: extern int32_t m_math_pow(int32_t x,int32_t y);
+[; ;m_string.h: 12: extern uint8_t m_str_cmp(uint8_t* d,uint8_t* s);
+[; ;m_string.h: 13: extern uint8_t m_str_cmp_len(uint8_t* d,uint8_t* s,uint16_t len);
+[; ;m_string.h: 14: extern uint16_t HEX8(uint8_t* hex,uint8_t x);
+[; ;m_string.h: 15: extern uint16_t m_str_b2h(uint8_t* h,uint8_t* b,uint16_t len);
+[; ;m_string.h: 16: extern uint16_t m_str_h2b(uint8_t* b,uint8_t* h,uint16_t len);
+[; ;m_string.h: 19: extern void m_int_2_str(uint8_t* buf,int32_t x,uint16_t len);
+[; ;m_string.h: 20: extern void m_int_2_str_ex(uint8_t* buf,int32_t x,uint16_t ssize);
+[; ;m_string.h: 21: extern uint16_t m_str_head_hide(uint8_t* str,uint16_t loc);
+[; ;m_string.h: 23: extern const uint8_t Bcd2HexTable[];
+[; ;m_string.h: 24: extern const uint8_t Hex2BcdTable[];
+[; ;m_string.h: 30: extern uint32_t swap_uint32(uint32_t x);
+[; ;m_string.h: 31: extern uint16_t swap_uint16(uint16_t x);
+[; ;m_string.h: 36: extern void int32_array_shift_right(int32_t *p32,uint16_t eoc);
+"8 src/api/my_uart.c
 [v _eusartRxIdleTime_ms `Vuc ~T0 @X0 1 e ]
 [i _eusartRxIdleTime_ms
 -> -> 0 `i `uc
 ]
-[; ;my_uart.c: 7: volatile uint8_t eusartRxIdleTime_ms=0;
-"9
-[v _eusartRxBuffer `Vuc ~T0 @X0 -> 32 `i e ]
-[; ;my_uart.c: 9: volatile uint8_t eusartRxBuffer[32];
+[; ;my_uart.c: 8: volatile uint8_t eusartRxIdleTime_ms=0;
 "10
+[v _eusartRxBuffer `Vuc ~T0 @X0 -> 32 `i e ]
+[; ;my_uart.c: 10: volatile uint8_t eusartRxBuffer[32];
+"11
 [v _eusartRxCount `Vuc ~T0 @X0 1 e ]
 [i _eusartRxCount
 -> -> 0 `i `uc
 ]
-[; ;my_uart.c: 10: volatile uint8_t eusartRxCount=0;
-"12
+[; ;my_uart.c: 11: volatile uint8_t eusartRxCount=0;
+"13
 [v _uart_send_byte `(v ~T0 @X0 1 ef1`uc ]
-"13
-{
-[; ;my_uart.c: 12: void uart_send_byte(uint8_t x)
-[; ;my_uart.c: 13: {
-[e :U _uart_send_byte ]
-"12
-[v _x `uc ~T0 @X0 1 r1 ]
-"13
-[f ]
-[; ;my_uart.c: 14: while(0 == PIR1bits.TXIF);
 "14
+{
+[; ;my_uart.c: 13: void uart_send_byte(uint8_t x)
+[; ;my_uart.c: 14: {
+[e :U _uart_send_byte ]
+"13
+[v _x `uc ~T0 @X0 1 r1 ]
+"14
+[f ]
+[; ;my_uart.c: 15: while(0 == PIR1bits.TXIF);
+"15
 [e $U 595  ]
 [e :U 596 ]
 [e :U 595 ]
 [e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 596  ]
 [e :U 597 ]
-[; ;my_uart.c: 16: TXREG = x;
-"16
-[e = _TXREG _x ]
-[; ;my_uart.c: 17: }
+[; ;my_uart.c: 17: TXREG = x;
 "17
+[e = _TXREG _x ]
+[; ;my_uart.c: 18: }
+"18
 [e :UE 594 ]
 }
-"21
+"22
 [v _uart_send_str `(v ~T0 @X0 1 ef1`*uc ]
-"22
+"23
 {
-[; ;my_uart.c: 21: void uart_send_str(uint8_t* str)
-[; ;my_uart.c: 22: {
+[; ;my_uart.c: 22: void uart_send_str(uint8_t* str)
+[; ;my_uart.c: 23: {
 [e :U _uart_send_str ]
-"21
-[v _str `*uc ~T0 @X0 1 r1 ]
 "22
+[v _str `*uc ~T0 @X0 1 r1 ]
+"23
 [f ]
-[; ;my_uart.c: 24: if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
-"24
+"25
+[v _len `ui ~T0 @X0 1 a ]
+[; ;my_uart.c: 25: uint16_t len;
+[; ;my_uart.c: 26: if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
+"26
 [e $ ! ! != -> . . _TXSTAbits 0 5 `i -> -> -> 0 `i `Vuc `i 599  ]
 [e = . . _TXSTAbits 0 5 -> -> 1 `i `uc ]
 [e :U 599 ]
-[; ;my_uart.c: 26: while(*str!='\0'){
-"26
-[e $U 600  ]
-[e :U 601 ]
-{
-[; ;my_uart.c: 27: while(0 == PIR1bits.TXIF);
-"27
-[e $U 603  ]
-[e :U 604 ]
-[e :U 603 ]
-[e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 604  ]
-[e :U 605 ]
-[; ;my_uart.c: 28: do{__nop();__nop();}while(0);;
+[; ;my_uart.c: 28: if(txBufLen>0)return;
 "28
-[e :U 608 ]
-{
-[e ( ___nop ..  ]
-[e ( ___nop ..  ]
-}
-[e :U 607 ]
-[; ;my_uart.c: 29: TXREG = *str;
-"29
-[e = _TXREG *U _str ]
-[; ;my_uart.c: 30: str++;
-"30
-[e ++ _str * -> -> 1 `i `x -> -> # *U _str `i `x ]
-"32
-}
+[e $ ! > -> _txBufLen `i -> 0 `i 600  ]
+[e $UE 598  ]
 [e :U 600 ]
-"26
-[e $ != -> *U _str `ui -> 0 `ui 601  ]
+[; ;my_uart.c: 29: len=m_mem_cpy(txBuf,str);
+"29
+[e = _len ( _m_mem_cpy (2 , &U _txBuf _str ]
+[; ;my_uart.c: 30: if(len==0)return;
+"30
+[e $ ! == _len -> -> 0 `i `ui 601  ]
+[e $UE 598  ]
+[e :U 601 ]
+[; ;my_uart.c: 31: while(0 == PIR1bits.TXIF);
+"31
+[e $U 602  ]
+[e :U 603 ]
 [e :U 602 ]
-[; ;my_uart.c: 32: }
-[; ;my_uart.c: 34: }
+[e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 603  ]
+[e :U 604 ]
+[; ;my_uart.c: 32: TXREG=txBuf[0];
+"32
+[e = _TXREG *U + &U _txBuf * -> -> -> 0 `i `ui `ux -> -> # *U &U _txBuf `ui `ux ]
+[; ;my_uart.c: 33: txBufLen=len;
+"33
+[e = _txBufLen -> _len `uc ]
+[; ;my_uart.c: 34: txBufLen--;
 "34
+[e -- _txBufLen -> -> 1 `i `uc ]
+[; ;my_uart.c: 35: txCount++;
+"35
+[e ++ _txCount -> -> 1 `i `uc ]
+[; ;my_uart.c: 36: if(!PIE1bits.TXIE)PIE1bits.TXIE=1;
+"36
+[e $ ! ! != -> . . _PIE1bits 0 3 `i -> -> -> 0 `i `Vuc `i 605  ]
+[e = . . _PIE1bits 0 3 -> -> 1 `i `uc ]
+[e :U 605 ]
+[; ;my_uart.c: 38: }
+"38
 [e :UE 598 ]
 }
-"36
+"40
 [v _xlen `uc ~T0 @X0 1 e ]
-[; ;my_uart.c: 36: uint8_t xlen;
-"37
+[; ;my_uart.c: 40: uint8_t xlen;
+"41
 [v _uart_send_len `(v ~T0 @X0 1 ef2`*uc`uc ]
-"38
+"42
 {
-[; ;my_uart.c: 37: void uart_send_len(uint8_t* buf,uint8_t len)
-[; ;my_uart.c: 38: {
+[; ;my_uart.c: 41: void uart_send_len(uint8_t* buf,uint8_t len)
+[; ;my_uart.c: 42: {
 [e :U _uart_send_len ]
-"37
+"41
 [v _buf `*uc ~T0 @X0 1 r1 ]
 [v _len `uc ~T0 @X0 1 r2 ]
-"38
+"42
 [f ]
-"39
-[v _i `uc ~T0 @X0 1 a ]
-[; ;my_uart.c: 39: uint8_t i;
-[; ;my_uart.c: 40: xlen=len;
-"40
-[e = _xlen _len ]
-[; ;my_uart.c: 41: if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
-"41
-[e $ ! ! != -> . . _TXSTAbits 0 5 `i -> -> -> 0 `i `Vuc `i 610  ]
+[; ;my_uart.c: 45: if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
+"45
+[e $ ! ! != -> . . _TXSTAbits 0 5 `i -> -> -> 0 `i `Vuc `i 607  ]
 [e = . . _TXSTAbits 0 5 -> -> 1 `i `uc ]
-[e :U 610 ]
-[; ;my_uart.c: 43: for(i=0;i<xlen;i++){
-"43
-{
-[e = _i -> -> 0 `i `uc ]
-[e $U 614  ]
-[e :U 611 ]
-{
-[; ;my_uart.c: 44: while(0 == PIR1bits.TXIF);
-"44
-[e $U 615  ]
-[e :U 616 ]
-[e :U 615 ]
-[e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 616  ]
-[e :U 617 ]
-[; ;my_uart.c: 46: TXREG = buf[i];
-"46
-[e = _TXREG *U + _buf * -> _i `ux -> -> # *U _buf `ui `ux ]
-[; ;my_uart.c: 47: do{__nop();__nop();}while(0);;
+[e :U 607 ]
+[; ;my_uart.c: 47: if(txBufLen>0)return;
 "47
-[e :U 620 ]
-{
-[e ( ___nop ..  ]
-[e ( ___nop ..  ]
-}
-[e :U 619 ]
+[e $ ! > -> _txBufLen `i -> 0 `i 608  ]
+[e $UE 606  ]
+[e :U 608 ]
+[; ;my_uart.c: 48: if(len>sizeof(txBuf))len=sizeof(txBuf);
 "48
-}
-"43
-[e ++ _i -> -> 1 `i `uc ]
-[e :U 614 ]
-[e $ < -> _i `i -> _xlen `i 611  ]
-[e :U 612 ]
-"48
-}
-[; ;my_uart.c: 48: }
-[; ;my_uart.c: 50: }
+[e $ ! > -> _len `ui -> * -> 64 `i # `uc `ui 609  ]
+[e = _len -> -> * -> 64 `i # `uc `ui `uc ]
+[e :U 609 ]
+[; ;my_uart.c: 49: m_mem_cpy_len(txBuf,buf,len);
+"49
+[e ( _m_mem_cpy_len (3 , , &U _txBuf _buf -> _len `ui ]
+[; ;my_uart.c: 50: if(len==0)return;
 "50
-[e :UE 609 ]
-}
+[e $ ! == -> _len `i -> 0 `i 610  ]
+[e $UE 606  ]
+[e :U 610 ]
+[; ;my_uart.c: 51: while(0 == PIR1bits.TXIF);
+"51
+[e $U 611  ]
+[e :U 612 ]
+[e :U 611 ]
+[e $ == -> 0 `i -> . . _PIR1bits 0 3 `i 612  ]
+[e :U 613 ]
+[; ;my_uart.c: 52: TXREG=txBuf[0];
 "52
-[v _uart_received_start `(v ~T0 @X0 1 ef ]
+[e = _TXREG *U + &U _txBuf * -> -> -> 0 `i `ui `ux -> -> # *U &U _txBuf `ui `ux ]
+[; ;my_uart.c: 53: txBufLen=len;
 "53
+[e = _txBufLen _len ]
+[; ;my_uart.c: 54: txBufLen--;
+"54
+[e -- _txBufLen -> -> 1 `i `uc ]
+[; ;my_uart.c: 55: txCount++;
+"55
+[e ++ _txCount -> -> 1 `i `uc ]
+[; ;my_uart.c: 56: if(!PIE1bits.TXIE)PIE1bits.TXIE=1;
+"56
+[e $ ! ! != -> . . _PIE1bits 0 3 `i -> -> -> 0 `i `Vuc `i 614  ]
+[e = . . _PIE1bits 0 3 -> -> 1 `i `uc ]
+[e :U 614 ]
+[; ;my_uart.c: 57: }
+"57
+[e :UE 606 ]
+}
+"59
+[v _uart_received_start `(v ~T0 @X0 1 ef ]
+"60
 {
-[; ;my_uart.c: 52: void uart_received_start(void)
-[; ;my_uart.c: 53: {
+[; ;my_uart.c: 59: void uart_received_start(void)
+[; ;my_uart.c: 60: {
 [e :U _uart_received_start ]
 [f ]
-[; ;my_uart.c: 54: eusartRxCount=0;
-"54
+[; ;my_uart.c: 61: eusartRxCount=0;
+"61
 [e = _eusartRxCount -> -> 0 `i `uc ]
-[; ;my_uart.c: 63: eusartRxIdleTime_ms=0;
-"63
+[; ;my_uart.c: 70: eusartRxIdleTime_ms=0;
+"70
 [e = _eusartRxIdleTime_ms -> -> 0 `i `uc ]
-[; ;my_uart.c: 64: }
-"64
-[e :UE 621 ]
+[; ;my_uart.c: 71: }
+"71
+[e :UE 615 ]
 }
-[; ;my_uart.c: 66: void uart_received_process(uint8_t* buf,uint8_t len);
+[; ;my_uart.c: 73: void uart_received_process(uint8_t* buf,uint8_t len);

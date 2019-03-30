@@ -4683,6 +4683,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; ;pin_manager.h: 226: void PIN_MANAGER_IOC(void);
 [; ;stdbool.h: 13: typedef unsigned char bool;
 [; ;interrupt_manager.h: 110: void interrupt INTERRUPT_InterruptManager(void);
+[; ;interrupt_manager.h: 113: extern uint8_t txBuf[64];
+[; ;interrupt_manager.h: 114: extern uint8_t txBufLen;
+[; ;interrupt_manager.h: 115: extern uint8_t txCount;
 [; ;stdbool.h: 13: typedef unsigned char bool;
 [; ;tmr2.h: 102: void TMR2_Initialize(void);
 [; ;tmr2.h: 131: void TMR2_StartTimer(void);

@@ -7194,6 +7194,11 @@ typedef unsigned char bool;
 # 110 "src/api/../../mcc_generated_files/interrupt_manager.h"
 void interrupt INTERRUPT_InterruptManager(void);
 
+# 113
+extern uint8_t txBuf[64];
+extern uint8_t txBufLen;
+extern uint8_t txCount;
+
 # 13 "C:\Program Files (x86)\Microchip\xc8\v2.00\pic\include\c90\stdbool.h"
 typedef unsigned char bool;
 
@@ -7432,7 +7437,36 @@ extern void uart_send_len(uint8_t* buf,uint8_t len);
 extern void uart_received_start(void);
 extern void uart_received_process(uint8_t* buf,uint8_t len);
 
-# 7 "src/api/my_uart.c"
+# 7 "src/api/../depend/m_string.h"
+extern void m_mem_set(uint8_t* buf,uint8_t x,uint16_t len);
+extern uint16_t m_mem_cpy(uint8_t* d,uint8_t* s);
+extern void m_mem_cpy_len(uint8_t* d,uint8_t* s,uint16_t len);
+extern uint16_t m_str_match(uint8_t* b,uint8_t* c);
+extern int32_t m_math_pow(int32_t x,int32_t y);
+extern uint8_t m_str_cmp(uint8_t* d,uint8_t* s);
+extern uint8_t m_str_cmp_len(uint8_t* d,uint8_t* s,uint16_t len);
+extern uint16_t HEX8(uint8_t* hex,uint8_t x);
+extern uint16_t m_str_b2h(uint8_t* h,uint8_t* b,uint16_t len);
+extern uint16_t m_str_h2b(uint8_t* b,uint8_t* h,uint16_t len);
+
+
+extern void m_int_2_str(uint8_t* buf,int32_t x,uint16_t len);
+extern void m_int_2_str_ex(uint8_t* buf,int32_t x,uint16_t ssize);
+extern uint16_t m_str_head_hide(uint8_t* str,uint16_t loc);
+
+extern const uint8_t Bcd2HexTable[];
+extern const uint8_t Hex2BcdTable[];
+
+# 30
+extern uint32_t swap_uint32(uint32_t x);
+extern uint16_t swap_uint16(uint16_t x);
+
+
+
+
+extern void int32_array_shift_right(int32_t *p32,uint16_t eoc);
+
+# 8 "src/api/my_uart.c"
 volatile uint8_t eusartRxIdleTime_ms=0;
 
 volatile uint8_t eusartRxBuffer[32];
@@ -7450,39 +7484,45 @@ TXREG = x;
 void uart_send_str(uint8_t* str)
 {
 
+uint16_t len;
 if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
 
-while(*str!='\0'){
+if(txBufLen>0)return;
+len=m_mem_cpy(txBuf,str);
+if(len==0)return;
 while(0 == PIR1bits.TXIF);
-do{__nop();__nop();}while(0);;
-TXREG = *str;
-str++;
-
-}
+TXREG=txBuf[0];
+txBufLen=len;
+txBufLen--;
+txCount++;
+if(!PIE1bits.TXIE)PIE1bits.TXIE=1;
 
 }
 
 uint8_t xlen;
 void uart_send_len(uint8_t* buf,uint8_t len)
 {
-uint8_t i;
-xlen=len;
+
+
 if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;
 
-for(i=0;i<xlen;i++){
+if(txBufLen>0)return;
+if(len>sizeof(txBuf))len=sizeof(txBuf);
+m_mem_cpy_len(txBuf,buf,len);
+if(len==0)return;
 while(0 == PIR1bits.TXIF);
-
-TXREG = buf[i];
-do{__nop();__nop();}while(0);;
-}
-
+TXREG=txBuf[0];
+txBufLen=len;
+txBufLen--;
+txCount++;
+if(!PIE1bits.TXIE)PIE1bits.TXIE=1;
 }
 
 void uart_received_start(void)
 {
 eusartRxCount=0;
 
-# 63
+# 70
 eusartRxIdleTime_ms=0;
 }
 

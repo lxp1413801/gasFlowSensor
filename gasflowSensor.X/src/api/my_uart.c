@@ -1,6 +1,7 @@
 #include "../../mcc_generated_files/mcc.h"
 #include "../globle/globle.h"
 #include "my_uart.h" 
+#include "../depend/m_string.h"
  
 //volatile uint8_t eusartTxBuffer[EUSART_TX_BUFFER_SIZE];
 //volatile uint8_t eusartTxLen=0;
@@ -21,38 +22,38 @@ void uart_send_byte(uint8_t x)
 void uart_send_str(uint8_t* str)
 {
     //TXSTAbits.TXEN=0;
-    if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;  
-    //while(0 == PIR1bits.TXIF);
-	while(*str!='\0'){
-		while(0 == PIR1bits.TXIF);
-        some_nop();
-		TXREG = *str;
-		str++;
-        //some_nop();
-	}
-    //while(0 == PIR1bits.TXIF);
+    uint16_t len;
+    if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1; 
+    
+    if(txBufLen>0)return;
+    len=m_mem_cpy(txBuf,str);
+    if(len==0)return;
+    while(0 == PIR1bits.TXIF);
+    TXREG=txBuf[0];
+    txBufLen=len;
+    txBufLen--;
+    txCount++;
+    if(!PIE1bits.TXIE)PIE1bits.TXIE=1;
+
 }
 
 uint8_t xlen;
 void uart_send_len(uint8_t* buf,uint8_t len)
 {
-    uint16_t tm=2000;
-	uint8_t i;
+
+    //uint16_t len;
+    if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1; 
     
-     xlen=len;
-    if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;  
-    //while(0 == PIR1bits.TXIF);
-	for(i=0;i<xlen;i++){
-        tm=2000;
-        while(tm-- > 1){
-            if(PIR1bits.TXIF)break;
-        }
-		//while(0 == PIR1bits.TXIF);
-         //some_nop();
-		TXREG = buf[i];		
-        some_nop();
-	}
-    //while(0 == PIR1bits.TXIF);
+    if(txBufLen>0)return;
+    if(len>sizeof(txBuf))len=sizeof(txBuf);
+    m_mem_cpy_len(txBuf,buf,len);
+    if(len==0)return;
+    while(0 == PIR1bits.TXIF);
+    TXREG=txBuf[0];
+    txBufLen=len;
+    txBufLen--;
+    txCount++;
+    if(!PIE1bits.TXIE)PIE1bits.TXIE=1;
 }
 
 void uart_received_start(void)
