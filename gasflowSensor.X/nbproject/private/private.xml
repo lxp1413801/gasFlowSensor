@@ -14,5 +14,12 @@
             <file>file:/G:/2018/cs70%20redo/gasFlowSensor/gasflowSensor.X/src/api/my_uart.c</file>
             <file>file:/G:/2018/cs70%20redo/gasFlowSensor/gasflowSensor.X/src/globle/globle.c</file>
         </group>
+        <group>
+            <file>file:/D:/2018/gasFlowSensor/gasflowSensor.X/mcc_generated_files/interrupt_manager.c</file>
+            <file>file:/D:/2018/gasFlowSensor/gasflowSensor.X/src/app/main.c</file>
+            <file>file:/D:/2018/gasFlowSensor/gasflowSensor.X/src/api/sysData.c</file>
+            <file>file:/D:/2018/gasFlowSensor/gasflowSensor.X/src/api/sample.c</file>
+            <file>file:/D:/2018/gasFlowSensor/gasflowSensor.X/mcc_generated_files/pwm1.c</file>
+        </group>
     </open-files>
 </project-private>

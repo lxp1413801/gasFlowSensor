@@ -112,7 +112,7 @@ uint16_t sys_data_init(void)
 		sysData.id=0x01;
 		for(i=0;i<MAX_CALIB_NUM;i++){
 			//24000
-			sysData.calibRsAdc[i]=6400+i*720;
+			sysData.calibRsAdc[i]=9400+i*720;
 			sysData.calibVoMV[i]=i*333;
 		}
 		

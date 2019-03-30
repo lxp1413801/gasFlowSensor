@@ -36,12 +36,18 @@ void uart_send_str(uint8_t* str)
 uint8_t xlen;
 void uart_send_len(uint8_t* buf,uint8_t len)
 {
+    uint16_t tm=2000;
 	uint8_t i;
+    
      xlen=len;
     if(!TXSTAbits.TXEN)TXSTAbits.TXEN=1;  
     //while(0 == PIR1bits.TXIF);
 	for(i=0;i<xlen;i++){
-		while(0 == PIR1bits.TXIF);
+        tm=2000;
+        while(tm-- > 1){
+            if(PIR1bits.TXIF)break;
+        }
+		//while(0 == PIR1bits.TXIF);
          //some_nop();
 		TXREG = buf[i];		
         some_nop();
