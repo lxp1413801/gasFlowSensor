@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <executable name="dist/default/debug\gasflowSensor.X.debug.hex">
+    <memory name="program">
+      <units>words</units>
+      <length>5888</length>
+      <used>4782</used>
+      <free>1106</free>
+    </memory>
+    <memory name="data">
+      <units>bytes</units>
+      <length>1008</length>
+      <used>414</used>
+      <free>594</free>
+    </memory>
+  </executable>
+</project>

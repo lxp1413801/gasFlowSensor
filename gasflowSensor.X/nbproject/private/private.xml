@@ -20,6 +20,12 @@
             <file>file:/D:/2018/gasFlowSensor/gasflowSensor.X/src/api/sysData.c</file>
             <file>file:/D:/2018/gasFlowSensor/gasflowSensor.X/src/api/sample.c</file>
             <file>file:/D:/2018/gasFlowSensor/gasflowSensor.X/mcc_generated_files/pwm1.c</file>
+            <file>file:/D:/2018/gasFlowSensor/gasflowSensor.X/src/api/my_uart.c</file>
+            <file>file:/D:/2018/gasFlowSensor/gasflowSensor.X/src/api/modbus.c</file>
+            <file>file:/D:/2018/gasFlowSensor/gasflowSensor.X/mcc_generated_files/eusart.c</file>
+            <file>file:/D:/2018/gasFlowSensor/gasflowSensor.X/mcc_generated_files/interrupt_manager.h</file>
+            <file>file:/D:/2018/gasFlowSensor/gasflowSensor.X/src/depend/m_string.c</file>
+            <file>file:/D:/2018/gasFlowSensor/gasflowSensor.X/src/depend/m_string.h</file>
         </group>
     </open-files>
 </project-private>

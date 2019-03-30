@@ -52,6 +52,7 @@ void main(void)
 			
 			pid_pwm1_idrv_run();
 			rsLoAvg=calc_rs_lo_avg(rtAdcValueRsLo);
+            //rsLoAvg=rtAdcValueRsLo;
 			voExpectMv=calc_expect_vout_adc_value(rsLoAvg);
 			voExpectAdcValue=(voExpectMv<<1);
 			pid_pwm2_vout_run();			

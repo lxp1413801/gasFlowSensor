@@ -123,6 +123,9 @@ uint16_t sys_data_init(void)
         sys_data_save();
 
 	}
+    PidKp=sysData.pidKp;
+    PidTi=sysData.pidTi;
+    PidTd=sysData.pidTd;;     
 	return ret;
 }
 
