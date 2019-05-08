@@ -7,6 +7,8 @@
             <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/src/api/iap.c</file>
             <file>file:/G:/2018/cs70%20redo/gasFlowSensor/bootLoader.X/src/app/boot_main.c</file>
         </group>
-        <group/>
+        <group>
+            <file>file:/D:/2018/gasFlowSensor/bootLoader.X/src/app/boot_main.c</file>
+        </group>
     </open-files>
 </project-private>

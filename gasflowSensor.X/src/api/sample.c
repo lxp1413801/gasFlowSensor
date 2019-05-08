@@ -331,15 +331,15 @@ void pid_pwm1_idrv_b_b(void)
 #define pidEI x1
 #define ed y0
 
-int16_t ik=20;
+int16_t ik=24;
 int16_t iexcept=0;
 int16_t idelta=0;
 void pid_pwm1_idrv_run(void)
 {
-    iexcept=pwm1DutyForIdrv*ik;
-    idelta=iexcept-rtAdcValueRsLo;
-    idelta/=ik;
-    ik=rtAdcValueRsLo/pwm1DutyForIdrv;
+    //iexcept=pwm1DutyForIdrv*ik;
+    //idelta=iexcept-rtAdcValueRsLo;
+    //idelta/=ik;
+    //ik=rtAdcValueRsLo/pwm1DutyForIdrv;
     
 	int32_t t32;
 	t32=((int32_t)resRs-(int32_t)resRc);
@@ -352,9 +352,10 @@ void pid_pwm1_idrv_run(void)
 
 	ep=(err[0]-err[1])*PidKp;
 	pidEI=PidKp*err[0]/PidTi;
-	//ed=(err[0]-2*err[1]+err[2])*PidKp*PidTd/200;;
-	//ed=0;
-	t32=ep+pidEI;//+ed;
+	//ed=(err[0]-2*err[1]+err[2])*PidKp*PidTd/10;;
+    //ed=(err[0]-2*err[1]+err[2])*PidTd;
+	ed=0;
+	t32=ep+pidEI+ed;
 	t32/=10000;
 	t32+=pidU;
 
@@ -363,11 +364,11 @@ void pid_pwm1_idrv_run(void)
 	if(t32<iDRV_PWM1_MIN)t32=iDRV_PWM1_MIN;
 	pidU=(uint16_t)t32;
 
-    t32+=idelta;
- 	if(t32>iDRV_PWM1_MAX)t32=iDRV_PWM1_MAX;
-	if(t32<iDRV_PWM1_MIN)t32=iDRV_PWM1_MIN;   
-	//set_idrv_pwm1_duty(pidU);
-    set_idrv_pwm1_duty((uint16_t)t32);
+    //t32+=idelta;
+ 	//if(t32>iDRV_PWM1_MAX)t32=iDRV_PWM1_MAX;
+	//if(t32<iDRV_PWM1_MIN)t32=iDRV_PWM1_MIN;   
+	set_idrv_pwm1_duty(pidU);
+    //set_idrv_pwm1_duty((uint16_t)t32);
 }
 
 
@@ -551,7 +552,6 @@ uint16_t cal_rs_simulate_power(void)
 	if(t32>65535)t32=65535;
 	t16=(uint16_t)t32;
 	return t16;
-
 }
 
 

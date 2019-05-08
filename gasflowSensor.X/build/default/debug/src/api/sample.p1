@@ -5414,350 +5414,371 @@ Version 3.2 HI-TECH Software Intermediate Code
 "259
 [e :UE 625 ]
 }
-"333
-[v _pid_pwm1_idrv_run `(v ~T0 @X0 1 ef ]
 "334
+[v _ik `i ~T0 @X0 1 e ]
+[i _ik
+-> 24 `i
+]
+[; ;sample.c: 334: int16_t ik=24;
+"335
+[v _iexcept `i ~T0 @X0 1 e ]
+[i _iexcept
+-> 0 `i
+]
+[; ;sample.c: 335: int16_t iexcept=0;
+"336
+[v _idelta `i ~T0 @X0 1 e ]
+[i _idelta
+-> 0 `i
+]
+[; ;sample.c: 336: int16_t idelta=0;
+"337
+[v _pid_pwm1_idrv_run `(v ~T0 @X0 1 ef ]
+"338
 {
-[; ;sample.c: 333: void pid_pwm1_idrv_run(void)
-[; ;sample.c: 334: {
+[; ;sample.c: 337: void pid_pwm1_idrv_run(void)
+[; ;sample.c: 338: {
 [e :U _pid_pwm1_idrv_run ]
 [f ]
-"337
+"344
 [v _t32 `l ~T0 @X0 1 a ]
-[; ;sample.c: 337: int32_t t32;
-[; ;sample.c: 338: t32=((int32_t)resRs-(int32_t)resRc);
-"338
+[; ;sample.c: 344: int32_t t32;
+[; ;sample.c: 345: t32=((int32_t)resRs-(int32_t)resRc);
+"345
 [e = _t32 - -> _resRs `l -> _resRc `l ]
-[; ;sample.c: 339: t32=2000-t32;
-"339
-[e = _t32 - -> -> 2000 `i `l _t32 ]
-[; ;sample.c: 341: err[2]=err[1];
-"341
-[e = *U + &U _err * -> -> -> 2 `i `ui `ux -> -> # *U &U _err `ui `ux *U + &U _err * -> -> -> 1 `i `ui `ux -> -> # *U &U _err `ui `ux ]
-[; ;sample.c: 342: err[1]=err[0];
-"342
-[e = *U + &U _err * -> -> -> 1 `i `ui `ux -> -> # *U &U _err `ui `ux *U + &U _err * -> -> -> 0 `i `ui `ux -> -> # *U &U _err `ui `ux ]
-[; ;sample.c: 343: err[0]=t32;
-"343
-[e = *U + &U _err * -> -> -> 0 `i `ui `ux -> -> # *U &U _err `ui `ux _t32 ]
-[; ;sample.c: 346: x0=(err[0]-err[1])*PidKp;
+[; ;sample.c: 346: t32=2000-t32;
 "346
-[e = _x0 * - *U + &U _err * -> -> -> 0 `i `ui `ux -> -> # *U &U _err `ui `ux *U + &U _err * -> -> -> 1 `i `ui `ux -> -> # *U &U _err `ui `ux -> _PidKp `l ]
-[; ;sample.c: 347: x1=PidKp*err[0]/PidTi;
-"347
-[e = _x1 / * -> _PidKp `l *U + &U _err * -> -> -> 0 `i `ui `ux -> -> # *U &U _err `ui `ux -> _PidTi `l ]
-[; ;sample.c: 350: t32=x0+x1;
+[e = _t32 - -> -> 2000 `i `l _t32 ]
+[; ;sample.c: 348: err[2]=err[1];
+"348
+[e = *U + &U _err * -> -> -> 2 `i `ui `ux -> -> # *U &U _err `ui `ux *U + &U _err * -> -> -> 1 `i `ui `ux -> -> # *U &U _err `ui `ux ]
+[; ;sample.c: 349: err[1]=err[0];
+"349
+[e = *U + &U _err * -> -> -> 1 `i `ui `ux -> -> # *U &U _err `ui `ux *U + &U _err * -> -> -> 0 `i `ui `ux -> -> # *U &U _err `ui `ux ]
+[; ;sample.c: 350: err[0]=t32;
 "350
-[e = _t32 + _x0 _x1 ]
-[; ;sample.c: 351: t32/=10000;
-"351
-[e =/ _t32 -> -> 10000 `us `l ]
-[; ;sample.c: 352: t32+=pidU;
-"352
-[e =+ _t32 -> _pidU `l ]
-[; ;sample.c: 354: __nop();
+[e = *U + &U _err * -> -> -> 0 `i `ui `ux -> -> # *U &U _err `ui `ux _t32 ]
+[; ;sample.c: 353: x0=(err[0]-err[1])*PidKp;
+"353
+[e = _x0 * - *U + &U _err * -> -> -> 0 `i `ui `ux -> -> # *U &U _err `ui `ux *U + &U _err * -> -> -> 1 `i `ui `ux -> -> # *U &U _err `ui `ux -> _PidKp `l ]
+[; ;sample.c: 354: x1=PidKp*err[0]/PidTi;
 "354
-[e ( ___nop ..  ]
-[; ;sample.c: 355: if(t32>1200)t32=1200;
+[e = _x1 / * -> _PidKp `l *U + &U _err * -> -> -> 0 `i `ui `ux -> -> # *U &U _err `ui `ux -> _PidTi `l ]
+[; ;sample.c: 355: y0=(err[0]-2*err[1]+err[2])*PidKp*PidTd/10;;
 "355
+[e = _y0 / * * + - *U + &U _err * -> -> -> 0 `i `ui `ux -> -> # *U &U _err `ui `ux * -> -> 2 `i `l *U + &U _err * -> -> -> 1 `i `ui `ux -> -> # *U &U _err `ui `ux *U + &U _err * -> -> -> 2 `i `ui `ux -> -> # *U &U _err `ui `ux -> _PidKp `l -> _PidTd `l -> -> 10 `i `l ]
+[; ;sample.c: 357: t32=x0+x1+y0;
+"357
+[e = _t32 + + _x0 _x1 _y0 ]
+[; ;sample.c: 358: t32/=10000;
+"358
+[e =/ _t32 -> -> 10000 `us `l ]
+[; ;sample.c: 359: t32+=pidU;
+"359
+[e =+ _t32 -> _pidU `l ]
+[; ;sample.c: 361: __nop();
+"361
+[e ( ___nop ..  ]
+[; ;sample.c: 362: if(t32>1200)t32=1200;
+"362
 [e $ ! > _t32 -> -> 1200 `i `l 629  ]
 [e = _t32 -> -> 1200 `i `l ]
 [e :U 629 ]
-[; ;sample.c: 356: if(t32<5)t32=5;
-"356
+[; ;sample.c: 363: if(t32<5)t32=5;
+"363
 [e $ ! < _t32 -> -> 5 `i `l 630  ]
 [e = _t32 -> -> 5 `i `l ]
 [e :U 630 ]
-[; ;sample.c: 357: pidU=(uint16_t)t32;
-"357
+[; ;sample.c: 364: pidU=(uint16_t)t32;
+"364
 [e = _pidU -> _t32 `ui ]
-[; ;sample.c: 359: set_idrv_pwm1_duty(pidU);
-"359
+[; ;sample.c: 369: set_idrv_pwm1_duty(pidU);
+"369
 [e ( _set_idrv_pwm1_duty (1 _pidU ]
-[; ;sample.c: 360: }
-"360
+[; ;sample.c: 371: }
+"371
 [e :UE 628 ]
 }
-"363
+"374
 [v _pid_pwm2_vout_run `(v ~T0 @X0 1 ef ]
-"364
+"375
 {
-[; ;sample.c: 363: void pid_pwm2_vout_run(void)
-[; ;sample.c: 364: {
+[; ;sample.c: 374: void pid_pwm2_vout_run(void)
+[; ;sample.c: 375: {
 [e :U _pid_pwm2_vout_run ]
 [f ]
-"365
+"376
 [v _t16 `i ~T0 @X0 1 a ]
 [v ___ei `i ~T0 @X0 1 a ]
-[; ;sample.c: 365: int16_t t16,__ei;
-[; ;sample.c: 366: t16=voExpectAdcValue-rtAdcValueVoFb;
-"366
+[; ;sample.c: 376: int16_t t16,__ei;
+[; ;sample.c: 377: t16=voExpectAdcValue-rtAdcValueVoFb;
+"377
 [e = _t16 -> - _voExpectAdcValue _rtAdcValueVoFb `i ]
-[; ;sample.c: 367: __ei=t16/150;
-"367
+[; ;sample.c: 378: __ei=t16/150;
+"378
 [e = ___ei / _t16 -> 150 `i ]
-[; ;sample.c: 368: if(__ei==0){
-"368
+[; ;sample.c: 379: if(__ei==0){
+"379
 [e $ ! == ___ei -> 0 `i 632  ]
 {
-[; ;sample.c: 369: if(t16>16)__ei=1;
-"369
+[; ;sample.c: 380: if(t16>16)__ei=1;
+"380
 [e $ ! > _t16 -> 16 `i 633  ]
 [e = ___ei -> 1 `i ]
 [e :U 633 ]
-[; ;sample.c: 370: if(t16<-16)__ei=-1;
-"370
+[; ;sample.c: 381: if(t16<-16)__ei=-1;
+"381
 [e $ ! < _t16 -U -> 16 `i 634  ]
 [e = ___ei -U -> 1 `i ]
 [e :U 634 ]
-"371
+"382
 }
 [e :U 632 ]
-[; ;sample.c: 371: }
-[; ;sample.c: 373: pwm2Ei=pwm2Ei+__ei;
-"373
+[; ;sample.c: 382: }
+[; ;sample.c: 384: pwm2Ei=pwm2Ei+__ei;
+"384
 [e = _pwm2Ei + _pwm2Ei ___ei ]
-[; ;sample.c: 377: t16=voExpectAdcValue/10;
-"377
+[; ;sample.c: 388: t16=voExpectAdcValue/10;
+"388
 [e = _t16 -> / _voExpectAdcValue -> -> 10 `i `ui `i ]
-[; ;sample.c: 379: t16=t16+pwm2Ei;
-"379
+[; ;sample.c: 390: t16=t16+pwm2Ei;
+"390
 [e = _t16 + _t16 _pwm2Ei ]
-[; ;sample.c: 380: if(t16>1580)t16=1580;
-"380
+[; ;sample.c: 391: if(t16>1580)t16=1580;
+"391
 [e $ ! > _t16 -> 1580 `i 635  ]
 [e = _t16 -> 1580 `i ]
 [e :U 635 ]
-[; ;sample.c: 381: if(t16<5)t16=5;
-"381
+[; ;sample.c: 392: if(t16<5)t16=5;
+"392
 [e $ ! < _t16 -> 5 `i 636  ]
 [e = _t16 -> 5 `i ]
 [e :U 636 ]
-[; ;sample.c: 382: set_vout_pwm2_duty((uint16_t)t16);
-"382
+[; ;sample.c: 393: set_vout_pwm2_duty((uint16_t)t16);
+"393
 [e ( _set_vout_pwm2_duty (1 -> _t16 `ui ]
-[; ;sample.c: 384: }
-"384
+[; ;sample.c: 395: }
+"395
 [e :UE 631 ]
 }
-"435
+"446
 [v _calc_rs_lo_avg `(ui ~T0 @X0 1 ef1`ui ]
-"436
+"447
 {
-[; ;sample.c: 435: uint16_t calc_rs_lo_avg(uint16_t x)
-[; ;sample.c: 436: {
+[; ;sample.c: 446: uint16_t calc_rs_lo_avg(uint16_t x)
+[; ;sample.c: 447: {
 [e :U _calc_rs_lo_avg ]
-"435
+"446
 [v _x `ui ~T0 @X0 1 r1 ]
-"436
+"447
 [f ]
-"437
+"448
 [v _i `uc ~T0 @X0 1 a ]
-"438
+"449
 [v _t32 `ul ~T0 @X0 1 a ]
-[; ;sample.c: 437: uint8_t i;
-[; ;sample.c: 438: uint32_t t32=0;
+[; ;sample.c: 448: uint8_t i;
+[; ;sample.c: 449: uint32_t t32=0;
 [e = _t32 -> -> -> 0 `i `l `ul ]
-[; ;sample.c: 440: for(i=0;i<6-1;i++){
-"440
+[; ;sample.c: 451: for(i=0;i<6-1;i++){
+"451
 {
 [e = _i -> -> 0 `i `uc ]
 [e $ < -> _i `i - -> 6 `i -> 1 `i 638  ]
 [e $U 639  ]
 [e :U 638 ]
 {
-[; ;sample.c: 441: rsLoAvgBuf[i]=rsLoAvgBuf[i+1];
-"441
+[; ;sample.c: 452: rsLoAvgBuf[i]=rsLoAvgBuf[i+1];
+"452
 [e = *U + &U _rsLoAvgBuf * -> _i `ux -> -> # *U &U _rsLoAvgBuf `ui `ux *U + &U _rsLoAvgBuf * -> -> + -> _i `i -> 1 `i `ui `ux -> -> # *U &U _rsLoAvgBuf `ui `ux ]
-[; ;sample.c: 442: t32+=((uint32_t)rsLoAvgBuf[i]);
-"442
+[; ;sample.c: 453: t32+=((uint32_t)rsLoAvgBuf[i]);
+"453
 [e =+ _t32 -> *U + &U _rsLoAvgBuf * -> _i `ux -> -> # *U &U _rsLoAvgBuf `ui `ux `ul ]
-"443
+"454
 }
-"440
+"451
 [e ++ _i -> -> 1 `i `uc ]
 [e $ < -> _i `i - -> 6 `i -> 1 `i 638  ]
 [e :U 639 ]
-"443
+"454
 }
-[; ;sample.c: 443: }
-[; ;sample.c: 444: rsLoAvgBuf[i]=x;
-"444
+[; ;sample.c: 454: }
+[; ;sample.c: 455: rsLoAvgBuf[i]=x;
+"455
 [e = *U + &U _rsLoAvgBuf * -> _i `ux -> -> # *U &U _rsLoAvgBuf `ui `ux _x ]
-[; ;sample.c: 445: t32+=x;
-"445
+[; ;sample.c: 456: t32+=x;
+"456
 [e =+ _t32 -> _x `ul ]
-[; ;sample.c: 446: t32/=6;
-"446
+[; ;sample.c: 457: t32/=6;
+"457
 [e =/ _t32 -> -> 6 `uc `ul ]
-[; ;sample.c: 447: return (uint16_t)t32;
-"447
+[; ;sample.c: 458: return (uint16_t)t32;
+"458
 [e ) -> _t32 `ui ]
 [e $UE 637  ]
-[; ;sample.c: 448: }
-"448
+[; ;sample.c: 459: }
+"459
 [e :UE 637 ]
 }
-"452
+"463
 [v _calc_expect_vout_adc_value `(ui ~T0 @X0 1 ef1`ui ]
-"453
+"464
 {
-[; ;sample.c: 452: uint16_t calc_expect_vout_adc_value(uint16_t x)
-[; ;sample.c: 453: {
+[; ;sample.c: 463: uint16_t calc_expect_vout_adc_value(uint16_t x)
+[; ;sample.c: 464: {
 [e :U _calc_expect_vout_adc_value ]
-"452
+"463
 [v _x `ui ~T0 @X0 1 r1 ]
-"453
+"464
 [f ]
-"455
+"466
 [v _i `uc ~T0 @X0 1 a ]
-"456
+"467
 [v _t32 `l ~T0 @X0 1 a ]
-[; ;sample.c: 455: uint8_t i;
-[; ;sample.c: 456: int32_t t32;
-[; ;sample.c: 459: for (i = 0; i < 30-1; i++) {
-"459
+[; ;sample.c: 466: uint8_t i;
+[; ;sample.c: 467: int32_t t32;
+[; ;sample.c: 470: for (i = 0; i < 30-1; i++) {
+"470
 {
 [e = _i -> -> 0 `i `uc ]
 [e $ < -> _i `i - -> 30 `i -> 1 `i 642  ]
 [e $U 643  ]
 [e :U 642 ]
 {
-[; ;sample.c: 460: if(sysData.calibRsAdc[i]<sysData.calibRsAdc[i+1]){
-"460
+[; ;sample.c: 471: if(sysData.calibRsAdc[i]<sysData.calibRsAdc[i+1]){
+"471
 [e $ ! < *U + &U . _sysData 7 * -> _i `ux -> -> # *U &U . _sysData 7 `ui `ux *U + &U . _sysData 7 * -> -> + -> _i `i -> 1 `i `ui `ux -> -> # *U &U . _sysData 7 `ui `ux 645  ]
 {
-[; ;sample.c: 461: if (x <= sysData.calibRsAdc[i+1])break;
-"461
+[; ;sample.c: 472: if (x <= sysData.calibRsAdc[i+1])break;
+"472
 [e $ ! <= _x *U + &U . _sysData 7 * -> -> + -> _i `i -> 1 `i `ui `ux -> -> # *U &U . _sysData 7 `ui `ux 646  ]
 [e $U 643  ]
 [e :U 646 ]
-"462
+"473
 }
-[; ;sample.c: 462: }else{
+[; ;sample.c: 473: }else{
 [e $U 647  ]
 [e :U 645 ]
 {
-[; ;sample.c: 464: break;
-"464
+[; ;sample.c: 475: break;
+"475
 [e $U 643  ]
-"465
+"476
 }
 [e :U 647 ]
-"466
+"477
 }
-"459
+"470
 [e ++ _i -> -> 1 `i `uc ]
 [e $ < -> _i `i - -> 30 `i -> 1 `i 642  ]
 [e :U 643 ]
-"466
+"477
 }
-[; ;sample.c: 465: }
-[; ;sample.c: 466: }
-[; ;sample.c: 468: if (i > 30-2)i=30-2;
-"468
+[; ;sample.c: 476: }
+[; ;sample.c: 477: }
+[; ;sample.c: 479: if (i > 30-2)i=30-2;
+"479
 [e $ ! > -> _i `i - -> 30 `i -> 2 `i 648  ]
 [e = _i -> - -> 30 `i -> 2 `i `uc ]
 [e :U 648 ]
-[; ;sample.c: 469: y1=sysData.calibVoMV[i+1];
-"469
+[; ;sample.c: 480: y1=sysData.calibVoMV[i+1];
+"480
 [e = _y1 -> *U + &U . _sysData 8 * -> -> + -> _i `i -> 1 `i `ui `ux -> -> # *U &U . _sysData 8 `ui `ux `l ]
-[; ;sample.c: 470: y0=sysData.calibVoMV[i];
-"470
+[; ;sample.c: 481: y0=sysData.calibVoMV[i];
+"481
 [e = _y0 -> *U + &U . _sysData 8 * -> _i `ux -> -> # *U &U . _sysData 8 `ui `ux `l ]
-[; ;sample.c: 473: x1=sysData.calibRsAdc[i+1];
-"473
+[; ;sample.c: 484: x1=sysData.calibRsAdc[i+1];
+"484
 [e = _x1 -> *U + &U . _sysData 7 * -> -> + -> _i `i -> 1 `i `ui `ux -> -> # *U &U . _sysData 7 `ui `ux `l ]
-[; ;sample.c: 474: x0=sysData.calibRsAdc[i];
-"474
+[; ;sample.c: 485: x0=sysData.calibRsAdc[i];
+"485
 [e = _x0 -> *U + &U . _sysData 7 * -> _i `ux -> -> # *U &U . _sysData 7 `ui `ux `l ]
-[; ;sample.c: 476: if(x<=x0 && i==0)return (uint16_t)y0;
-"476
+[; ;sample.c: 487: if(x<=x0 && i==0)return (uint16_t)y0;
+"487
 [e $ ! && <= -> _x `l _x0 == -> _i `i -> 0 `i 649  ]
 [e ) -> _y0 `ui ]
 [e $UE 641  ]
 [e :U 649 ]
-[; ;sample.c: 477: if(x1<=x0)return (uint16_t)y0;
-"477
+[; ;sample.c: 488: if(x1<=x0)return (uint16_t)y0;
+"488
 [e $ ! <= _x1 _x0 650  ]
 [e ) -> _y0 `ui ]
 [e $UE 641  ]
 [e :U 650 ]
-[; ;sample.c: 480: t32=(x-x0);
-"480
+[; ;sample.c: 491: t32=(x-x0);
+"491
 [e = _t32 - -> _x `l _x0 ]
-[; ;sample.c: 481: t32=t32*(y1-y0);
-"481
+[; ;sample.c: 492: t32=t32*(y1-y0);
+"492
 [e = _t32 * _t32 - _y1 _y0 ]
-[; ;sample.c: 482: t32=t32/(x1-x0);
-"482
+[; ;sample.c: 493: t32=t32/(x1-x0);
+"493
 [e = _t32 / _t32 - _x1 _x0 ]
-[; ;sample.c: 483: t32=t32+y0;
-"483
+[; ;sample.c: 494: t32=t32+y0;
+"494
 [e = _t32 + _t32 _y0 ]
-[; ;sample.c: 484: if(t32<0)t32=0;
-"484
+[; ;sample.c: 495: if(t32<0)t32=0;
+"495
 [e $ ! < _t32 -> -> 0 `i `l 651  ]
 [e = _t32 -> -> 0 `i `l ]
 [e :U 651 ]
-[; ;sample.c: 485: return (uint16_t)t32;
-"485
+[; ;sample.c: 496: return (uint16_t)t32;
+"496
 [e ) -> _t32 `ui ]
 [e $UE 641  ]
-[; ;sample.c: 486: }
-"486
+[; ;sample.c: 497: }
+"497
 [e :UE 641 ]
 }
-"528
+"539
 [v _cal_rs_simulate_power `(ui ~T0 @X0 1 ef ]
-"529
+"540
 {
-[; ;sample.c: 528: uint16_t cal_rs_simulate_power(void)
-[; ;sample.c: 529: {
+[; ;sample.c: 539: uint16_t cal_rs_simulate_power(void)
+[; ;sample.c: 540: {
 [e :U _cal_rs_simulate_power ]
 [f ]
-"530
+"541
 [v _t32 `ul ~T0 @X0 1 a ]
-"532
+"543
 [v _t16 `ui ~T0 @X0 1 a ]
-[; ;sample.c: 530: uint32_t t32;
-[; ;sample.c: 532: uint16_t t16=rtAdcValueRsLo;
+[; ;sample.c: 541: uint32_t t32;
+[; ;sample.c: 543: uint16_t t16=rtAdcValueRsLo;
 [e = _t16 _rtAdcValueRsLo ]
-[; ;sample.c: 533: if(t16>24000)t16=24000;
-"533
+[; ;sample.c: 544: if(t16>24000)t16=24000;
+"544
 [e $ ! > _t16 -> -> 24000 `i `ui 653  ]
 [e = _t16 -> -> 24000 `i `ui ]
 [e :U 653 ]
-[; ;sample.c: 534: if(t16<6400)t16=6400;
-"534
+[; ;sample.c: 545: if(t16<6400)t16=6400;
+"545
 [e $ ! < _t16 -> -> 6400 `i `ui 654  ]
 [e = _t16 -> -> 6400 `i `ui ]
 [e :U 654 ]
-[; ;sample.c: 535: t32=t16;
-"535
+[; ;sample.c: 546: t32=t16;
+"546
 [e = _t32 -> _t16 `ul ]
-[; ;sample.c: 536: t32=t32*t16;
-"536
+[; ;sample.c: 547: t32=t32*t16;
+"547
 [e = _t32 * _t32 -> _t16 `ul ]
-[; ;sample.c: 538: t32-=40960000UL;
-"538
+[; ;sample.c: 549: t32-=40960000UL;
+"549
 [e =- _t32 -> 40960000 `ul ]
-[; ;sample.c: 539: t32>>=13;
-"539
+[; ;sample.c: 550: t32>>=13;
+"550
 [e =>> _t32 -> 13 `i ]
-[; ;sample.c: 540: if(t32>65535)t32=65535;
-"540
+[; ;sample.c: 551: if(t32>65535)t32=65535;
+"551
 [e $ ! > _t32 -> -> 65535 `l `ul 655  ]
 [e = _t32 -> -> 65535 `l `ul ]
 [e :U 655 ]
-[; ;sample.c: 541: t16=(uint16_t)t32;
-"541
+[; ;sample.c: 552: t16=(uint16_t)t32;
+"552
 [e = _t16 -> _t32 `ui ]
-[; ;sample.c: 542: return t16;
-"542
+[; ;sample.c: 553: return t16;
+"553
 [e ) _t16 ]
 [e $UE 652  ]
-[; ;sample.c: 544: }
-"544
+[; ;sample.c: 555: }
+"555
 [e :UE 652 ]
 }
