@@ -1,0 +1,170 @@
+(ExpressProject ""
+  (ProjectVersion "19981106")
+  (ProjectType "PCB")
+  (Folder "Design Resources"
+    (Folder "Library"
+      (File "e:\common lib\pcblib\orcad\liborcadcommlxp.olb"
+        (Type "Schematic Library"))
+      (File "d:\common lib\pcblib\orcad\liborcadcommlxp.olb"
+        (Type "Schematic Library")))
+    (File ".\gasflowsensor.dsn"
+      (Type "Schematic Design"))
+    (BuildFileAddedOrDeleted "x")
+    (CompileFileAddedOrDeleted "x")
+    (DOCKED "TRUE")
+    (DOCKING_POSITION "59420")
+    (NoModify)
+    (ANNOTATE_Scope "1")
+    (ANNOTATE_Mode "1")
+    (ANNOTATE_Action "1")
+    (Annotate_Page_Order "0")
+    (ANNOTATE_Reset_References_to_1 "FALSE")
+    (ANNOTATE_No_Page_Number_Change "FALSE")
+    (ANNOTATE_Property_Combine "{Value}{Source Package}{POWER_GROUP}")
+    (ANNOTATE_IncludeNonPrimitive "FALSE")
+    (ANNOTATE_PreserveDesignator "FALSE")
+    (ANNOTATE_PreserveUserEdits "FALSE")
+    (ANNOTATE_Refdes_Control_Required "FALSE")
+    (Update_Instace_for_External_Design "FALSE")
+    (Annotate_type "Default")
+    (width_pages "100")
+    (width_start "80")
+    (width_End "80"))
+  (Folder "Outputs")
+  (Folder "Referenced Projects")
+  (PartMRUSelector
+    (CON3
+      (FullPartName "CON3.Normal")
+      (LibraryName "D:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (CON2
+      (FullPartName "CON2.Normal")
+      (LibraryName "D:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (DIODE1
+      (FullPartName "DIODE1.Normal")
+      (LibraryName "D:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (2N3906
+      (FullPartName "2N3906.Normal")
+      (LibraryName "C:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\TRANSISTOR.OLB")
+      (DeviceIndex "0"))
+    (2N3904
+      (FullPartName "2N3904.Normal")
+      (LibraryName "C:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\TRANSISTOR.OLB")
+      (DeviceIndex "0"))
+    (CON1
+      (FullPartName "CON1.Normal")
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (LM324
+      (FullPartName "LM324D.Normal")
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "3"))
+    (TL431
+      (FullPartName "TL431.Normal")
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (LM358/TO
+      (FullPartName "LM358/TO.Normal")
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (GND
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (RT
+      (FullPartName "RT.Normal")
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (RES3
+      (FullPartName "RES3.Normal")
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (LM317/TO92
+      (FullPartName "LM317/TO92.Normal")
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (Off_Page_Out_L
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (D3V0
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (Off_Page_In_L
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (CAP
+      (FullPartName "CAP.Normal")
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    ("CAP NP"
+      (FullPartName "CAP NP.Normal")
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (LM7805L
+      (FullPartName "LM7805L.Normal")
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (HT7530
+      (FullPartName "HT7530.Normal")
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (L7805/TO3
+      (FullPartName "L7805/TO3.Normal")
+      (LibraryName "D:\CADENCE\SPB_16.6\TOOLS\CAPTURE\LIBRARY\REGULATOR.OLB")
+      (DeviceIndex "0"))
+    (Off_Page_Bi_R
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (Off_Page_In_R
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0"))
+    (CON6
+      (FullPartName "CON6.Normal")
+      (LibraryName "E:\COMMON LIB\PCBLIB\ORCAD\LIBORCADCOMMLXP.OLB")
+      (DeviceIndex "0")))
+  (GlobalState
+    (FileView
+      (Path "Design Resources")
+      (Path "Design Resources" ".\gasflowsensor.dsn")
+      (Path "Design Resources" ".\gasflowsensor.dsn" "SCHEMATIC1")
+      (Path "Design Resources" "Library")
+      (Select "Design Resources" ".\gasflowsensor.dsn" "SCHEMATIC1" "withMcu"))
+    (HierarchyView)
+    (Doc
+      (Type "COrCapturePMDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -1 -1 0 250 0 912"))
+      (Tab 0))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -9 -38 64 1361 64 647")
+        (Scroll "-37 0")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path "D:\2018\CS70 REDO\DOC\GASFLOWSENSOR.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "PAGE1"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -9 -38 96 1393 96 679")
+        (Scroll "-42 0")
+        (Zoom "100")
+        (Occurrence "/"))
+      (Path "D:\2018\CS70 REDO\DOC\GASFLOWSENSOR.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "slu02"))
+    (Doc
+      (Type "COrSchematicDoc")
+      (Frame
+        (Placement "44 0 1 -1 -1 -9 -38 128 1425 128 711")
+        (Scroll "-43 0")
+        (Zoom "99")
+        (Occurrence "/"))
+      (Path "D:\2018\CS70 REDO\DOC\GASFLOWSENSOR.DSN")
+      (Schematic "SCHEMATIC1")
+      (Page "withMcu")))
+  (LastUsedLibraryBrowseDirectory "C:\Cadence\SPB_16.6\tools\capture\library")
+  (MPSSessionName "Administrator"))
